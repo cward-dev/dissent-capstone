@@ -6,6 +6,7 @@ Capstone project by Milan Stojanovic, Maria Bohnenstengel, and Chris Ward.
 
 1. What are we going to use to keep track of our work? This must be done.
 	* The 2 approved tools are Trello and Github issues. If you want to use something else, get approval FIRST from the instruction team
+	- [ ] Trello
 2. How are we going to break down the problem? What specifically are we solving?
 3. Do we have outstanding questions on what we are solving and do we have a plan to find those answers?
 4. What technologies will we need to solve our problem?
