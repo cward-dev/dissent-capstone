@@ -1,6 +1,5 @@
 package capstone.dissent.data;
 
-import capstone.dissent.models.Tag;
 import capstone.dissent.models.User;
 import capstone.dissent.models.UserLogin;
 

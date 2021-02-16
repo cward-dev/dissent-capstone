@@ -1,6 +1,6 @@
 package capstone.dissent.data;
 
-import capstone.dissent.models.Tag;
+import capstone.dissent.models.FeedbackTag;
 import capstone.dissent.models.User;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -45,7 +45,7 @@ public class UserJdbcTemplateRepository implements UserRepository {
     }
 
     @Override
-    public HashMap<Tag, Integer> getTagData(User user) {
+    public HashMap<FeedbackTag, Integer> getTagData(User user) {
         return null;
     }
 

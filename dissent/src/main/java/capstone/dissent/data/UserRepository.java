@@ -1,6 +1,6 @@
 package capstone.dissent.data;
 
-import capstone.dissent.models.Tag;
+import capstone.dissent.models.FeedbackTag;
 import capstone.dissent.models.User;
 
 import java.util.HashMap;
@@ -22,6 +22,6 @@ public interface UserRepository {
     boolean deleteById(int userLoginId);
 
     // helpers
-    HashMap<Tag, Integer> getTagData(User user);
+    HashMap<FeedbackTag, Integer> getTagData(User user);
 
 }
