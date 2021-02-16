@@ -155,11 +155,12 @@ begin
 			'e920c55d-4b95-4b69-a8e3-04cc1eb8e2cb', 
             'd293ae18-63e0-49b7-87fd-9856bcf52884', 
             'First Image of a Black Hole', 
-            `The shadow of a black hole seen here is the closest we can come to an image of the black hole itself`, 
+            'The shadow of a black hole seen here is the closest we can come to an image of the black hole itself', 
             'https://www.eso.org/public/images/eso1907a/', 
             'https://cdn.eso.org/images/thumb700x/eso1907a.jpg',
             '04/10/2019', 
-            '2/16/2021');
+            '2/16/2021'
+		);
         
 	insert into article_topic
 		(article_id, topic_id) 
@@ -207,4 +208,3 @@ begin
 end //
 -- 4. Change the statement terminator back to the original.
 delimiter ;
-
