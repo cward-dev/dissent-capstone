@@ -5,14 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9f92960c-adf9-4bb8-97ef-a3e7eaab156a" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/../dissent-react/public/favicon.ico" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../dissent-react/public/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/../dissent-react/public/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../dissent-react/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/../dissent-react/src/App.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../dissent-react/src/App.test.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../dissent-react/src/logo.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../dissent-react/src/reportWebVitals.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../dissent-react/src/setupTests.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
