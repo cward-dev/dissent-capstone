@@ -1,5 +1,6 @@
 package capstone.dissent.data.mappers;
 
+
 import capstone.dissent.models.Post;
 import org.springframework.jdbc.core.RowMapper;
 
@@ -20,4 +21,5 @@ public class PostMapper implements RowMapper<Post> {
         post.setContent(resultSet.getString("content"));
         return post;
     }
+
 }
