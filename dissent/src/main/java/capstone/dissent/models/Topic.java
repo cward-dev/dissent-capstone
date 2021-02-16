@@ -7,7 +7,7 @@ import java.util.List;
 public class Topic {
     private final int MAX_CHARACTERS = 255;
 
-    String topicId;
+    int topicId;
     @NotNull(message = "Topic name cannot be blank!")
     @Size(max = MAX_CHARACTERS, min =1, message = "Name must be between 1 and 255 characters")
     String topicName;
@@ -22,11 +22,11 @@ public class Topic {
     }
 
 
-    public String getTopicId() {
+    public int getTopicId() {
         return topicId;
     }
 
-    public void setTopicId(String topicId) {
+    public void setTopicId(int topicId) {
         this.topicId = topicId;
     }
 

@@ -23,7 +23,7 @@ public class Article {
     String description;
     @NotNull(message = "Source cannot be blank!")
     @Size(max = MAX_CHARACTERS, min =1, message = "Source must be at least 1 character and cannot exceed 255")
-    String source;
+    String source_id;
     @NotNull(message = "Author cannot be blank!")
     @Size(max = MAX_CHARACTERS, min = 1, message = "Author must be at least 1 character and cannot exceed 255")
     String author;
@@ -46,7 +46,7 @@ public class Article {
                    String articleUrl,String articleImageUrl, LocalDate datePublished, LocalDate datePosted) {
         this.title = title;
         this.description = description;
-        this.source = source;
+        this.source_id = source;
         this.author = author;
         this.articleUrl = articleUrl;
         this.articleImageUrl = articleImageUrl;
@@ -92,12 +92,12 @@ public class Article {
         this.description = description;
     }
 
-    public String getSource() {
-        return source;
+    public String getSource_id() {
+        return source_id;
     }
 
-    public void setSource(String source) {
-        this.source = source;
+    public void setSource_id(String source_id) {
+        this.source_id = source_id;
     }
 
     public String getAuthor() {

@@ -6,7 +6,7 @@ import java.util.Objects;
 public class FeedbackTag {
 
     private final int MAX_CHARACTERS = 255;
-    String tagId;
+    int tagId;
     @NotNull(message = "Tag name cannot be blank!")
     @Size(max = MAX_CHARACTERS, min = 1, message = "Name has to be between 1 and 255 characters")
     String name;
@@ -19,11 +19,11 @@ public class FeedbackTag {
 
     }
 
-    public String getTagId() {
+    public int getTagId() {
         return tagId;
     }
 
-    public void setTagId(String tagId) {
+    public void setTagId(int tagId) {
         this.tagId = tagId;
     }
 
