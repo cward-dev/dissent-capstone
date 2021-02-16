@@ -23,7 +23,7 @@ CREATE TABLE `user` (
 
 # ARTICLE TABLES
 CREATE TABLE topic (
-    topic_id VARCHAR(255) PRIMARY KEY,
+    topic_id int PRIMARY KEY AUTO_INCREMENT,
     topic_name VARCHAR(255) NOT NULL
 );
 
@@ -38,6 +38,7 @@ CREATE TABLE article (
     article_id VARCHAR(255) PRIMARY KEY,
     source_id VARCHAR(255) NOT NULL,
     title VARCHAR(255) NOT NULL,
+    author VARCHAR(255) NOT NULL,
     `description` VARCHAR(255) NOT NULL,
     article_url VARCHAR(255) NOT NULL,
     article_image_url VARCHAR(255),
@@ -50,7 +51,7 @@ CREATE TABLE article (
 # ARTICLE-TOPIC BRIDGE TABLE
 CREATE TABLE article_topic (
     article_id VARCHAR(255) NOT NULL,
-    topic_id VARCHAR(255) NOT NULL,
+    topic_id INT NOT NULL,
     CONSTRAINT pk_article_topic PRIMARY KEY (article_id , topic_id),
     CONSTRAINT fk_article_topic_article_id FOREIGN KEY (article_id)
         REFERENCES article (article_id),
@@ -60,7 +61,7 @@ CREATE TABLE article_topic (
 
 # POST TABLES
 CREATE TABLE feedback_tag (
-    feedback_tag_id VARCHAR(255) PRIMARY KEY,
+    feedback_tag_id INT PRIMARY KEY AUTO_INCREMENT,
     `name` VARCHAR(255) NOT NULL
 );
 
@@ -84,7 +85,7 @@ CREATE TABLE post (
 # POST-feedback_tag BRIDGE TABLE
 CREATE TABLE post_feedback_tag (
     post_id VARCHAR(255) NOT NULL,
-    feedback_tag_id VARCHAR(255) NOT NULL,
+    feedback_tag_id INT NOT NULL,
     count INT UNSIGNED NOT NULL, # UNSIGNED => 0 to 4294967295 v.s. -2147483648 to 2147483647
         CONSTRAINT pk_post_feedback_tag PRIMARY KEY (post_id , feedback_tag_id),
     CONSTRAINT fk_post_feedback_tag_post_id FOREIGN KEY (post_id)
@@ -93,13 +94,29 @@ CREATE TABLE post_feedback_tag (
         REFERENCES feedback_tag (feedback_tag_id)
 );
 
+# Article-Feedback_Tag BRIDGE TABLE
+CREATE TABLE article_feedback_tag (
+    article_id VARCHAR(255) NOT NULL,
+    feedback_tag_id INT NOT NULL,
+    count INT UNSIGNED NOT NULL, # UNSIGNED => 0 to 4294967295 v.s. -2147483648 to 2147483647
+        CONSTRAINT pk_article_feedback_tag PRIMARY KEY (article_id , feedback_tag_id),
+    CONSTRAINT fk_article_feedback_tag_article_id FOREIGN KEY (article_id)
+        REFERENCES article (article_id),
+    CONSTRAINT fk_article_feedback_tag_feedback_tag_id FOREIGN KEY (feedback_tag_id)
+        REFERENCES feedback_tag (feedback_tag_id)
+);
+
+
 delimiter //
 create procedure set_known_good_state()
 begin
 
 # Clean Tables
+	delete from article_feedback_tag;
+    
 	delete from post_feedback_tag;
     delete from feedback_tag;
+    ALTER TABLE feedback_tag AUTO_INCREMENT = 1;
     
     delete from post
     WHERE
@@ -110,6 +127,7 @@ begin
     delete from article;
     delete from `source`;
     delete from topic;
+    ALTER TABLE topic AUTO_INCREMENT = 1;
     
     delete from `user`;
     delete from user_login;
@@ -136,7 +154,7 @@ begin
 	insert into topic 
 		(topic_id, topic_name) 
 	values
-		('e920c55d-4b95-4b69-a8e3-04cc1eb8e2cb', 'Science');
+		(1, 'Science');
     
     insert into `source`
 		(source_id, source_name, website_url, `description`) 
@@ -149,12 +167,13 @@ begin
 		);
         
 	insert into article
-		(article_id, source_id, title, `description`, article_url, article_image_url, date_published, date_posted)
+		(article_id, source_id, title, author, `description`, article_url, article_image_url, date_published, date_posted)
 	values
 		(
 			'c32bec11-b9a0-434b-bda7-08b9cf2007e2', 
             'd293ae18-63e0-49b7-87fd-9856bcf52884', 
             'First Image of a Black Hole', 
+            'Michael Douglas',
             'The shadow of a black hole seen here is the closest we can come to an image of the black hole itself', 
             'https://www.eso.org/public/images/eso1907a/', 
             'https://cdn.eso.org/images/thumb700x/eso1907a.jpg',
@@ -167,7 +186,7 @@ begin
 	values
 		(
 			'c32bec11-b9a0-434b-bda7-08b9cf2007e2',
-            'e920c55d-4b95-4b69-a8e3-04cc1eb8e2cb'
+            1
         );
         
 	insert into post
@@ -195,15 +214,20 @@ begin
 	insert into feedback_tag 
 		(feedback_tag_id, `name`)
     values
-		('39cc81c9-8e94-4514-8037-1dd17d15e60d', 'Sound'),
-        ('1c86b6af-8366-4653-acd9-662bf55e34f4', 'Fallicious'),
-        ('1cefb24d-c406-4c9f-9374-2ab84ee01272', 'Biased');
+		(1, 'Sound'),
+        (2, 'Fallicious'),
+        (3, 'Biased');
 	
 	insert into post_feedback_tag 
 		(post_id, feedback_tag_id, count)
     values
-		('a7db5cb6-446a-4c8e-836e-006d9ff239b5', '1c86b6af-8366-4653-acd9-662bf55e34f4', 342), # Fallicious
-        ('a7db5cb6-446a-4c8e-836e-006d9ff239b5', '1cefb24d-c406-4c9f-9374-2ab84ee01272', 125); # Biased
+		('a7db5cb6-446a-4c8e-836e-006d9ff239b5', 2, 342), # Fallicious
+        ('a7db5cb6-446a-4c8e-836e-006d9ff239b5', 3, 125); # Biased
+        
+	insert into article_feedback_tag 
+		(article_id, feedback_tag_id, count)
+    values
+		('c32bec11-b9a0-434b-bda7-08b9cf2007e2', 1, 752); # Sound
 
 end //
 -- 4. Change the statement terminator back to the original.

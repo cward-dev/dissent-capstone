@@ -23,7 +23,7 @@ CREATE TABLE `user` (
 
 # ARTICLE TABLES
 CREATE TABLE topic (
-    topic_id VARCHAR(255) PRIMARY KEY,
+    topic_id int PRIMARY KEY AUTO_INCREMENT,
     topic_name VARCHAR(255) NOT NULL
 );
 
@@ -38,6 +38,7 @@ CREATE TABLE article (
     article_id VARCHAR(255) PRIMARY KEY,
     source_id VARCHAR(255) NOT NULL,
     title VARCHAR(255) NOT NULL,
+    author VARCHAR(255) NOT NULL,
     `description` VARCHAR(255) NOT NULL,
     article_url VARCHAR(255) NOT NULL,
     article_image_url VARCHAR(255),
@@ -50,7 +51,7 @@ CREATE TABLE article (
 # ARTICLE-TOPIC BRIDGE TABLE
 CREATE TABLE article_topic (
     article_id VARCHAR(255) NOT NULL,
-    topic_id VARCHAR(255) NOT NULL,
+    topic_id INT NOT NULL,
     CONSTRAINT pk_article_topic PRIMARY KEY (article_id , topic_id),
     CONSTRAINT fk_article_topic_article_id FOREIGN KEY (article_id)
         REFERENCES article (article_id),
@@ -60,7 +61,7 @@ CREATE TABLE article_topic (
 
 # POST TABLES
 CREATE TABLE feedback_tag (
-    feedback_tag_id VARCHAR(255) PRIMARY KEY,
+    feedback_tag_id INT PRIMARY KEY AUTO_INCREMENT,
     `name` VARCHAR(255) NOT NULL
 );
 
@@ -84,11 +85,23 @@ CREATE TABLE post (
 # POST-feedback_tag BRIDGE TABLE
 CREATE TABLE post_feedback_tag (
     post_id VARCHAR(255) NOT NULL,
-    feedback_tag_id VARCHAR(255) NOT NULL,
+    feedback_tag_id INT NOT NULL,
     count INT UNSIGNED NOT NULL, # UNSIGNED => 0 to 4294967295 v.s. -2147483648 to 2147483647
         CONSTRAINT pk_post_feedback_tag PRIMARY KEY (post_id , feedback_tag_id),
     CONSTRAINT fk_post_feedback_tag_post_id FOREIGN KEY (post_id)
         REFERENCES post (post_id),
     CONSTRAINT fk_post_feedback_tag_feedback_tag_id FOREIGN KEY (feedback_tag_id)
+        REFERENCES feedback_tag (feedback_tag_id)
+);
+
+# Article-Feedback_Tag BRIDGE TABLE
+CREATE TABLE article_feedback_tag (
+    article_id VARCHAR(255) NOT NULL,
+    feedback_tag_id INT NOT NULL,
+    count INT UNSIGNED NOT NULL, # UNSIGNED => 0 to 4294967295 v.s. -2147483648 to 2147483647
+        CONSTRAINT pk_article_feedback_tag PRIMARY KEY (article_id , feedback_tag_id),
+    CONSTRAINT fk_article_feedback_tag_article_id FOREIGN KEY (article_id)
+        REFERENCES article (article_id),
+    CONSTRAINT fk_article_feedback_tag_feedback_tag_id FOREIGN KEY (feedback_tag_id)
         REFERENCES feedback_tag (feedback_tag_id)
 );
