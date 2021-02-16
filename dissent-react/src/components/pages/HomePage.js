@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import ArticleFeed from './ArticleListDisplay/ArticleFeed';
+import ArticleFeed from '../article-components/ArticleFeed';
 
 const TEST_ARTICLE = {
   articleId: 1,

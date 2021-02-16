@@ -1,10 +1,10 @@
 import React from 'react';
 import { Route, BrowserRouter as Router, Switch, Link } from 'react-router-dom';
-import HomePage from './components/HomePage.js';
-import TopicPage from './components/TopicPage.js';
-import About from './components/About.js';
-import UserPage from './components/UserDisplay/UserPage.js';
-import NotFound from './components/NotFound.js';
+import HomePage from './components/pages/HomePage.js';
+import TopicPage from './components/pages/TopicPage.js';
+import About from './components/pages/About.js';
+import UserPage from './components/pages/UserPage.js';
+import NotFound from './components/pages/NotFound.js';
 import Navbar from './components/Navbar.js';
 import './App.css';
 
@@ -23,16 +23,8 @@ function App() {
               <Route path='*' exact component={NotFound} />
             </Switch>
           </div>
-          <div className="col">
-            <div className="container mb-4">
-              <form className="d-flex">
-                <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
-                <button className="btn btn-secondary ml-2 px-2" type="submit">Search</button>
-              </form>
-            </div>
-            <div className="container">
-              <div className="col alert alert-secondary"></div>
-            </div>
+          <div className="col container alert alert-secondary ml-4">
+            This will be a side bar
           </div>
         </div>
       </div>
