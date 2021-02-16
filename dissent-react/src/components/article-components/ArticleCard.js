@@ -1,6 +1,9 @@
+import FeedbackTagIcon from '../feedback-tag-components/FeedbackTagIcon';
+import './ArticleCard.css';
+
 function ArticleCard ( { article } ) {
 
-  const { articleId, title, description, source, author, articleUrl, articleImageUrl, datePublished, timestamp, topics, posts, tags } = article;
+  const { articleId, title, description, source, author, articleUrl, articleImageUrl, datePublished, timestamp, topics, posts, feedbackTags } = article;
 
   return (
     <div key={articleId} className="card flex-row flex-wrap text-white bg-dark mb-4">
@@ -22,7 +25,7 @@ function ArticleCard ( { article } ) {
       <div className="card-footer w-100 text-muted px-1">
         <div className="row">  
           <div className="col">
-            <a className="nav-link active" href="http://www.google.com"><img className="tag-pie-chart" src="http://www.pngpix.com/wp-content/uploads/2016/10/PNGPIX-COM-Pie-Chart-PNG-Image.png" /></a>
+            <FeedbackTagIcon />
           </div>
           <div className="col text-right">
             <a className="nav-link active" aria-current="page" href="/article/1"><button className="btn btn-secondary px-2 py-1">Discussion ({posts.length})</button></a>

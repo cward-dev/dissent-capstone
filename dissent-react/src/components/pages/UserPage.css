@@ -1,0 +1,12 @@
+.user-page-img {
+  height: 200px;
+  width: 200px;
+  object-fit: cover;
+  position: relative;
+}
+
+.tag-pie-chart-user-profile {
+  width: 50px;
+  border: 1px solid black;
+    border-radius: 500px;
+}
