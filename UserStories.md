@@ -1,6 +1,5 @@
 # User Stories
 
-- As a user commenting 
 
 
 Anonymous User
