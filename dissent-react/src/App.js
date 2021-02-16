@@ -4,6 +4,7 @@ import './App.css';
 import { Route, BrowserRouter as Router, Switch, Link } from 'react-router-dom';
 import Home from './components/HomePage.js';
 import About from './components/About.js';
+import NotFound from './components/NotFound.js';
 import LogoTextOnly from './components/images/logo-text-only.png';
 
 function App() {
@@ -33,6 +34,7 @@ function App() {
             <Switch>
               <Route path='/about' exact component={About} />
               <Route path='/' exact component={HomePage} />
+              <Route path='*' exact component={NotFound} />
             </Switch>
           </div>
           <div className="col">
