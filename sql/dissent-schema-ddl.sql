@@ -62,8 +62,8 @@ CREATE TABLE article_topic (
 );
 
 # POST TABLES
-CREATE TABLE tag (
-    tag_id VARCHAR(255) PRIMARY KEY,
+CREATE TABLE feedback_tag (
+    feedback_tag_id VARCHAR(255) PRIMARY KEY,
     `name` VARCHAR(255) NOT NULL
 );
 
@@ -84,14 +84,14 @@ CREATE TABLE post (
         REFERENCES `user` (user_id)
 );
 
-# POST-TAG BRIDGE TABLE
-CREATE TABLE post_tag (
+# POST-feedback_tag BRIDGE TABLE
+CREATE TABLE post_feedback_tag (
     post_id VARCHAR(255) NOT NULL,
-    tag_id VARCHAR(255) NOT NULL,
+    feedback_tag_id VARCHAR(255) NOT NULL,
     count INT UNSIGNED NOT NULL, # UNSIGNED => 0 to 4294967295 v.s. -2147483648 to 2147483647
-        CONSTRAINT pk_post_tag PRIMARY KEY (post_id , tag_id),
-    CONSTRAINT fk_post_tag_post_id FOREIGN KEY (post_id)
+        CONSTRAINT pk_post_feedback_tag PRIMARY KEY (post_id , feedback_tag_id),
+    CONSTRAINT fk_post_feedback_tag_post_id FOREIGN KEY (post_id)
         REFERENCES post (post_id),
-    CONSTRAINT fk_post_tag_tag_id FOREIGN KEY (tag_id)
-        REFERENCES tag (tag_id)
+    CONSTRAINT fk_post_feedback_tag_feedback_tag_id FOREIGN KEY (feedback_tag_id)
+        REFERENCES feedback_tag (feedback_tag_id)
 );
