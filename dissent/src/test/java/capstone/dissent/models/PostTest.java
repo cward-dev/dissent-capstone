@@ -20,33 +20,33 @@ class PostTest {
     ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
     Validator validator = factory.getValidator();
 
-    private final Post TEST_POST = new Post(null,new Article(), new User(), true, LocalDate.of(2020,10,10),"dsjdjdj");
+    private final Post TEST_POST = new Post(null,"testId", "testId", true, LocalDate.of(2020,10,10),"dsjdjdj");
     @Test
     void postShouldPass(){
         Post post = TEST_POST;
         Set<ConstraintViolation<Post>> violations = validator.validate(post);
         ConstraintViolation<Post> first = violations.stream().findFirst().orElse(null);
         assertEquals(0, violations.size());
-//        assertEquals("Title cannot be blank!", first.getMessage());
+
     }
     @Test
     void postMustNotHaveNullArticle(){
         Post post = TEST_POST;
-        post.setArticle(null);
+        post.setArticleId(null);
         Set<ConstraintViolation<Post>> violations = validator.validate(post);
         ConstraintViolation<Post> first = violations.stream().findFirst().orElse(null);
         assertEquals(1, violations.size());
-        assertEquals("post must belong to an article", first.getMessage());
+        assertEquals("Post must belong to an article", first.getMessage());
     }
 
     @Test
     void postMustNotHaveNullUser(){
         Post post = TEST_POST;
-        post.setUser(null);
+        post.setUserId(null);
         Set<ConstraintViolation<Post>> violations = validator.validate(post);
         ConstraintViolation<Post> first = violations.stream().findFirst().orElse(null);
         assertEquals(1, violations.size());
-        assertEquals("post must have a user", first.getMessage());
+        assertEquals("Post must have a user", first.getMessage());
     }
 
     @Test
@@ -56,7 +56,7 @@ class PostTest {
         Set<ConstraintViolation<Post>> violations = validator.validate(post);
         ConstraintViolation<Post> first = violations.stream().findFirst().orElse(null);
         assertEquals(1, violations.size());
-        assertEquals("Date Posted must not be in future", first.getMessage());
+        assertEquals("Date posted must not be in future", first.getMessage());
     }
 
     @Test

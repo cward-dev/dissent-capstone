@@ -1,5 +1,6 @@
 package capstone.dissent.models;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PastOrPresent;
 import javax.validation.constraints.Size;
@@ -10,14 +11,14 @@ import java.util.Objects;
 public class Post {
 
     String postId;
-    Post parentPost;
-    @NotNull(message = "post must belong to an article")
-    Article article;
-    @NotNull(message = "post must have a user")
-    User user;
-    @NotNull(message = "post must have a stance [accepting / dissenting]")
+    String parentPostId;
+    @NotBlank(message = "Post must belong to an article")
+    String articleId;
+    @NotBlank(message = "Post must have a user")
+    String userId;
+    @NotNull(message = "Post must have a stance [accepting / dissenting]")
     boolean isDissenting;
-    @PastOrPresent(message = "Date Posted must not be in future")
+    @PastOrPresent(message = "Date posted must not be in future")
     LocalDate datePosted;
     @NotNull(message = "Post content cannot be blank")
     @Size(max = 255, min = 1, message =  "Post content must between 1 and 255 characters")
@@ -25,10 +26,10 @@ public class Post {
     HashMap<FeedbackTag, Integer> feedbackTags = new HashMap<>();
 
 
-    public Post( Post parentPost, Article article, User user, boolean isDissenting, LocalDate datePosted, String content) {
-        this.parentPost = parentPost;
-        this.article = article;
-        this.user = user;
+    public Post( String parentPost, String article, String user, boolean isDissenting, LocalDate datePosted, String content) {
+        this.parentPostId = parentPost;
+        this.articleId = article;
+        this.userId = user;
         this.isDissenting = isDissenting;
         this.datePosted = datePosted;
         this.content = content;
@@ -58,28 +59,28 @@ public class Post {
         this.postId = postId;
     }
 
-    public Post getParentPost() {
-        return parentPost;
+    public String getParentPostId() {
+        return parentPostId;
     }
 
-    public void setParentPost(Post parentPost) {
-        this.parentPost = parentPost;
+    public void setParentPostId(String parentPostId) {
+        this.parentPostId = parentPostId;
     }
 
-    public Article getArticle() {
-        return article;
+    public String getArticleId() {
+        return articleId;
     }
 
-    public void setArticle(Article article) {
-        this.article = article;
+    public void setArticleId(String articleId) {
+        this.articleId = articleId;
     }
 
-    public User getUser() {
-        return user;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public boolean isDissenting() {
