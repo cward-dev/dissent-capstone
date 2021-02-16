@@ -3,20 +3,19 @@ package capstone.dissent.models;
 import javax.validation.constraints.*;
 import java.util.Objects;
 
-public class Tag {
+public class FeedbackTag {
 
     private final int MAX_CHARACTERS = 255;
     String tagId;
     @NotNull(message = "Tag name cannot be blank!")
-    @Size(max = MAX_CHARACTERS, message = "Name exceeded maximum characters ${MAX_CHARACTERS}")
+    @Size(max = MAX_CHARACTERS, min = 1, message = "Name has to be between 1 and 255 characters")
     String name;
 
-    public Tag(String tagId, String name) {
-        this.tagId = tagId;
+    public FeedbackTag(String name) {
         this.name = name;
     }
 
-    public Tag(){
+    public FeedbackTag(){
 
     }
 
@@ -36,13 +35,6 @@ public class Tag {
         this.name = name;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Tag)) return false;
-        Tag tag = (Tag) o;
-        return Objects.equals(getTagId(), tag.getTagId());
-    }
 
     @Override
     public int hashCode() {
