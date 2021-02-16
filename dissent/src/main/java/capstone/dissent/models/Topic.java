@@ -5,19 +5,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Topic {
+    private final int MAX_CHARACTERS = 255;
+
     String topicId;
+    @NotNull(message = "Topic name cannot be blank!")
+    @Size(max = MAX_CHARACTERS, min =1, message = "Name must be between 1 and 255 characters")
     String topicName;
     List<Article> articles = new ArrayList<>();
 
-    public Topic(String topicId, String topicName, List<Article> articles) {
-        this.topicId = topicId;
+    public Topic(String topicName) {
         this.topicName = topicName;
-        this.articles = articles;
     }
 
     public Topic(){
 
     }
+
 
     public String getTopicId() {
         return topicId;
