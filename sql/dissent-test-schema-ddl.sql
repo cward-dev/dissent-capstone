@@ -103,7 +103,11 @@ begin
 # Clean Tables
 	delete from post_feedback_tag;
     delete from feedback_tag;
-    delete from post;
+    
+    delete from post
+    WHERE
+		parent_post_id IS NOT NULL; # DELETE REPLIES (DEPENDENTS) FIRST.
+	delete from post; # DELETE TOP LEVEL (INDEPENDENTS) POSTS.
     
     delete from article_topic;
     delete from article;
@@ -158,8 +162,8 @@ begin
             'The shadow of a black hole seen here is the closest we can come to an image of the black hole itself', 
             'https://www.eso.org/public/images/eso1907a/', 
             'https://cdn.eso.org/images/thumb700x/eso1907a.jpg',
-            '04/10/2019', 
-            '2/16/2021'
+            '2019-04-10T00:00:00.000', 
+            '2021-02-16T12:00:00.000'
 		);
         
 	insert into article_topic
@@ -179,7 +183,7 @@ begin
             'c32bec11-b9a0-434b-bda7-08b9cf2007e2', 
             'dffec086-b1e9-455a-aab4-ff6c6611fef0', 
             true, 
-            '02/16/2021', 
+            '2021-02-15T12:00:00.000', 
             'I\'ll have to see this black-hole to believe it!'
 		),
         (   
@@ -188,16 +192,16 @@ begin
             'c32bec11-b9a0-434b-bda7-08b9cf2007e2', 
             'dffec086-b1e9-455a-aab4-ff6c6611fef0', 
             false, 
-            '02/16/2021', 
+            '2021-02-16T12:00:00.000', 
             'Wait --- Nevermind, because science.'
 		);
         
 	insert into feedback_tag 
 		(feedback_tag_id, `name`)
     values
-		('39cc81c9-8e94-4514-8037-1dd17d15e60d', `Sound`),
-        ('1c86b6af-8366-4653-acd9-662bf55e34f4', `Fallicious`),
-        ('1cefb24d-c406-4c9f-9374-2ab84ee01272', `Biased`);
+		('39cc81c9-8e94-4514-8037-1dd17d15e60d', 'Sound'),
+        ('1c86b6af-8366-4653-acd9-662bf55e34f4', 'Fallicious'),
+        ('1cefb24d-c406-4c9f-9374-2ab84ee01272', 'Biased');
 	
 	insert into post_feedback_tag 
 		(post_id, feedback_tag_id, count)
