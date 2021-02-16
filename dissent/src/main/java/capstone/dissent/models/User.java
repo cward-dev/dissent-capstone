@@ -9,7 +9,6 @@ public class User {
     private final int MAX_CHARACTERS = 255;
 
     private String userId;
-
     private UserLogin userLogin;
 
     @NotNull(message = "Username cannot be null")
@@ -20,7 +19,6 @@ public class User {
     //    TODO: discuss making Role a model
 
     private String role;
-
     private String photoUrl;
 
     @Size(max = MAX_CHARACTERS, message = "Country must not exceed ${MAX_CHARACTERS} characters.")
@@ -37,7 +35,6 @@ public class User {
 
 
     // getters/setters
-
     public String getUserId() {
         return userId;
     }
