@@ -1,3 +1,5 @@
+import './ArticleCard.css';
+
 function ArticleCard ( { article } ) {
 
   const { articleId, title, description, source, author, articleUrl, articleImageUrl, datePublished, timestamp, topics, posts, tags } = article;

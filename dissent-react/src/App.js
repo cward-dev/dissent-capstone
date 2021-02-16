@@ -11,20 +11,20 @@ function App() {
     <Router>
       <nav className="navbar navbar-expand-lg navbar-light bg-light mb-4">
         <div className="container-fluid">
-          <a className="navbar-brand" href="/"><img src={LogoTextOnly} id="navbar-logo" /></a>
+          <Link className="navbar-brand" to="/"><img src={LogoTextOnly} id="navbar-logo" /></Link>
           <div className="row">
             <ul className="navbar-nav me-auto mb-2 mb-lg-0">
               <li className="nav-item">
-                <a className="nav-link active" aria-current="page" href="/about">About</a>
+                <Link className="nav-link active" to="/about" aria-current="page">About</Link>
               </li>
               <li className="nav-item">
-                <a className="nav-link active" href="/user/my-profile">Profile</a>
+                <Link className="nav-link active" to="/user/my-profile">Profile</Link>
               </li>
               <li className="nav-item">
-                <a className="nav-link active" href="/user/log-out">Log Out</a>
+                <Link className="nav-link active" to="/user/log-out">Log Out</Link>
               </li>
             </ul>
-          </div>
+          </div> 
         </div>
       </nav>
       <div className="container">

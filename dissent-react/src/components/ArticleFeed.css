@@ -1,9 +1,3 @@
-.card-image-top {
-  width: 15vw;
-  height: 100%;
-  object-fit: cover;
-}
-
 .source-author-line {
   font-style: italic;
   color: lightgray;
@@ -22,10 +16,4 @@ a:hover {
   width: 35px;
   border: 1px solid black;
     border-radius: 500px;
-}
-
-.card-img-top {
-  height: 100%;
-  width: 10vw;
-  object-fit: cover;
 }
