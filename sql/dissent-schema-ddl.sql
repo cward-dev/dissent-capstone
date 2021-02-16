@@ -36,7 +36,6 @@ CREATE TABLE `source` (
 
 CREATE TABLE article (
     article_id VARCHAR(255) PRIMARY KEY,
-    topic_id VARCHAR(255) NOT NULL,
     source_id VARCHAR(255) NOT NULL,
     title VARCHAR(255) NOT NULL,
     `description` VARCHAR(255) NOT NULL,
@@ -44,8 +43,6 @@ CREATE TABLE article (
     article_image_url VARCHAR(255),
     date_published DATETIME NOT NULL,
     date_posted DATETIME NOT NULL,
-    CONSTRAINT fk_article_topic_id FOREIGN KEY (topic_id)
-        REFERENCES topic (topic_id),
     CONSTRAINT fk_article_source_id FOREIGN KEY (source_id)
         REFERENCES `source` (source_id)
 );

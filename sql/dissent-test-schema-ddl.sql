@@ -36,7 +36,6 @@ CREATE TABLE `source` (
 
 CREATE TABLE article (
     article_id VARCHAR(255) PRIMARY KEY,
-    topic_id VARCHAR(255) NOT NULL,
     source_id VARCHAR(255) NOT NULL,
     title VARCHAR(255) NOT NULL,
     `description` VARCHAR(255) NOT NULL,
@@ -44,8 +43,6 @@ CREATE TABLE article (
     article_image_url VARCHAR(255),
     date_published DATETIME NOT NULL,
     date_posted DATETIME NOT NULL,
-    CONSTRAINT fk_article_topic_id FOREIGN KEY (topic_id)
-        REFERENCES topic (topic_id),
     CONSTRAINT fk_article_source_id FOREIGN KEY (source_id)
         REFERENCES `source` (source_id)
 );
@@ -152,11 +149,10 @@ begin
 		);
         
 	insert into article
-		(article_id, topic_id, source_id, title, `description`, article_url, article_image_url, date_published, date_posted)
+		(article_id, source_id, title, `description`, article_url, article_image_url, date_published, date_posted)
 	values
 		(
 			'c32bec11-b9a0-434b-bda7-08b9cf2007e2', 
-			'e920c55d-4b95-4b69-a8e3-04cc1eb8e2cb', 
             'd293ae18-63e0-49b7-87fd-9856bcf52884', 
             'First Image of a Black Hole', 
             'The shadow of a black hole seen here is the closest we can come to an image of the black hole itself', 
