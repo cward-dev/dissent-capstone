@@ -39,7 +39,7 @@ function App() {
             <div className="container mb-4">
               <form className="d-flex">
                 <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
-                <button className="btn btn-outline-secondary ml-2" type="submit">Search</button>
+                <button className="btn btn-secondary ml-2 px-2" type="submit">Search</button>
               </form>
             </div>
             <div className="container">
