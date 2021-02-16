@@ -2,7 +2,7 @@ import './ArticleCard.css';
 
 function ArticleCard ( { article } ) {
 
-  const { articleId, title, description, source, author, articleUrl, articleImageUrl, datePublished, timestamp, topics, posts, tags } = article;
+  const { articleId, title, description, source, author, articleUrl, articleImageUrl, datePublished, timestamp, topics, posts, feedbackTags } = article;
 
   return (
     <div key={articleId} className="card flex-row flex-wrap text-white bg-dark mb-4">
