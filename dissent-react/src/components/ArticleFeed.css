@@ -1,0 +1,24 @@
+.card-image-top {
+  width: 15vw;
+  height: 100%;
+  object-fit: cover;
+}
+
+.source-author-line {
+  font-style: italic;
+  color: lightgray;
+}
+
+a {
+  color: lightgray;
+  
+}
+
+a:hover {
+  color: white;
+  
+}
+
+.tag-pie-chart {
+  width: 25px;
+}
