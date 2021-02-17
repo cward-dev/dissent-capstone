@@ -5,11 +5,13 @@ import capstone.dissent.models.Topic;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.util.List;
 
+@Repository
 public class TopicJdbcTemplateRepository implements TopicRepository {
 
     private final JdbcTemplate jdbcTemplate;
@@ -23,8 +25,8 @@ public class TopicJdbcTemplateRepository implements TopicRepository {
     }
 
     @Override
-    public Topic findById(String topicId) {
-        final String sql = "select topic_id, topic_name, from topic where topic_id = ?;";
+    public Topic findById(int topicId) {
+        final String sql = "select topic_id, topic_name from topic where topic_id = ?;";
 
         return jdbcTemplate.query(sql, new TopicMapper(), topicId).stream()
                 .findAny().orElse(null);
@@ -60,7 +62,7 @@ public class TopicJdbcTemplateRepository implements TopicRepository {
     }
 
     @Override
-    public boolean deleteById(String topicId) {
+    public boolean deleteById(int topicId) {
         return jdbcTemplate.update("delete from topic where topic_id = ?;", topicId) > 0;
     }
 }

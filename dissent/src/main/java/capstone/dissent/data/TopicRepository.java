@@ -8,11 +8,11 @@ public interface TopicRepository {
 
     public List<Topic> findAll();
 
-    public Topic findById(String topicId);
+    public Topic findById(int topicId);
 
     public Topic add(Topic topic);
 
     public boolean edit(Topic topic);
 
-    public boolean deleteById(String topicId);
+    public boolean deleteById(int topicId);
 }
