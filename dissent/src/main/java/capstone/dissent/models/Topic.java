@@ -22,6 +22,11 @@ public class Topic {
         this.topicName = topicName;
     }
 
+    public Topic(int topicId, String topicName) {
+        this.topicId = topicId;
+        this.topicName = topicName;
+    }
+
     public int getTopicId() {
         return topicId;
     }
