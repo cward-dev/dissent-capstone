@@ -160,7 +160,10 @@ begin
 	insert into topic 
 		(topic_id, topic_name) 
 	values
-		(1, 'Science');
+		(1, 'Science'),
+        (2, 'Philosophy'),
+        (3, 'Economics'),
+        (4, 'Politics');
     
     insert into `source`
 		(source_id, source_name, website_url, `description`) 
