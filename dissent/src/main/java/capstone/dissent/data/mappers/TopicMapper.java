@@ -1,4 +1,6 @@
 package capstone.dissent.data.mappers;
 
-public class TopicMapper {
-}
+import capstone.dissent.models.Topic;
+import org.springframework.jdbc.core.RowMapper;
+
+
