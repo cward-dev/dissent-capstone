@@ -25,7 +25,7 @@ hs_err_pid*
 # IntelliJ
 **/.idea
 .idea/
-**/resources/application.properties
+/application.properties
 
 # Maven
 target/
