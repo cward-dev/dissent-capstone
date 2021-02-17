@@ -8,6 +8,7 @@ import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -20,7 +21,7 @@ class PostTest {
     ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
     Validator validator = factory.getValidator();
 
-    private final Post TEST_POST = new Post(null,"testId", "testId", true, LocalDate.of(2020,10,10),"dsjdjdj");
+    private final Post TEST_POST = new Post(null,"testId", "testId", true, LocalDateTime.now(),"dsjdjdj");
     @Test
     void postShouldPass(){
         Post post = TEST_POST;
@@ -52,7 +53,7 @@ class PostTest {
     @Test
     void postMustBeMadeInFuture(){
         Post post = TEST_POST;
-        post.setDatePosted(LocalDate.of(9999,10,10));
+        post.setTimestamp(LocalDateTime.now().plusDays(1));
         Set<ConstraintViolation<Post>> violations = validator.validate(post);
         ConstraintViolation<Post> first = violations.stream().findFirst().orElse(null);
         assertEquals(1, violations.size());

@@ -1,9 +1,8 @@
 package capstone.dissent.data;
 
-import capstone.dissent.models.Article;
 import capstone.dissent.models.Post;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface PostRepository {
@@ -18,7 +17,7 @@ public interface PostRepository {
 
     public List<Post> findByUserId(String userId);
 
-    public List<Post> findByDateRange(LocalDate startDate, LocalDate endDate);
+    public List<Post> findByTimestampRange(LocalDateTime start, LocalDateTime end);
 
     public Post add(Post post);
 

@@ -4,7 +4,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PastOrPresent;
 import javax.validation.constraints.Size;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Objects;
 
@@ -19,19 +19,19 @@ public class Post {
     @NotNull(message = "Post must have a stance [accepting / dissenting]")
     boolean isDissenting;
     @PastOrPresent(message = "Date posted must not be in future")
-    LocalDate datePosted;
+    LocalDateTime timestamp;
     @NotNull(message = "Post content cannot be blank")
     @Size(max = 255, min = 1, message =  "Post content must between 1 and 255 characters")
     String content;
     HashMap<FeedbackTag, Integer> feedbackTags = new HashMap<>();
 
 
-    public Post( String parentPost, String article, String user, boolean isDissenting, LocalDate datePosted, String content) {
+    public Post( String parentPost, String article, String user, boolean isDissenting, LocalDateTime timestamp, String content) {
         this.parentPostId = parentPost;
         this.articleId = article;
         this.userId = user;
         this.isDissenting = isDissenting;
-        this.datePosted = datePosted;
+        this.timestamp = timestamp;
         this.content = content;
     }
 
@@ -91,12 +91,12 @@ public class Post {
         isDissenting = dissenting;
     }
 
-    public LocalDate getDatePosted() {
-        return datePosted;
+    public LocalDateTime getTimestamp() {
+        return timestamp;
     }
 
-    public void setDatePosted(LocalDate datePosted) {
-        this.datePosted = datePosted;
+    public void setTimestamp(LocalDateTime timestamp) {
+        this.timestamp = timestamp;
     }
 
     public String getContent() {
