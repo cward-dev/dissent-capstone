@@ -25,8 +25,9 @@ public class Post {
     @PastOrPresent(message = "Time posted must not be in future")
     LocalDateTime timestamp;
 
+    private final int MAX_CHARACTERS = 40000;
     @NotBlank(message = "Post content cannot be blank")
-    @Size(max = 40000, min = 1, message =  "Post content must between 1 and 40000 characters")
+    @Size(max = MAX_CHARACTERS, min = 1, message =  "Post content must between 1 and 40000 characters")
     String content;
 
     boolean isActive;
