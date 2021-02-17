@@ -7,7 +7,9 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class PostJdbcTemplateRepository implements PostRepository {
@@ -51,12 +53,12 @@ public class PostJdbcTemplateRepository implements PostRepository {
     }
 
     @Override
-    public List<Post> findByDateRange(LocalDate startDate, LocalDate endDate) {
+    public List<Post> findByTimestampRange(LocalDateTime start, LocalDateTime end) {
         final String sql = "select post_id, parent_post_id, article_id, user_id, is_dissenting, date_posted, content"
                 + "from post "
                 + "where date_posted between ? and ?;";
 
-        return jdbcTemplate.query(sql, new PostMapper(), startDate, endDate);
+        return jdbcTemplate.query(sql, new PostMapper(), start, end);
     }
 
     @Override
@@ -84,7 +86,7 @@ public class PostJdbcTemplateRepository implements PostRepository {
             ps.setString(3, post.getArticleId());
             ps.setString(4, post.getUserId());
             ps.setBoolean(5, post.isDissenting());
-            ps.setDate(6, Date.valueOf(post.getDatePosted()));
+            ps.setTimestamp(6, Timestamp.valueOf(post.getTimestamp()));
             ps.setString(7, post.getContent());
             return ps;
         });
@@ -105,7 +107,7 @@ public class PostJdbcTemplateRepository implements PostRepository {
                 + "content = ? "
                 + "where post_id = ?";
 
-        return jdbcTemplate.update(sql, post.isDissenting(), post.getDatePosted(), post.getContent()) > 0;
+        return jdbcTemplate.update(sql, post.isDissenting(), Timestamp.valueOf(post.getTimestamp()), post.getContent()) > 0;
     }
 
     @Override

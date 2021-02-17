@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -96,7 +97,7 @@ class PostJdbcTemplateRepositoryTest {
         post.setArticleId("c32bec11-b9a0-434b-bda7-08b9cf2007e2");
         post.setUserId("dffec086-b1e9-455a-aab4-ff6c6611fef0");
         post.setDissenting(true);
-        post.setDatePosted(LocalDate.of(2021, 2, 16));
+        post.setTimestamp(LocalDateTime.now());
         post.setContent("Wait, I take that back. There's no such thing as black holes!");
         return post;
     }
