@@ -10,9 +10,13 @@ public interface PostRepository {
 
     public List<Post> findAll();
 
-    public Post findById(int postId);
+    public Post findById(String postId);
 
-    public List<Post> findByArticleId(int articleId);
+    public List<Post> findByParentPostId(String parentPostId);
+
+    public List<Post> findByArticleId(String articleId);
+
+    public List<Post> findByUserId(String userId);
 
     public List<Post> findByDateRange(LocalDate startDate, LocalDate endDate);
 
