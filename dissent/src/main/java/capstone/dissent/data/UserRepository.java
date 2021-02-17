@@ -13,13 +13,14 @@ public interface UserRepository {
 
     // read
     List<User> findAll();
-    User findById(int userId);
+
+    User findById(String userId);
 
     // update
     boolean edit(User user);
 
     // delete
-    boolean deleteById(int userLoginId);
+    boolean deleteById(String userLoginId);
 
     // helpers
     HashMap<FeedbackTag, Integer> getTagData(User user);
