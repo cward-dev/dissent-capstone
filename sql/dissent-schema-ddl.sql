@@ -17,6 +17,7 @@ CREATE TABLE `user` (
     photo_url VARCHAR(255),
     country VARCHAR(255),
     bio VARCHAR(255),
+    is_active BOOL NOT NULL DEFAULT true,
     CONSTRAINT fk_user_user_login_id FOREIGN KEY (user_login_id)
         REFERENCES user_login (user_login_id)
 );
@@ -44,6 +45,7 @@ CREATE TABLE article (
     article_image_url VARCHAR(255),
     date_published DATETIME NOT NULL,
     date_posted DATETIME NOT NULL,
+    is_active BOOL NOT NULL DEFAULT true,
     CONSTRAINT fk_article_source_id FOREIGN KEY (source_id)
         REFERENCES `source` (source_id)
 );
@@ -74,6 +76,7 @@ CREATE TABLE post (
     is_dissenting BOOL NOT NULL,
     date_posted DATETIME NOT NULL,
     content TEXT(40000) NOT NULL, # INDUSTRY MAX CHAR SIZE
+    is_active BOOL NOT NULL DEFAULT true,
     CONSTRAINT fk_post_parent_post_id FOREIGN KEY (parent_post_id)
 		REFERENCES post (post_id),
     CONSTRAINT fk_post_article_id FOREIGN KEY (article_id)
