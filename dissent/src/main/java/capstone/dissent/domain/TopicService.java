@@ -56,6 +56,7 @@ public class TopicService {
 
         if (topic.getTopicId() <= 0) {
             result.addMessage("Topic ID must be set for `add` operation", ResultType.INVALID);
+            return result;
         }
 
         if (!repository.edit(topic)) {

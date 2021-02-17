@@ -266,7 +266,6 @@ class PostServiceTest {
     @Test
     void shouldEditExistingPost() {
         Post actual = makePost();
-        actual.setContent("Wait, I take that back. There's no such thing as black holes! OR SCIENCE!");
 
         when(repository.edit(actual)).thenReturn(true);
         when(repository.findByUserId("dffec086-b1e9-455a-aab4-ff6c6611fef0")).thenReturn(List.of(makePost()));
@@ -279,10 +278,7 @@ class PostServiceTest {
     void shouldNotEditWithoutId() {
         Post actual = makePost();
         actual.setPostId(null);
-        actual.setTimestamp(LocalDateTime.now().minusDays(1));
-        actual.setContent("Wait, I take that back. There's no such thing as black holes! OR SCIENCE!");
 
-        when(repository.edit(actual)).thenReturn(true);
         when(repository.findByUserId("dffec086-b1e9-455a-aab4-ff6c6611fef0")).thenReturn(List.of(makePost()));
         Result<Post> result = service.edit(actual);
 

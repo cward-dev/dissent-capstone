@@ -21,7 +21,7 @@ class TopicTest {
         Set<ConstraintViolation<Topic>> violations = validator.validate(topic);
         ConstraintViolation<Topic> first = violations.stream().findFirst().orElse(null);
         assertEquals(1, violations.size());
-        assertEquals("Topic name cannot be blank!", first.getMessage());
+        assertEquals("Topic name cannot be blank", first.getMessage());
     }
     @Test
     public void topicNameShouldNotBeBlank(){
@@ -29,7 +29,7 @@ class TopicTest {
         Set<ConstraintViolation<Topic>> violations = validator.validate(topic);
         ConstraintViolation<Topic> first = violations.stream().findFirst().orElse(null);
         assertEquals(1, violations.size());
-        assertEquals("Name must be between 1 and 255 characters", first.getMessage());
+        assertEquals("Topic name must be between 1 and 255 characters", first.getMessage());
     }
 
 
