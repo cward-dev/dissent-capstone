@@ -4,6 +4,7 @@ import capstone.dissent.data.mappers.ArticleMapper;
 import capstone.dissent.data.mappers.PostMapper;
 import capstone.dissent.models.Article;
 import capstone.dissent.models.FeedbackTag;
+import capstone.dissent.models.Post;
 import capstone.dissent.models.Topic;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -11,7 +12,9 @@ import org.springframework.stereotype.Repository;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 
@@ -34,9 +37,9 @@ public class ArticleJdbcTemplateRepository implements ArticleRepository {
 
     @Override
     public Article findArticleByArticleId(String articleId) {
-        final String sql = "select article_id, title, description,source_id, author, article_url, " +
-                " article_image_url, date_published, date_posted from article" +
-                "where article_id =  ?;";
+        final String sql = "select article_id, title, description, source_id, author, article_url, " +
+                " article_image_url, date_published, date_posted from article " +
+                " where article_id =  ?;";
 
         Article article = jdbcTemplate.query(sql, new ArticleMapper(), articleId).stream()
                 .findFirst().orElse(null);
@@ -50,23 +53,23 @@ public class ArticleJdbcTemplateRepository implements ArticleRepository {
         return article;
     }
 
-    public List<Article> findArticleByTopicId(Topic topic) {
-        final String sql = "select article_id, title, description,source_id, author, article_url, " +
-                " article_image_url, date_published, date_posted from article  a inner join article_topic ar on a.article_id = ar.article_id"
-                + "where ar.topic_id = ?;";
-        var articles = jdbcTemplate.query(sql, new ArticleMapper(), topic.getTopicId());
+    public List<Article> findArticleByTopicId(int topicId) {
+        final String sql = "select a.article_id, a.title,a.description, a.source_id, a.author, a.article_url, " +
+                " a.article_image_url, a.date_published, a.date_posted from article  a inner join article_topic ar on a.article_id = ar.article_id"
+                + " where ar.topic_id = ?;";
+        var articles = jdbcTemplate.query(sql, new ArticleMapper(), topicId);
 
         return articles;
     }
 
-    public List<Article> findByPostedDateRange(LocalDate d1, LocalDate d2) {
+    public List<Article> findByPostedDateRange(LocalDateTime d1, LocalDateTime d2) {
         final String sql = "select * from article where date_posted between ? AND ? ";
         return jdbcTemplate.query(sql, new ArticleMapper(), d1, d2);
     }
 
     public Article addArticle(Article article){
         final String sql = "insert into article (article_id, source_id, title, author, `description`, article_url, "
-        +"article_image_url, date_published, date_posted)"
+        +" article_image_url, date_published, date_posted) "
         +" values(?,?,?,?,?,?,?,?,?);";
 
         int rowsAffected = jdbcTemplate.update(connection -> {
@@ -78,8 +81,9 @@ public class ArticleJdbcTemplateRepository implements ArticleRepository {
             ps.setString(5,article.getDescription());
             ps.setString(6,article.getArticleUrl());
             ps.setString(7,article.getArticleImageUrl());
-            ps.setDate(8, Date.valueOf(article.getDatePublished()));
-            ps.setDate(8, Date.valueOf(article.getDatePosted()));
+            ps.setTimestamp(8, Timestamp.valueOf(article.getDatePublished()));
+            ps.setTimestamp(9,Timestamp.valueOf(article.getDatePosted()));
+            // TODO: 2/17/2021  add isActiveBoolean from DB 
             return ps;
         });
         if(rowsAffected <= 0){
@@ -108,18 +112,20 @@ public class ArticleJdbcTemplateRepository implements ArticleRepository {
 
     }
 
-    public boolean deleteArticleById(String articleId){
-        jdbcTemplate.update("delete from article_feedback_tag where article_id = ?; ", articleId);
-         return jdbcTemplate.update("delete from article where article_id = ?;" ,articleId) >0;
-        // TODO: 2/17/2021  do we want to delete posts when we delete article? This will effect user data
+    public boolean inActivateArticle(String articleId){
+        final String sql = "update article set "
+                    + "is_active = ? "
+                    + "where article_id = ?;";
+
+        return jdbcTemplate.update(sql, false, articleId)>0;
     }
-    
+
 
 
     public HashMap<FeedbackTag, Integer> getTagData(Article article) {
         final String sql = "select ft.feedback_tag_id, ft.name" +
-                "from article_feedback_tag aft inner join feedback_tag ft on  aft.feedback_tag_id = ft.feedback_tag_id"
-                + "where aft.article_id = ?;";
+                " from article_feedback_tag aft inner join feedback_tag ft on  aft.feedback_tag_id = ft.feedback_tag_id"
+                + " where aft.article_id = ?;";
 
 //           var allFeedBackTags = jdbcTemplate(sql,new FeedBackTagMapper(),article.getArticleId());
 //
@@ -140,7 +146,7 @@ public class ArticleJdbcTemplateRepository implements ArticleRepository {
     }
 
     private void addPosts(Article article) {
-        final String sql = "select p.post_id, p.parent_post_id, p.article_id,user_id,p.is_dissenting,p.date_posted,p.content"
+        final String sql = "select p.post_id, p.parent_post_id, p.article_id,user_id,p.is_dissenting,p.date_posted,p.content "
                 + "from post p inner join article a where p.article_id= ?;";
 
         var posts = jdbcTemplate.query(sql, new PostMapper(), article.getArticleId());

@@ -9,6 +9,7 @@ import javax.validation.ValidatorFactory;
 
 import java.sql.Date;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -17,10 +18,11 @@ class ArticleTest {
     ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
     Validator validator = factory.getValidator();
 
+   private final  LocalDateTime someday = LocalDateTime.of(2020,01,01,12,00,00);
     @Test
     void articleShouldPass(){
         Article article = new Article("Yolo","Young Idiots","CNN","Jesus",
-                "www.u.com","www.u.com", LocalDate.of(2020,10,10),LocalDate.of(2020,10,10));
+                "www.u.com","www.u.com", someday,someday);
         Set<ConstraintViolation<Article>> violations = validator.validate(article);
         for(ConstraintViolation<Article>violation : violations){
             System.out.println(violation.getMessage());
@@ -31,7 +33,7 @@ class ArticleTest {
     @Test
     void titleShouldNotBeNull(){
         Article article = new Article( null,"Young Idiots","CNN","Jesus",
-                "www.u.com","www.u.com", LocalDate.of(2020,10,10),LocalDate.of(2020,10,10));
+                "www.u.com","www.u.com", someday, someday);
         Set<ConstraintViolation<Article>> violations = validator.validate(article);
         ConstraintViolation<Article> first = violations.stream().findFirst().orElse(null);
         assertEquals(1, violations.size());
@@ -41,7 +43,7 @@ class ArticleTest {
     @Test
     void titleShouldNotBeBlank(){
         Article article = new Article( "","Young Idiots","CNN","Jesus",
-                "www.u.com","www.u.com", LocalDate.of(2020,10,10),LocalDate.of(2020,10,10));
+                "www.u.com","www.u.com", someday,someday);
         Set<ConstraintViolation<Article>> violations = validator.validate(article);
         ConstraintViolation<Article> first = violations.stream().findFirst().orElse(null);
         assertEquals(1, violations.size());
@@ -52,7 +54,7 @@ class ArticleTest {
     @Test
     void descriptionShouldNotBeNull(){
         Article article = new Article( "xxx",null,"CNN","Jesus",
-                "www.u.com","www.u.com", LocalDate.of(2020,10,10),LocalDate.of(2020,10,10));
+                "www.u.com","www.u.com",someday,someday);
         Set<ConstraintViolation<Article>> violations = validator.validate(article);
         ConstraintViolation<Article> first = violations.stream().findFirst().orElse(null);
         assertEquals(1, violations.size());
@@ -63,7 +65,7 @@ class ArticleTest {
     @Test
     void descriptionShouldNotBeBlank(){
         Article article = new Article( "xx","","CNN","Jesus",
-                "www.u.com","www.u.com", LocalDate.of(2020,10,10),LocalDate.of(2020,10,10));
+                "www.u.com","www.u.com", someday,someday);
         Set<ConstraintViolation<Article>> violations = validator.validate(article);
         ConstraintViolation<Article> first = violations.stream().findFirst().orElse(null);
         assertEquals(1, violations.size());
@@ -74,7 +76,7 @@ class ArticleTest {
     @Test
     void sourceShouldNotBeNull(){
         Article article = new Article( "xx","xxx",null,"Jesus",
-                "www.u.com","www.u.com", LocalDate.of(2020,10,10),LocalDate.of(2020,10,10));
+                "www.u.com","www.u.com",someday,someday);
         Set<ConstraintViolation<Article>> violations = validator.validate(article);
         ConstraintViolation<Article> first = violations.stream().findFirst().orElse(null);
         assertEquals(1, violations.size());
@@ -84,7 +86,7 @@ class ArticleTest {
     @Test
     void sourceShouldNotBeBlank(){
         Article article = new Article( "xx","xxx","","Jesus",
-                "www.u.com","www.u.com", LocalDate.of(2020,10,10),LocalDate.of(2020,10,10));
+                "www.u.com","www.u.com", someday,someday);
         Set<ConstraintViolation<Article>> violations = validator.validate(article);
         ConstraintViolation<Article> first = violations.stream().findFirst().orElse(null);
         assertEquals(1, violations.size());
@@ -95,7 +97,7 @@ class ArticleTest {
     @Test
     void authorShouldNotBeNull(){
         Article article = new Article( "xx","xxx","yyy",null,
-                "www.u.com","www.u.com", LocalDate.of(2020,10,10),LocalDate.of(2020,10,10));
+                "www.u.com","www.u.com", someday,someday);
         Set<ConstraintViolation<Article>> violations = validator.validate(article);
         ConstraintViolation<Article> first = violations.stream().findFirst().orElse(null);
         assertEquals(1, violations.size());
@@ -105,7 +107,7 @@ class ArticleTest {
     @Test
     void authorShouldNotBeBlank(){
         Article article = new Article( "xx","xxx","zzzz","",
-                "www.u.com","www.u.com", LocalDate.of(2020,10,10),LocalDate.of(2020,10,10));
+                "www.u.com","www.u.com", someday,someday);
         Set<ConstraintViolation<Article>> violations = validator.validate(article);
         ConstraintViolation<Article> first = violations.stream().findFirst().orElse(null);
         assertEquals(1, violations.size());
@@ -115,7 +117,7 @@ class ArticleTest {
     @Test
     void articleUrlShouldNotBeNull(){
         Article article = new Article( "xx","xxx","sss","Jesus",
-                null,"www.u.com", LocalDate.of(2020,10,10),LocalDate.of(2020,10,10));
+                null,"www.u.com", someday,someday);
         Set<ConstraintViolation<Article>> violations = validator.validate(article);
         ConstraintViolation<Article> first = violations.stream().findFirst().orElse(null);
         assertEquals(1, violations.size());
@@ -125,7 +127,7 @@ class ArticleTest {
     @Test
     void articleUrlShouldNotBeBlank(){
         Article article = new Article( "xx","xxx","ccc","Jesus",
-                "","www.u.com", LocalDate.of(2020,10,10),LocalDate.of(2020,10,10));
+                "","www.u.com", someday,someday);
         Set<ConstraintViolation<Article>> violations = validator.validate(article);
         ConstraintViolation<Article> first = violations.stream().findFirst().orElse(null);
         assertEquals(1, violations.size());
@@ -136,7 +138,7 @@ class ArticleTest {
     @Test
     void datePublishedShouldNotBeNull(){
         Article article = new Article( "xx","xxx","xxx","Jesus",
-                "www.u.com","www.u.com", null,LocalDate.of(2020,10,10));
+                "www.u.com","www.u.com", null,someday);
         Set<ConstraintViolation<Article>> violations = validator.validate(article);
         ConstraintViolation<Article> first = violations.stream().findFirst().orElse(null);
 
@@ -147,7 +149,7 @@ class ArticleTest {
     @Test
     void datePublishedShouldNotBeInFuture(){
         Article article = new Article( "xx","xxx","sjsjs","Jesus",
-                "www.u.com","www.u.com", LocalDate.of(2029,10,10),LocalDate.of(2020,10,10));
+                "www.u.com","www.u.com",LocalDateTime.of(2029,01,01,12,00,00),someday);
         Set<ConstraintViolation<Article>> violations = validator.validate(article);
         ConstraintViolation<Article> first = violations.stream().findFirst().orElse(null);
 
@@ -159,7 +161,7 @@ class ArticleTest {
     @Test
     void datePostedShouldNotBeInFuture(){
         Article article = new Article( "xx","xxx","sjsjs","Jesus",
-                "www.u.com","www.u.com", LocalDate.of(2020,10,10),LocalDate.of(2029,10,10));
+                "www.u.com","www.u.com", someday,LocalDateTime.of(2029,01,01,12,00,00));
         Set<ConstraintViolation<Article>> violations = validator.validate(article);
         ConstraintViolation<Article> first = violations.stream().findFirst().orElse(null);
 

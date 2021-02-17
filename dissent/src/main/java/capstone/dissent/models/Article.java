@@ -4,6 +4,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -31,19 +32,22 @@ public class Article {
     @Size(max = MAX_CHARACTERS, min = 1, message = "Article Url must be at least 1 character and cannot exceed 255")
     String articleUrl;
     String articleImageUrl;
-    @NotNull(message = "Article must have published date!")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @NotNull(message = "Article must have published date!")
     @PastOrPresent(message = "Article cannot have a future published date")
-    LocalDate datePublished;
+    LocalDateTime datePublished;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @PastOrPresent(message = "Article cannot have a future post date")
-    LocalDate datePosted;
-    List<Topic> topics = new ArrayList<>();
-    List<Post> posts = new ArrayList<>();
-    HashMap<FeedbackTag, Integer> feedbackTags = new HashMap<>();
+    LocalDateTime datePosted;
+    boolean isActive;
 
-    public Article( String title, String description, String source, String author,
-                   String articleUrl,String articleImageUrl, LocalDate datePublished, LocalDate datePosted) {
+    List<Topic> topics = new ArrayList<>();
+
+    List<Post> posts = new ArrayList<>();
+
+    HashMap<FeedbackTag, Integer> feedbackTags = new HashMap<>();
+    public Article(String title, String description, String source, String author,
+                   String articleUrl, String articleImageUrl, @NotNull(message = "Article must have published date!") @PastOrPresent(message = "Article cannot have a future published date") LocalDateTime datePublished, LocalDateTime datePosted) {
         this.title = title;
         this.description = description;
         this.source_id = source;
@@ -53,7 +57,6 @@ public class Article {
         this.datePublished = datePublished;
         this.datePosted = datePosted;
     }
-
     public Article(){}
 
     public void addFeedbackTagToArticle(FeedbackTag feedbackTag){
@@ -124,20 +127,32 @@ public class Article {
         this.articleImageUrl = articleImageUrl;
     }
 
-    public LocalDate getDatePublished() {
+    public LocalDateTime getDatePublished() {
         return datePublished;
     }
 
-    public void setDatePublished(LocalDate datePublished) {
+    public void setDatePublished(LocalDateTime datePublished) {
         this.datePublished = datePublished;
     }
 
-    public LocalDate getDatePosted() {
+    public LocalDateTime getDatePosted() {
         return datePosted;
     }
 
-    public void setDatePosted(LocalDate datePosted) {
+    public void setDatePosted(LocalDateTime datePosted) {
         this.datePosted = datePosted;
+    }
+
+    public int getMAX_CHARACTERS() {
+        return MAX_CHARACTERS;
+    }
+
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setActive(boolean active) {
+        isActive = active;
     }
 
     public List<Topic> getTopics() {
