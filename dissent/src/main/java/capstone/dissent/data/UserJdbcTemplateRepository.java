@@ -5,6 +5,7 @@ import capstone.dissent.models.FeedbackTag;
 import capstone.dissent.models.User;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.PreparedStatement;
 import java.sql.Statement;
@@ -14,6 +15,9 @@ import java.util.List;
 
 @Repository
 public class UserJdbcTemplateRepository implements UserRepository {
+
+    private static final User DEFAULT_USER = new User();
+
 
     private final JdbcTemplate jdbcTemplate;
 
@@ -75,9 +79,9 @@ public class UserJdbcTemplateRepository implements UserRepository {
     public boolean edit(User user) {
 
         final String sql = "update user set " +
-                "username = ? " +
-                "photo_url = ? " +
-                "country = ? " +
+                "username = ?, " +
+                "photo_url = ?, " +
+                "country = ?, " +
                 "bio = ? " +
                 "where user_id = ?;";
 
@@ -89,8 +93,10 @@ public class UserJdbcTemplateRepository implements UserRepository {
 
     // delete
     @Override
-    public boolean deleteById(String userLoginId) {
-        return false;
+    @Transactional
+    public boolean deleteById(String userId) {
+
+        return jdbcTemplate.update("delete from user where user_id = ?;", userId) > 0;
     }
 
 

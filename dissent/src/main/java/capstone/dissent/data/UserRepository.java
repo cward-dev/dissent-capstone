@@ -20,7 +20,7 @@ public interface UserRepository {
     boolean edit(User user);
 
     // delete
-    boolean deleteById(String userLoginId);
+    boolean deleteById(String userId);
 
     // helpers
     HashMap<FeedbackTag, Integer> getTagData(User user);

@@ -61,11 +61,17 @@ class UserJdbcTemplateRepositoryTest {
 
     @Test
     void shouldUpdate() {
-        Post post = makePost();
-        post.setPostId("d7e12582-6f81-4f02-9e6e-18190f622264");
-        assertTrue(repository.edit(post));
-        post.setPostId("this-leads-to-nothing");
-        assertFalse(repository.edit(post));
+        User user = makeUser();
+        user = repository.add(user);
+        user.setCountry("United States");
+        assertTrue(repository.edit(user));
+        user.setUserId("this-leads-to-nothing");
+        assertFalse(repository.edit(user));
+    }
+
+    @Test
+    void shouldDelete() {
+
     }
 
 
