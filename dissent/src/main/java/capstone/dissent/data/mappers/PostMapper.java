@@ -19,6 +19,7 @@ public class PostMapper implements RowMapper<Post> {
         post.setDissenting(resultSet.getBoolean("is_dissenting"));
         post.setTimestamp(resultSet.getTimestamp("date_posted").toLocalDateTime());
         post.setContent(resultSet.getString("content"));
+        post.setActive(resultSet.getBoolean("is_active"));
         return post;
     }
 
