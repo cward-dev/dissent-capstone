@@ -112,6 +112,14 @@ public class Article {
         return articleImageUrl;
     }
 
+    public String getArticleUrl() {
+        return articleUrl;
+    }
+
+    public void setArticleUrl(String articleUrl) {
+        this.articleUrl = articleUrl;
+    }
+
     public void setArticleImageUrl(String articleImageUrl) {
         this.articleImageUrl = articleImageUrl;
     }

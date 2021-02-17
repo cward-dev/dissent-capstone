@@ -17,7 +17,7 @@ public class ArticleMapper implements RowMapper<Article> {
         article.setDescription(resultSet.getString("description"));
         article.setSource_id(resultSet.getString("source_id"));
         article.setAuthor(resultSet.getString("author"));
-        article.setArticleImageUrl(resultSet.getString("article_url"));
+        article.setArticleUrl(resultSet.getString("article_url"));
         article.setArticleImageUrl(resultSet.getString("article_image_url"));
         article.setDatePublished(resultSet.getDate("date_published").toLocalDate());
         article.setDatePosted(resultSet.getDate("date_posted").toLocalDate());
