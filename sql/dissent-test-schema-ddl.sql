@@ -17,6 +17,7 @@ CREATE TABLE `user` (
     photo_url VARCHAR(255),
     country VARCHAR(255),
     bio VARCHAR(255),
+    is_active BOOL NOT NULL DEFAULT true,
     CONSTRAINT fk_user_user_login_id FOREIGN KEY (user_login_id)
         REFERENCES user_login (user_login_id)
 );
@@ -44,8 +45,9 @@ CREATE TABLE article (
     article_image_url VARCHAR(255),
     date_published DATETIME NOT NULL,
     date_posted DATETIME NOT NULL,
+    is_active BOOL NOT NULL DEFAULT true,
     CONSTRAINT fk_article_source_id FOREIGN KEY (source_id)
-        REFERENCES `source` (source_id)
+        REFERENCES `source` (source_id) ON DELETE CASCADE
 );
 
 # ARTICLE-TOPIC BRIDGE TABLE
@@ -74,12 +76,13 @@ CREATE TABLE post (
     is_dissenting BOOL NOT NULL,
     date_posted DATETIME NOT NULL,
     content TEXT(40000) NOT NULL, # INDUSTRY MAX CHAR SIZE
+    is_active BOOL NOT NULL DEFAULT true,
     CONSTRAINT fk_post_parent_post_id FOREIGN KEY (parent_post_id)
-		REFERENCES post (post_id),
+		REFERENCES post (post_id) ON DELETE CASCADE,
     CONSTRAINT fk_post_article_id FOREIGN KEY (article_id)
-        REFERENCES article (article_id),
+        REFERENCES article (article_id) ON DELETE CASCADE,
     CONSTRAINT fk_post_user_id FOREIGN KEY (user_id)
-        REFERENCES `user` (user_id)
+        REFERENCES `user` (user_id) ON DELETE CASCADE
 );
 
 # POST-FEEDBACK_TAG BRIDGE TABLE
@@ -117,19 +120,18 @@ begin
 
 # Clean Tables
 	delete from article_feedback_tag;
-    
 	delete from post_feedback_tag;
+    
     delete from feedback_tag;
     ALTER TABLE feedback_tag AUTO_INCREMENT = 1;
     
-    delete from post
-    WHERE
-		parent_post_id IS NOT NULL; # DELETE REPLIES (DEPENDENTS) FIRST.
-	delete from post; # DELETE TOP LEVEL (INDEPENDENTS) POSTS.
+    delete from post;
     
     delete from article_topic;
     delete from article;
+    
     delete from `source`;
+    
     delete from topic;
     ALTER TABLE topic AUTO_INCREMENT = 1;
     
@@ -213,6 +215,15 @@ begin
             false, 
             '2021-02-16T12:00:00.000', 
             'Wait --- Nevermind, because science.'
+		),
+		(   
+			'dfdsf67s-fd67-580f-f678-44120dsfa873', 
+            'd7e12582-6f81-4f02-9e6e-18190f622264', 
+            'c32bec11-b9a0-434b-bda7-08b9cf2007e2', 
+            'dffec086-b1e9-455a-aab4-ff6c6611fef0', 
+            false, 
+            '2021-02-16T12:00:00.000', 
+            'Science never lies!'
 		);
         
 	insert into feedback_tag 
@@ -236,3 +247,9 @@ begin
 end //
 -- 4. Change the statement terminator back to the original.
 delimiter ;
+
+set SQL_SAFE_UPDATES = 0;
+call set_known_good_state;
+set SQL_SAFE_UPDATES = 1;
+
+select * from post;

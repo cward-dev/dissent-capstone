@@ -11,32 +11,50 @@ import java.util.Objects;
 public class Post {
 
     String postId;
+
     String parentPostId;
+
     @NotBlank(message = "Post must belong to an article")
     String articleId;
+
     @NotBlank(message = "Post must have a user")
     String userId;
-    @NotNull(message = "Post must have a stance [accepting / dissenting]")
+
     boolean isDissenting;
-    @PastOrPresent(message = "Date posted must not be in future")
+
+    @PastOrPresent(message = "Time posted must not be in future")
     LocalDateTime timestamp;
-    @NotNull(message = "Post content cannot be blank")
-    @Size(max = 255, min = 1, message =  "Post content must between 1 and 255 characters")
+
+    @NotBlank(message = "Post content cannot be blank")
+    @Size(max = 40000, min = 1, message =  "Post content must between 1 and 40000 characters")
     String content;
+
+    boolean isActive;
+
     HashMap<FeedbackTag, Integer> feedbackTags = new HashMap<>();
 
+    public Post() {
+        this.isActive = true;
+    }
 
-    public Post( String parentPost, String article, String user, boolean isDissenting, LocalDateTime timestamp, String content) {
+    public Post(String parentPost, String article, String user, boolean isDissenting, LocalDateTime timestamp, String content, boolean isActive) {
         this.parentPostId = parentPost;
         this.articleId = article;
         this.userId = user;
         this.isDissenting = isDissenting;
         this.timestamp = timestamp;
         this.content = content;
+        this.isActive = isActive;
     }
 
-    public Post() {
-
+    public Post(String postId, String parentPostId, String articleId, String userId, boolean isDissenting, LocalDateTime timestamp, String content, boolean isActive) {
+        this.parentPostId = parentPostId;
+        this.articleId = articleId;
+        this.userId = userId;
+        this.isDissenting = isDissenting;
+        this.timestamp = timestamp;
+        this.content = content;
+        this.isActive = isActive;
     }
 
     public void addFeedbackTagToPost(FeedbackTag feedbackTag){
@@ -105,6 +123,14 @@ public class Post {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setActive(boolean active) {
+        isActive = active;
     }
 
     public HashMap<FeedbackTag, Integer> getFeedbackTags() {

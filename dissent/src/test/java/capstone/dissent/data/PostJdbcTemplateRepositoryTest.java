@@ -36,20 +36,12 @@ class PostJdbcTemplateRepositoryTest {
 
     @Test
     void shouldFindById() {
-        Post post = repository.findById("a7db5cb6-446a-4c8e-836e-006d9ff239b5");
+        Post post = repository.findById("d7e12582-6f81-4f02-9e6e-18190f622264");
         assertEquals("Wait --- Nevermind, because science.", post.getContent());
 
 
         Post invalidPost = repository.findById("this-leads-to-nothing");
         assertNull(invalidPost);
-    }
-
-    @Test
-    void shouldFindByParentPostId() {
-        List<Post> posts = repository.findByArticleId("a7db5cb6-446a-4c8e-836e-006d9ff239b5");
-
-        assertNotNull(posts);
-        assertTrue(posts.size() > 0);
     }
 
     @Test
@@ -87,8 +79,10 @@ class PostJdbcTemplateRepositoryTest {
 
     @Test
     void shouldDelete() {
-        assertTrue(repository.deleteById(3));
-        assertFalse(repository.deleteById(45));
+        assertTrue(repository.deleteById("dfdsf67s-fd67-580f-f678-44120dsfa873"));
+        assertFalse(repository.findById("dfdsf67s-fd67-580f-f678-44120dsfa873").isActive());
+
+        assertFalse(repository.deleteById("this-leads-to-nothing"));
     }
 
     private Post makePost() {

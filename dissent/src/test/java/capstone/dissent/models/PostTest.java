@@ -21,15 +21,15 @@ class PostTest {
     ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
     Validator validator = factory.getValidator();
 
-    private final Post TEST_POST = new Post(null,"testId", "testId", true, LocalDateTime.now(),"dsjdjdj");
+    private final Post TEST_POST = new Post(null,"testId", "testId", true, LocalDateTime.now(),"dsjdjdj", true);
     @Test
     void postShouldPass(){
         Post post = TEST_POST;
         Set<ConstraintViolation<Post>> violations = validator.validate(post);
         ConstraintViolation<Post> first = violations.stream().findFirst().orElse(null);
         assertEquals(0, violations.size());
-
     }
+
     @Test
     void postMustNotHaveNullArticle(){
         Post post = TEST_POST;
@@ -51,13 +51,13 @@ class PostTest {
     }
 
     @Test
-    void postMustBeMadeInFuture(){
+    void postCannotBeMadeInFuture(){
         Post post = TEST_POST;
         post.setTimestamp(LocalDateTime.now().plusDays(1));
         Set<ConstraintViolation<Post>> violations = validator.validate(post);
         ConstraintViolation<Post> first = violations.stream().findFirst().orElse(null);
         assertEquals(1, violations.size());
-        assertEquals("Date posted must not be in future", first.getMessage());
+        assertEquals("Time posted must not be in future", first.getMessage());
     }
 
     @Test
@@ -81,10 +81,5 @@ class PostTest {
         assertEquals("Post content cannot be blank", first.getMessage());
 
     }
-
-
-
-
-
 
 }

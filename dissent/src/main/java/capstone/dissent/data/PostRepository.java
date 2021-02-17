@@ -11,8 +11,6 @@ public interface PostRepository {
 
     public Post findById(String postId);
 
-    public List<Post> findByParentPostId(String parentPostId);
-
     public List<Post> findByArticleId(String articleId);
 
     public List<Post> findByUserId(String userId);
@@ -23,5 +21,5 @@ public interface PostRepository {
 
     public boolean edit(Post post);
 
-    public boolean deleteById(int postId);
+    public boolean deleteById(String postId);
 }
