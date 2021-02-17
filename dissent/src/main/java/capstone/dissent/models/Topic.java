@@ -9,8 +9,8 @@ public class Topic {
     int topicId;
 
     private final int MAX_CHARACTERS = 255;
-    @NotBlank(message = "Topic name cannot be blank!")
-    @Size(max = MAX_CHARACTERS, min =1, message = "Name must be between 1 and 255 characters")
+    @NotBlank(message = "Topic name cannot be blank")
+    @Size(max = MAX_CHARACTERS, min =1, message = "Topic name must be between 1 and 255 characters")
     String topicName;
 
     List<Article> articles = new ArrayList<>();
@@ -19,6 +19,11 @@ public class Topic {
     }
 
     public Topic(String topicName) {
+        this.topicName = topicName;
+    }
+
+    public Topic(int topicId, String topicName) {
+        this.topicId = topicId;
         this.topicName = topicName;
     }
 
