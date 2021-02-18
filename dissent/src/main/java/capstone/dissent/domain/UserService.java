@@ -27,16 +27,8 @@ public class UserService {
         return repository.findAll();
     }
 
-    public List<User> findByArticleId(String articleId) {
-        return repository.findByArticleId(articleId);
-    }
-
-    public List<User> findByUserId(String userId) {
-        return repository.findByUserId(userId);
-    }
-
-    public List<User> findByTimestampRange(LocalDateTime start, LocalDateTime end) {
-        return repository.findByTimestampRange(start, end);
+    public User findByUserId(String userId) {
+        return repository.findById(userId);
     }
 
     public User findById(String userId) {
@@ -51,11 +43,6 @@ public class UserService {
 
         if (user.getUserId() != null) {
             result.addMessage("User ID cannot be set for `add` operation", ResultType.INVALID);
-            return result;
-        }
-
-        if (checkForSpam(user)) {
-            result.addMessage("Cannot submit another user so quickly, please try again soon", ResultType.INVALID);
             return result;
         }
 
