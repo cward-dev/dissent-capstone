@@ -14,6 +14,7 @@ public class TopicMapper implements RowMapper<Topic> {
         Topic topic = new Topic();
         topic.setTopicId(resultSet.getInt("topic_id"));
         topic.setTopicName(resultSet.getString("topic_name"));
+        topic.setActive(resultSet.getBoolean("is_active"));
 
         return topic;
     }

@@ -24,10 +24,10 @@ class TopicServiceTest {
     @Test
     void shouldFindALl() {
         List<Topic> expected = List.of(
-            new Topic(1, "Science"),
-            new Topic(2, "Philosophy"),
-            new Topic(3, "Economics"),
-            new Topic(4, "Politics")
+            new Topic(1, "Science", true),
+            new Topic(2, "Philosophy", true),
+            new Topic(3, "Economics", true),
+            new Topic(4, "Politics", true)
         );
         when(repository.findAll()).thenReturn(expected);
         List<Topic> actual = repository.findAll();
@@ -36,7 +36,16 @@ class TopicServiceTest {
     }
 
     @Test
-    void shouldFindPostById() {
+    void shouldFindALlInactive() {
+        List<Topic> expected = List.of(new Topic(5, "Healthcare", false));
+        when(repository.findAllInactive()).thenReturn(expected);
+        List<Topic> actual = repository.findAllInactive();
+
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void shouldFindTopicById() {
         Topic expected = makeTopic();
         when(repository.findById(5)).thenReturn(expected);
         Topic actual = repository.findById(5);
@@ -45,7 +54,7 @@ class TopicServiceTest {
     }
 
     @Test
-    void shouldNotFindPostByIdNotPresent() {
+    void shouldNotFindTopicByIdNotPresent() {
         when(repository.findById(45)).thenReturn(null);
         Topic actual = repository.findById(5);
 

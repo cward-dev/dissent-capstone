@@ -9,7 +9,7 @@ public class User {
     private final int MAX_CHARACTERS = 255;
 
     private String userId;
-    private UserLogin userLogin;
+    private String userLoginId;
 
     @NotNull(message = "Username cannot be null")
     @Size(max = MAX_CHARACTERS, message = "Username must not exceed ${MAX_CHARACTERS} characters.")
@@ -43,12 +43,12 @@ public class User {
         this.userId = userId;
     }
 
-    public UserLogin getUserLogin() {
-        return userLogin;
+    public String getUserLoginId() {
+        return userLoginId;
     }
 
-    public void setUserLogin(UserLogin userLogin) {
-        this.userLogin = userLogin;
+    public void setUserLoginId(String userLogin) {
+        this.userLoginId = userLogin;
     }
 
     public String getUsername() {

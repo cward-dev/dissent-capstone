@@ -29,7 +29,7 @@ public class UserLoginJdbcTemplateRepository implements UserLoginRepository {
     }
 
     @Override
-    public UserLogin findById(int userLoginId) {
+    public UserLogin findById(String userLoginId) {
         return null;
     }
 
@@ -39,7 +39,7 @@ public class UserLoginJdbcTemplateRepository implements UserLoginRepository {
     }
 
     @Override
-    public boolean deleteById(int userLoginId) {
+    public boolean deleteById(String userLoginId) {
         return false;
     }
 

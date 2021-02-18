@@ -13,6 +13,8 @@ public class Topic {
     @Size(max = MAX_CHARACTERS, message = "Topic name must be between 1 and 255 characters")
     String topicName;
 
+    boolean isActive;
+
     List<Article> articles = new ArrayList<>();
 
     public Topic(){
@@ -22,9 +24,10 @@ public class Topic {
         this.topicName = topicName;
     }
 
-    public Topic(int topicId, String topicName) {
+    public Topic(int topicId, String topicName, boolean isActive) {
         this.topicId = topicId;
         this.topicName = topicName;
+        this.isActive = isActive;
     }
 
     public int getTopicId() {
@@ -41,6 +44,14 @@ public class Topic {
 
     public void setTopicName(String topicName) {
         this.topicName = topicName;
+    }
+
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setActive(boolean active) {
+        isActive = active;
     }
 
     public List<Article> getArticles() {

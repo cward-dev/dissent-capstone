@@ -27,7 +27,7 @@ public class Post {
 
     private final int MAX_CHARACTERS = 40000;
     @NotBlank(message = "Post content cannot be blank")
-    @Size(max = MAX_CHARACTERS, min = 1, message =  "Post content must between 1 and 40000 characters")
+    @Size(max = MAX_CHARACTERS, message =  "Post content must between 1 and 40000 characters")
     String content;
 
     boolean isActive;
