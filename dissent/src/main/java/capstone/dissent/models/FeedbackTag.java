@@ -8,8 +8,8 @@ public class FeedbackTag {
     int feedbackTagId;
 
     private final int MAX_CHARACTERS = 255;
-    @NotNull(message = "Tag name cannot be blank")
-    @Size(max = MAX_CHARACTERS, message = "Feedback tag name must be between 1 and 255 characters")
+    @NotBlank(message = "Feedback Tag name cannot be blank")
+    @Size(max = MAX_CHARACTERS, message = "Feedback Tag name must be between 1 and 255 characters")
     String name;
 
     boolean isActive;
@@ -21,7 +21,7 @@ public class FeedbackTag {
         this.name = name;
     }
 
-    public FeedbackTag(int feedbackTagId, String name) {
+    public FeedbackTag(int feedbackTagId, String name, boolean isActive) {
         this.feedbackTagId = feedbackTagId;
         this.name = name;
     }
