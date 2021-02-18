@@ -64,7 +64,8 @@ CREATE TABLE article_topic (
 # POST TABLES
 CREATE TABLE feedback_tag (
     feedback_tag_id INT PRIMARY KEY AUTO_INCREMENT,
-    `name` VARCHAR(255) NOT NULL
+    feedback_tag_name VARCHAR(255) NOT NULL,
+    is_active BOOL NOT NULL DEFAULT true
 );
 
 # POST TABLE
@@ -230,7 +231,7 @@ begin
 		);
         
 	insert into feedback_tag 
-		(feedback_tag_id, `name`)
+		(feedback_tag_id, feedback_tag_name)
     values
 		(1, 'Sound'),
         (2, 'Fallicious'),
@@ -255,4 +256,4 @@ set SQL_SAFE_UPDATES = 0;
 call set_known_good_state;
 set SQL_SAFE_UPDATES = 1;
 
-select * from post;
+select * from feedback_tag;

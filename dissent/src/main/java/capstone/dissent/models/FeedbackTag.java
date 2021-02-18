@@ -5,26 +5,33 @@ import java.util.Objects;
 
 public class FeedbackTag {
 
+    int feedbackTagId;
+
     private final int MAX_CHARACTERS = 255;
-    int tagId;
-    @NotNull(message = "Tag name cannot be blank!")
-    @Size(max = MAX_CHARACTERS, min = 1, message = "Name has to be between 1 and 255 characters")
+    @NotNull(message = "Tag name cannot be blank")
+    @Size(max = MAX_CHARACTERS, message = "Feedback tag name must be between 1 and 255 characters")
     String name;
+
+    boolean isActive;
+
+    public FeedbackTag(){
+    }
 
     public FeedbackTag(String name) {
         this.name = name;
     }
 
-    public FeedbackTag(){
-
+    public FeedbackTag(int feedbackTagId, String name) {
+        this.feedbackTagId = feedbackTagId;
+        this.name = name;
     }
 
-    public int getTagId() {
-        return tagId;
+    public int getFeedbackTagId() {
+        return feedbackTagId;
     }
 
-    public void setTagId(int tagId) {
-        this.tagId = tagId;
+    public void setFeedbackTagId(int feedbackTagId) {
+        this.feedbackTagId = feedbackTagId;
     }
 
     public String getName() {
@@ -35,9 +42,16 @@ public class FeedbackTag {
         this.name = name;
     }
 
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setActive(boolean active) {
+        isActive = active;
+    }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getTagId());
+        return Objects.hash(getFeedbackTagId());
     }
 }

@@ -64,7 +64,8 @@ CREATE TABLE article_topic (
 # POST TABLES
 CREATE TABLE feedback_tag (
     feedback_tag_id INT PRIMARY KEY AUTO_INCREMENT,
-    `name` VARCHAR(255) NOT NULL
+    feedback_tag_name VARCHAR(255) NOT NULL,
+    is_active BOOL NOT NULL DEFAULT true
 );
 
 # POST TABLE
