@@ -2,6 +2,7 @@ package capstone.dissent.data;
 
 import capstone.dissent.data.mappers.ArticleMapper;
 import capstone.dissent.data.mappers.PostMapper;
+import capstone.dissent.data.mappers.TopicMapper;
 import capstone.dissent.models.Article;
 import capstone.dissent.models.FeedbackTag;
 import capstone.dissent.models.Post;
@@ -30,7 +31,7 @@ public class ArticleJdbcTemplateRepository implements ArticleRepository {
     @Override
     public List<Article> findAllArticles() {
         final String sql = "select article_id, title, description,source_id, author, article_url, " +
-                " article_image_url, date_published, date_posted from article;";
+                " article_image_url, date_published, date_posted, is_active from article;";
 
         return jdbcTemplate.query(sql, new ArticleMapper());
     }
@@ -38,7 +39,7 @@ public class ArticleJdbcTemplateRepository implements ArticleRepository {
     @Override
     public Article findArticleByArticleId(String articleId) {
         final String sql = "select article_id, title, description, source_id, author, article_url, " +
-                " article_image_url, date_published, date_posted from article " +
+                " article_image_url, date_published, date_posted, is_active from article " +
                 " where article_id =  ?;";
 
         Article article = jdbcTemplate.query(sql, new ArticleMapper(), articleId).stream()
@@ -53,24 +54,27 @@ public class ArticleJdbcTemplateRepository implements ArticleRepository {
         return article;
     }
 
+    @Override
     public List<Article> findArticleByTopicId(int topicId) {
         final String sql = "select a.article_id, a.title,a.description, a.source_id, a.author, a.article_url, " +
-                " a.article_image_url, a.date_published, a.date_posted from article  a inner join article_topic ar on a.article_id = ar.article_id"
+                " a.article_image_url, a.date_published, a.date_posted, a.is_active from article a inner join article_topic ar on a.article_id = ar.article_id"
                 + " where ar.topic_id = ?;";
         var articles = jdbcTemplate.query(sql, new ArticleMapper(), topicId);
 
         return articles;
     }
 
+    @Override
     public List<Article> findByPostedDateRange(LocalDateTime d1, LocalDateTime d2) {
         final String sql = "select * from article where date_posted between ? AND ? ";
         return jdbcTemplate.query(sql, new ArticleMapper(), d1, d2);
     }
 
+    @Override
     public Article addArticle(Article article){
         final String sql = "insert into article (article_id, source_id, title, author, `description`, article_url, "
-        +" article_image_url, date_published, date_posted) "
-        +" values(?,?,?,?,?,?,?,?,?);";
+        +" article_image_url, date_published, date_posted, is_active) "
+        +" values(?,?,?,?,?,?,?,?,?,?);";
 
         int rowsAffected = jdbcTemplate.update(connection -> {
             PreparedStatement ps = connection.prepareStatement(sql, Statement.NO_GENERATED_KEYS);
@@ -83,7 +87,7 @@ public class ArticleJdbcTemplateRepository implements ArticleRepository {
             ps.setString(7,article.getArticleImageUrl());
             ps.setTimestamp(8, Timestamp.valueOf(article.getDatePublished()));
             ps.setTimestamp(9,Timestamp.valueOf(article.getDatePosted()));
-            // TODO: 2/17/2021  add isActiveBoolean from DB 
+            ps.setBoolean(10,article.isActive());
             return ps;
         });
         if(rowsAffected <= 0){
@@ -94,10 +98,11 @@ public class ArticleJdbcTemplateRepository implements ArticleRepository {
 
     }
 
+    @Override
     public boolean updateArticle(Article article){
-        String sql = "update article set "
-                +"title = ? , description = ? ,source_id = ? , author = ? , article_url = ?,"
-                + "article_image_url = ?, date_published = ?, date_posted =? "
+        final String sql = "update article set "
+                +" title = ? , description = ? ,source_id = ? , author = ? , article_url = ?,"
+                + " article_image_url = ?, date_published = ?, date_posted =?, is_active = ? "
                 + " where article_id = ?;";
         return jdbcTemplate.update(sql,
                     article.getTitle(),
@@ -108,11 +113,13 @@ public class ArticleJdbcTemplateRepository implements ArticleRepository {
                     article.getArticleImageUrl(),
                     article.getDatePublished(),
                     article.getDatePosted(),
+                    article.isActive(),
                     article.getArticleId()) >0;
 
     }
 
-    public boolean inActivateArticle(String articleId){
+    @Override
+    public boolean inactivateArticle(String articleId){
         final String sql = "update article set "
                     + "is_active = ? "
                     + "where article_id = ?;";
@@ -122,6 +129,7 @@ public class ArticleJdbcTemplateRepository implements ArticleRepository {
 
 
 
+    @Override
     public HashMap<FeedbackTag, Integer> getTagData(Article article) {
         final String sql = "select ft.feedback_tag_id, ft.name" +
                 " from article_feedback_tag aft inner join feedback_tag ft on  aft.feedback_tag_id = ft.feedback_tag_id"
@@ -137,17 +145,17 @@ public class ArticleJdbcTemplateRepository implements ArticleRepository {
     }
 
     private void addTopics(Article article) {
-        final String sql = "select t.topic_id, t.topic_name" +
-                "from topic t inner join article_topic ta on t.topic_id = ta.topic_id "
+        final String sql = "select t.topic_id, t.topic_name " +
+                " from topic t inner join article_topic ta on t.topic_id = ta.topic_id "
                 + "where ta.article_id = ?;";
-//        var topics = jdbcTemplate.query(sql,new TopicMapper(),article.getArticleId());
+        var topics = jdbcTemplate.query(sql,new TopicMapper(),article.getArticleId());
 
-//        article.setTopics(topics);
+        article.setTopics(topics);
     }
 
     private void addPosts(Article article) {
-        final String sql = "select p.post_id, p.parent_post_id, p.article_id,user_id,p.is_dissenting,p.date_posted,p.content "
-                + "from post p inner join article a where p.article_id= ?;";
+        final String sql = "select p.post_id, p.parent_post_id, p.article_id,user_id,p.is_dissenting,p.date_posted,p.content, p.is_active "
+                + " from post p inner join article a where p.article_id= ?;";
 
         var posts = jdbcTemplate.query(sql, new PostMapper(), article.getArticleId());
         article.setPosts(posts);

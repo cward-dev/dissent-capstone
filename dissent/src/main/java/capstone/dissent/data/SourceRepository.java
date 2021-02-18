@@ -11,13 +11,13 @@ public interface SourceRepository {
 
     // read
     List<Source> findAll();
-    Source findById(int sourceId);
+    Source findById(String sourceId);
 
     // update
     boolean edit(Source source);
 
     // delete
-    boolean deleteById(int sourceId);
+    boolean deleteById(String sourceId);
 
     // helpers
     List<Source> getSourceFromLogin(Source userLogin);

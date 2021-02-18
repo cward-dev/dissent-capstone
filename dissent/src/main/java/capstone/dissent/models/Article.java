@@ -39,7 +39,7 @@ public class Article {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @PastOrPresent(message = "Article cannot have a future post date")
     LocalDateTime datePosted;
-    boolean isActive;
+    boolean isActive = true;
 
     List<Topic> topics = new ArrayList<>();
 

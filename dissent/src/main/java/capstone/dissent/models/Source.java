@@ -10,8 +10,15 @@ public class Source {
 
     // these fields should auto-populate from the API call
     private String sourceId;
+    @NotNull(message = "Source name cannot be blank")
+    @Size(min = 2, max = MAX_CHARACTERS, message = "Source name must between 2 and 255 characters")
+    //Min size of 2 to accommodate Abbreviations of News Source Names
     private String sourceName;
+    @NotNull(message = "Website Url cannot be blank")
+    @Size(min = 4, max = MAX_CHARACTERS, message = "URL must between 4 and 255 characters")
+    //Min size of 4 to accommodate the smallest url {u.co}
     private String websiteUrl;
+    @Size(max=255,message = "Description should be less than 255 characters")
     private String description;
 
     // constructor(s)
