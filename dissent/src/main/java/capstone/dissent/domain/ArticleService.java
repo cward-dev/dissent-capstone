@@ -1,10 +1,13 @@
 package capstone.dissent.domain;
 
 
+import capstone.dissent.data.ArticleFeedbackTagRepository;
 import capstone.dissent.data.ArticleRepository;
 import capstone.dissent.data.ArticleTopicRepository;
 import capstone.dissent.models.Article;
+
 import capstone.dissent.models.ArticleTopic;
+import capstone.dissent.models.ArticleFeedbackTag;
 import org.springframework.stereotype.Service;
 
 import javax.validation.ConstraintViolation;
@@ -19,24 +22,28 @@ import java.util.UUID;
 @Service
 public class ArticleService {
 
+
     private final ArticleRepository repository;
     private final ArticleTopicRepository articleTopicRepository;
+    private final ArticleRepository articleRepository;
+    private final ArticleFeedbackTagRepository articleFeedbackTagRepository;
 
-    public ArticleService(ArticleRepository repository, ArticleTopicRepository articleTopicRepository) {
+    public ArticleService(ArticleRepository repository, ArticleTopicRepository articleTopicRepository, ArticleRepository articleRepository, ArticleFeedbackTagRepository articleFeedbackTagRepository) {
         this.repository = repository;
         this.articleTopicRepository = articleTopicRepository;
+        this.articleRepository = articleRepository;
+        this.articleFeedbackTagRepository = articleFeedbackTagRepository;
     }
 
-    ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
-    Validator validator = factory.getValidator();
+    Validator validator;
 
 
     public List<Article> findAll() {
-        return repository.findAllArticles();
+        return articleRepository.findAllArticles();
     }
 
     public Article findById(String articleId) {
-        return repository.findArticleByArticleId(articleId);
+        return articleRepository.findArticleByArticleId(articleId);
     }
 
 //    public List<Article> findArticleByTopicId(int topicId) {  // TODO maybe delete?
@@ -44,7 +51,7 @@ public class ArticleService {
 //    }
 
     public List<Article> findByPostedDateRange(LocalDateTime d1, LocalDateTime d2) {
-        return repository.findByPostedDateRange(d1, d2);
+        return articleRepository.findByPostedDateRange(d1, d2);
     }
 
 
@@ -67,7 +74,7 @@ public class ArticleService {
         UUID uuid = UUID.randomUUID();
         article.setArticleId(uuid.toString());
 
-        article = repository.addArticle(article);
+        article = articleRepository.addArticle(article);
         result.setPayload(article);
         return result;
 
@@ -85,7 +92,7 @@ public class ArticleService {
             return result;
         }
 
-        Article originalArticle = repository.findArticleByArticleId(article.getArticleId());
+        Article originalArticle = articleRepository.findArticleByArticleId(article.getArticleId());
         if(originalArticle == null){
             String msg = String.format("Article:  %s  by %s, was not found! ",article.getTitle(),article.getAuthor());
             result.addMessage(msg,ResultType.NOT_FOUND);
@@ -95,7 +102,7 @@ public class ArticleService {
             result.addMessage("Cannot update Article URL", ResultType.INVALID);
             return result;
         }
-        if(!repository.updateArticle(article)){
+        if(!articleRepository.updateArticle(article)){
             String msg = String.format("Article:  %s  by %s, was not found! ",article.getTitle(),article.getAuthor());
             result.addMessage(msg,ResultType.NOT_FOUND);
         }
@@ -105,8 +112,9 @@ public class ArticleService {
 
     public boolean inactivateArticle(String articleId){
 
-        return repository.inactivateArticle(articleId);
+        return articleRepository.inactivateArticle(articleId);
     }
+
 
     public Result<Void> addTopic(ArticleTopic articleTopic){
         Result<Void> result = validateArticleTopic(articleTopic);
@@ -120,6 +128,24 @@ public class ArticleService {
     }
 
     // Get Tag Data can be called from the object...
+
+    public Result<Void> addFeedbackTag(ArticleFeedbackTag articleFeedbackTag) {
+        Result<Void> result = validate(articleFeedbackTag);
+        if (!result.isSuccess()) {
+            return result;
+        }
+
+        if (!articleFeedbackTagRepository.add(articleFeedbackTag)) {
+            result.addMessage("Article feedback tag not added", ResultType.INVALID);
+        }
+
+        return result;
+    }
+
+    public boolean deleteFeedbackTagByKey(String articleId, String userId, int feedbackTagId) {
+        return articleFeedbackTagRepository.deleteByKey(articleId, userId, feedbackTagId);
+    }
+
 
     private Result<Article> checkForDuplicates(Article article){
         Result<Article> result = new Result<>();
@@ -153,6 +179,7 @@ public class ArticleService {
         return result;
     }
 
+
     private Result<Void> validateArticleTopic(ArticleTopic articleTopic){
         Result<Void> result = new Result<>();
 
@@ -163,6 +190,21 @@ public class ArticleService {
         if(articleTopic.getArticleId() == null || articleTopic.getTopicId()<=0){
             result.addMessage("topicId and articleId cannot be blank or missing!", ResultType.INVALID);
         }
+        return result;
+    }
+
+
+    private Result<Void> validate(ArticleFeedbackTag articleFeedbackTag) {
+        Result<Void> result = new Result<>();
+        if (articleFeedbackTag == null) {
+            result.addMessage("Article Feedback Tag cannot be null", ResultType.INVALID);
+            return result;
+        }
+
+        if (articleFeedbackTag.getFeedbackTag() == null) {
+            result.addMessage("Feedback Tag cannot be null", ResultType.INVALID);
+        }
+
         return result;
     }
 

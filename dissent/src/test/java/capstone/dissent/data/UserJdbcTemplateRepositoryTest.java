@@ -41,8 +41,8 @@ class UserJdbcTemplateRepositoryTest {
     @Test
     void shouldFindById() {
         User user = repository.findById("dffec086-b1e9-455a-aab4-ff6c6611fef0");
-        String expected = "dissenter101";
-        String actual = user.getUsername();
+        String expected = "dffec086-b1e9-455a-aab4-ff6c6611fef0";
+        String actual = user.getUserId();
         assertEquals(expected, actual);
 
         User invalidUser = repository.findById("...");

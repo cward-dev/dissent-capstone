@@ -80,8 +80,8 @@ class UserLoginJdbcTemplateRepositoryTest {
         String loginId = "103a7d9b-f72b-4469-b1a3-bdba2f6356b4";
         User user = repository.getUserFromUserLoginId(loginId);
 
-        String expected = "dissenter101";
-        String actual = user.getUsername();
+        String expected = "dffec086-b1e9-455a-aab4-ff6c6611fef0";
+        String actual = user.getUserId();
 
         assertEquals(expected, actual);
 

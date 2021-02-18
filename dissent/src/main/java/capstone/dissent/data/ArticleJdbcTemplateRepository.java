@@ -2,10 +2,7 @@ package capstone.dissent.data;
 
 import capstone.dissent.data.mappers.*;
 
-import capstone.dissent.models.Article;
-import capstone.dissent.models.FeedbackTag;
-import capstone.dissent.models.Post;
-import capstone.dissent.models.Topic;
+import capstone.dissent.models.*;
 
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
