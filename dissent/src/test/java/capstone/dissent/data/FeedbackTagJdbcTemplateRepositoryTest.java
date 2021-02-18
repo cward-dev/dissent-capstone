@@ -1,6 +1,7 @@
 package capstone.dissent.data;
 
 import capstone.dissent.models.FeedbackTag;
+import capstone.dissent.models.Topic;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 class FeedbackTagJdbcTemplateRepositoryTest {
 
-    final static int NEXT_FEEDBACK_TAG_ID = 5;
+    final static int NEXT_FEEDBACK_TAG_ID = 6;
 
     @Autowired
     FeedbackTagJdbcTemplateRepository repository;
@@ -51,11 +52,28 @@ class FeedbackTagJdbcTemplateRepositoryTest {
     }
 
     @Test
+    void shouldFindInactiveByName() {
+        FeedbackTag feedbackTag = repository.findInactiveByName("Too Nice");
+
+        assertNotNull(feedbackTag);
+        assertEquals(5, feedbackTag.getFeedbackTagId());
+    }
+
+    @Test
     void shouldAdd() {
         FeedbackTag feedbackTag = makeFeedbackTag();
         FeedbackTag actual = repository.add(feedbackTag);
         assertNotNull(actual);
         assertEquals(NEXT_FEEDBACK_TAG_ID, actual.getFeedbackTagId());
+    }
+
+    @Test
+    void shouldReactivateIfAddedExistingInactive() {
+        FeedbackTag feedbackTag = makeFeedbackTag();
+        feedbackTag.setName("Not Nice");
+        FeedbackTag actual = repository.add(feedbackTag);
+        assertNotNull(actual);
+        assertEquals(4, actual.getFeedbackTagId());
     }
 
     @Test

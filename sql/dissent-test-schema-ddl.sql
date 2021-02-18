@@ -166,7 +166,8 @@ begin
         (2, 'Philosophy', 1),
         (3, 'Economics', 1),
         (4, 'Politics', 1),
-        (5, 'Healthcare', 0);
+        (5, 'Healthcare', 0),
+        (6, 'History', 0);
     
     insert into `source`
 		(source_id, source_name, website_url, `description`) 
@@ -259,4 +260,4 @@ set SQL_SAFE_UPDATES = 0;
 call set_known_good_state;
 set SQL_SAFE_UPDATES = 1;
 
-select * from feedback_tag;
+select * from topic;

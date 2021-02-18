@@ -2,6 +2,7 @@ package capstone.dissent.data;
 
 import capstone.dissent.data.mappers.FeedbackTagMapper;
 import capstone.dissent.models.FeedbackTag;
+import capstone.dissent.models.Topic;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -41,7 +42,24 @@ public class FeedbackTagJdbcTemplateRepository implements FeedbackTagRepository 
     }
 
     @Override
+    public FeedbackTag findInactiveByName(String feedbackTagName) {
+        final String sql = "select feedback_tag_id, feedback_tag_name, is_active from feedback_tag where UPPER(feedback_tag_name) = UPPER(?);";
+
+        return jdbcTemplate.query(sql, new FeedbackTagMapper(), feedbackTagName).stream()
+                .findAny().orElse(null);
+    }
+
+    @Override
     public FeedbackTag add(FeedbackTag feedbackTag) {
+        FeedbackTag inactiveFeedbackTag = findInactiveByName(feedbackTag.getName());
+        if (inactiveFeedbackTag != null) {
+            if (activateById(inactiveFeedbackTag.getFeedbackTagId())) {
+                inactiveFeedbackTag.setActive(true);
+                return inactiveFeedbackTag;
+            }
+            return null;
+        }
+
         final String sql = "insert into feedback_tag (feedback_tag_name) values (?);";
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
@@ -67,6 +85,16 @@ public class FeedbackTagJdbcTemplateRepository implements FeedbackTagRepository 
                 + "where feedback_tag_id = ? and is_active = true;";
 
         return jdbcTemplate.update(sql, feedbackTag.getName(), feedbackTag.getFeedbackTagId()) > 0;
+    }
+
+    @Override
+    public boolean activateById(int feedbackTagId) {
+
+        final String sql = "update feedback_tag set "
+                + "is_active = true "
+                + "where feedback_tag_id = ? and is_active = false;";
+
+        return jdbcTemplate.update(sql, feedbackTagId) > 0;
     }
 
     @Override

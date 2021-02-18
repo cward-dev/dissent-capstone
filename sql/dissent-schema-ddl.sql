@@ -25,7 +25,8 @@ CREATE TABLE `user` (
 # ARTICLE TABLES
 CREATE TABLE topic (
     topic_id int PRIMARY KEY AUTO_INCREMENT,
-    topic_name VARCHAR(255) NOT NULL
+    topic_name VARCHAR(255) NOT NULL,
+    is_active BOOL NOT NULL DEFAULT true
 );
 
 CREATE TABLE `source` (
