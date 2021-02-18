@@ -2,6 +2,7 @@ package capstone.dissent.data;
 
 import capstone.dissent.models.Article;
 
+import capstone.dissent.models.FeedbackTag;
 import capstone.dissent.models.Topic;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -10,7 +11,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -66,6 +69,7 @@ class ArticleJdbcTemplateRepositoryTest {
 //        List<Article> articles = repository.findArticleByTopicId(99);
 //        assertTrue(articles.size()==0);
 //    }
+
 
     @Test
     void shouldFindByPostedDateRange(){
@@ -130,6 +134,21 @@ class ArticleJdbcTemplateRepositoryTest {
         assertEquals(repository.findArticleByArticleId("b").isActive(), false);
 
     }
+
+    @Test
+
+    void shouldFindData(){
+      Article article = repository.findArticleByArticleId("b");
+
+        HashMap<FeedbackTag, Integer> data = repository.getTagData(article);
+
+     for(Map.Entry<FeedbackTag, Integer> entry: data.entrySet()){
+         System.out.println(entry.getKey() + " : " + entry.getValue());
+     }
+
+
+    }
+
 
 
 

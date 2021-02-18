@@ -1,7 +1,12 @@
 package capstone.dissent.data;
 
 import capstone.dissent.data.mappers.*;
-import capstone.dissent.models.*;
+
+import capstone.dissent.models.Article;
+import capstone.dissent.models.FeedbackTag;
+import capstone.dissent.models.Post;
+import capstone.dissent.models.Topic;
+
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -143,17 +148,16 @@ public class ArticleJdbcTemplateRepository implements ArticleRepository {
 
     @Override
     public HashMap<FeedbackTag, Integer> getTagData(Article article) {
-        final String sql = "select ft.feedback_tag_id, ft.name" +
+        final String sql = "select ft.feedback_tag_id, ft.feedback_tag_name" +
                 " from article_feedback_tag aft inner join feedback_tag ft on  aft.feedback_tag_id = ft.feedback_tag_id"
                 + " where aft.article_id = ?;";
 
-//           var allFeedBackTags = jdbcTemplate(sql,new FeedBackTagMapper(),article.getArticleId());
-//
-//           for(FeedbackTag tag : allFeedBackTags){
-//               article.addFeedbackTagToArticle(tag);
-//           }
-        return null;
+           var allTags = jdbcTemplate.query(sql,new FeedbackTagMapper(),article.getArticleId());
 
+           for(FeedbackTag tag : allTags){
+               article.addFeedbackTagToArticle(tag);
+           }
+        return article.getFeedbackTags();
     }
 
     private void addFeedbackTags(Article article) {
@@ -178,17 +182,20 @@ public class ArticleJdbcTemplateRepository implements ArticleRepository {
     }
 
     private void addTopics(Article article) {
+
         final String sql = "select t.topic_id, t.topic_name, t.is_active " +
                 " from topic t inner join article_topic ta on t.topic_id = ta.topic_id "
                 + "where ta.article_id = ?;";
+      
         var topics = jdbcTemplate.query(sql,new TopicMapper(),article.getArticleId());
 
         article.setTopics(topics);
     }
 
     private void addPosts(Article article) {
-        final String sql = "select p.post_id, p.parent_post_id, p.article_id, user_id, p.is_dissenting, p.date_posted, p.content, p.is_active "
-                + " from post p inner join article a where p.article_id= ?;";
+
+        final String sql = "select p.post_id, p.parent_post_id, p.article_id, user_id,p.is_dissenting,p.date_posted,p.content, p.is_active "
+                + " from post p inner join article a on p.article_id = a.article_id where p.article_id= ?;";
 
         var posts = jdbcTemplate.query(sql, new PostMapper(), article.getArticleId());
         article.setPosts(posts);
