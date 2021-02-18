@@ -19,7 +19,6 @@ public interface SourceRepository {
     // delete
     boolean deleteById(String sourceId);
 
-    // helpers
-    List<Source> getSourceFromLogin(Source userLogin);
+
 
 }

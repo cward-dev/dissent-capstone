@@ -30,7 +30,7 @@ class ArticleServiceTest {
             "www.u.com","www.u.com", DAY1,DAY2);
 
     @Test
-    void findAll() {
+    void shouldFindAll() {
         List<Article> articles = new ArrayList<>();
         articles.add(new Article());
 
@@ -232,6 +232,19 @@ class ArticleServiceTest {
         boolean result = service.inactivateArticle("XXXXX");
 
         assertFalse(result);
+    }
+
+    @Test
+    void shouldNotAddArticleWithFuturePostDate(){
+        Article article = TEST_ARTICLE;
+        article.setDatePosted(LocalDateTime.of(2999,01,01,12,00,00));
+
+        Result<Article> result = service.add(article);
+
+        assertFalse(result.isSuccess());
+        assertEquals(1, result.getMessages().size());
+        System.out.println(result.getMessages().get(0));
+        assertTrue(result.getMessages().contains("Article cannot have a future post date"));
     }
 
 }
