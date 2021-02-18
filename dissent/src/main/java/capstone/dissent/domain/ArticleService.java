@@ -35,9 +35,9 @@ public class ArticleService {
         return repository.findArticleByArticleId(articleId);
     }
 
-    public List<Article> findArticleByTopicId(int topicId) {
-        return repository.findArticleByTopicId(topicId);
-    }
+//    public List<Article> findArticleByTopicId(int topicId) {  // TODO maybe delete?
+//        return repository.findArticleByTopicId(topicId);
+//    }
 
     public List<Article> findByPostedDateRange(LocalDateTime d1, LocalDateTime d2) {
         return repository.findByPostedDateRange(d1, d2);

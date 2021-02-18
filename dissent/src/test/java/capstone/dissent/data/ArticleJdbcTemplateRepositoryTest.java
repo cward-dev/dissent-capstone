@@ -20,8 +20,6 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 class ArticleJdbcTemplateRepositoryTest {
 
-
-
     @Autowired
     ArticleJdbcTemplateRepository repository;
 
@@ -51,6 +49,7 @@ class ArticleJdbcTemplateRepositoryTest {
        Article article = repository.findArticleByArticleId("c32bec11-b9a0-434b-bda7-08b9cf2007e2");
        assertNotNull(article);
        assertTrue(article.getAuthor().equalsIgnoreCase("Michael Douglas"));
+       assertEquals(article.getFeedbackTags().size(), 1);
 
     }
     @Test
@@ -59,18 +58,18 @@ class ArticleJdbcTemplateRepositoryTest {
         assertNull(article);
     }
 
-    @Test
-    void shouldFindArticleByTopicId(){
-        List<Article> articles = repository.findArticleByTopicId(1);
-        assertTrue(articles.size()==1 || articles.size()==2);
-    }
+//    @Test  // TODO maybe delete?
+//    void shouldFindArticleByTopicId(){
+//        List<Article> articles = repository.findArticleByTopicId(1);
+//        assertTrue(articles.size()==1 || articles.size()==2);
+//    }
+//
+//    @Test  // TODO maybe delete?
+//    void shouldNOTFindArticleByTopicId(){
+//        List<Article> articles = repository.findArticleByTopicId(99);
+//        assertTrue(articles.size()==0);
+//    }
 
-
-    @Test
-    void shouldNOTFindArticleByTopicId(){
-        List<Article> articles = repository.findArticleByTopicId(99);
-        assertTrue(articles.size()==0);
-    }
 
     @Test
     void shouldFindByPostedDateRange(){

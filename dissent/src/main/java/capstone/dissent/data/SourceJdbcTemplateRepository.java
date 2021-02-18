@@ -74,5 +74,4 @@ public class SourceJdbcTemplateRepository implements SourceRepository {
         return jdbcTemplate.update("delete from source where source_id = ?;",sourceId)>0;
     }
 
-
 }

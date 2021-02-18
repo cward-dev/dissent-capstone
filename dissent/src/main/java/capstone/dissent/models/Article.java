@@ -42,10 +42,9 @@ public class Article {
     boolean isActive = true;
 
     List<Topic> topics = new ArrayList<>();
-
     List<Post> posts = new ArrayList<>();
-
     HashMap<FeedbackTag, Integer> feedbackTags = new HashMap<>();
+
     public Article(String title, String description, String source, String author,
                    String articleUrl, String articleImageUrl, @NotNull(message = "Article must have published date!") @PastOrPresent(message = "Article cannot have a future published date") LocalDateTime datePublished, LocalDateTime datePosted) {
         this.title = title;

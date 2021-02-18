@@ -25,6 +25,11 @@ public class TopicController {
         return service.findAll();
     }
 
+    @GetMapping("/inactive")
+    public List<Topic> findAllInactive() {
+        return service.findAllInactive();
+    }
+
     @GetMapping("/{topicId}")
     public ResponseEntity<Topic> findById(@PathVariable int topicId) {
         Topic topic = service.findById(topicId);
@@ -46,7 +51,7 @@ public class TopicController {
     }
 
     @PutMapping("/{topicId}")
-    public ResponseEntity<Object> add(@PathVariable int topicId, @RequestBody Topic topic) {
+    public ResponseEntity<Object> edit(@PathVariable int topicId, @RequestBody Topic topic) {
         if (topicId != topic.getTopicId()) {
             return new ResponseEntity<>(HttpStatus.CONFLICT);
         }

@@ -4,7 +4,7 @@ GET {{url}} HTTP/1.1
 
 ###
 
-GET {{url}}/1fe45af8-87af-4e0a-a6b3-24e290e519ae HTTP/1.1
+GET {{url}}/a7db5cb6-446a-4c8e-836e-006d9ff239b5 HTTP/1.1
 
 ###
 
@@ -25,7 +25,6 @@ Content-Type: application/json
   "userId": "dffec086-b1e9-455a-aab4-ff6c6611fef0",
   "timestamp": "2021-02-17T10:47:56",
   "content": "I agree 100%!",
-  "feedbackTags": {},
   "dissenting": false
 }
 
@@ -35,11 +34,12 @@ PUT {{url}}/a7db5cb6-446a-4c8e-836e-006d9ff239b5 HTTP/1.1
 Content-Type: application/json
 
 {
-  "parentPostId": "a7db5cb6-446a-4c8e-836e-006d9ff239b5",
+  "postId": "a7db5cb6-446a-4c8e-836e-006d9ff239b5",
+  "parentPostId": null,
   "articleId": "c32bec11-b9a0-434b-bda7-08b9cf2007e2",
   "userId": "dffec086-b1e9-455a-aab4-ff6c6611fef0",
+  "timestamp": "2021-02-15T06:00:00",
   "content": "I'll have to see this black-hole to believe it! Edit: I saw it and I believe it!",
-  "feedbackTags": {},
   "dissenting": false
 }
 

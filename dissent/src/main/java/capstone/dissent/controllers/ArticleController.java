@@ -37,11 +37,11 @@ public class ArticleController {
         return ResponseEntity.ok(article);
     }
 
-    @GetMapping("/topic/{topicId}")
-    public List<Article> findArticleByTopicId(@PathVariable int topicId){
-       return service.findArticleByTopicId(topicId);
-
-    }
+//    @GetMapping("/topic/{topicId}") // TODO maybe delete?
+//    public List<Article> findArticleByTopicId(@PathVariable int topicId){
+//       return service.findArticleByTopicId(topicId);
+//
+//    }
 
     @GetMapping("/{date1}/{date2}")
     public List<Article> findPostedDateRange(@PathVariable LocalDateTime date1, @PathVariable LocalDateTime date2){
