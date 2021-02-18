@@ -56,7 +56,6 @@ class PostFeedbackTagJdbcTemplateRepositoryTest {
         PostFeedbackTag postFeedbackTag = new PostFeedbackTag();
         postFeedbackTag.setPostId("a7db5cb6-446a-4c8e-836e-006d9ff239b5");
         postFeedbackTag.setUserId("dffec086-b1e9-455a-aab4-ff6c6611fef0");
-        postFeedbackTag.setFeedbackTagId(1);
 
         FeedbackTag feedbackTag = new FeedbackTag(1, "Sound", true);
 

@@ -14,7 +14,6 @@ public class PostFeedbackTagMapper implements RowMapper<PostFeedbackTag> {
         PostFeedbackTag postFeedbackTag = new PostFeedbackTag();
         postFeedbackTag.setPostId(resultSet.getString("post_id"));
         postFeedbackTag.setUserId(resultSet.getString("user_id"));
-        postFeedbackTag.setFeedbackTagId(resultSet.getInt("feedback_tag_id"));
 
         FeedbackTagMapper feedbackTagMapper = new FeedbackTagMapper();
         postFeedbackTag.setFeedbackTag(feedbackTagMapper.mapRow(resultSet, i));

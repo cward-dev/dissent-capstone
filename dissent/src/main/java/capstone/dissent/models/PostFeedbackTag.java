@@ -4,7 +4,6 @@ public class PostFeedbackTag {
 
     private String postId;
     private String userId;
-    private int feedbackTagId;
 
     private FeedbackTag feedbackTag;
 
@@ -22,14 +21,6 @@ public class PostFeedbackTag {
 
     public void setUserId(String userId) {
         this.userId = userId;
-    }
-
-    public int getFeedbackTagId() {
-        return feedbackTagId;
-    }
-
-    public void setFeedbackTagId(int feedbackTagId) {
-        this.feedbackTagId = feedbackTagId;
     }
 
     public FeedbackTag getFeedbackTag() {
