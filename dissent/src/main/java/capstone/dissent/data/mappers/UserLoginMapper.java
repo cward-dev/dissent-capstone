@@ -13,7 +13,7 @@ public class UserLoginMapper implements RowMapper<UserLogin> {
 
         UserLogin userLogin = new UserLogin();
 
-        userLogin.setUserLoginId(resultSet.getString("userLogin_id"));
+        userLogin.setUserLoginId(resultSet.getString("user_login_id"));
         userLogin.setEmail(resultSet.getString("email"));
 
         // TODO: discuss how passwords are handled (security)

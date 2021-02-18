@@ -74,9 +74,4 @@ public class SourceJdbcTemplateRepository implements SourceRepository {
         return jdbcTemplate.update("delete from source where source_id = ?;",sourceId)>0;
     }
 
-    // TODO: 2/17/2021 Do we need this??
-    @Override
-    public List<Source> getSourceFromLogin(Source userLogin) {
-        return null;
-    }
 }

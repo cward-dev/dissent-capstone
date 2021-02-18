@@ -71,10 +71,13 @@ class UserJdbcTemplateRepositoryTest {
 
     @Test
     void shouldDelete() {
+        User user = makeUser();
+        user = repository.add(user);
 
+        boolean actual = repository.deleteById(user.getUserId());
+
+        assertTrue(actual);
     }
-
-
 
 
     private User makeUser() {
