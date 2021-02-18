@@ -90,13 +90,19 @@ public class UserJdbcTemplateRepository implements UserRepository {
     }
 
 
-
+    // TODO: Need to discuss how to handle deletes for users
     // delete
     @Override
     @Transactional
     public boolean deleteById(String userId) {
-
-        return jdbcTemplate.update("delete from user where user_id = ?;", userId) > 0;
+        final String sql = "update user set "
+                + "username = 'deleted', "
+                + "user_role = 'deleted', "
+                + "photo_url = null, "
+                + "country = null, "
+                + "bio = null "
+                + "where user_id = ?";
+        return jdbcTemplate.update(sql, userId) > 0;
     }
 
 

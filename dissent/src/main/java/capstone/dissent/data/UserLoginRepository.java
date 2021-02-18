@@ -22,6 +22,6 @@ public interface UserLoginRepository {
     boolean deleteById(String userLoginId);
 
     // helpers
-    List<User> getUserFromLogin(UserLogin userLogin);
+    User getUserFromUserLoginId(String userLoginId);
 
 }
