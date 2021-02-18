@@ -30,7 +30,18 @@ public class ArticleJdbcTemplateRepository implements ArticleRepository {
         final String sql = "select article_id, title, description,source_id, author, article_url, " +
                 " article_image_url, date_published, date_posted, is_active from article;";
 
-        return jdbcTemplate.query(sql, new ArticleMapper());
+        List<Article> result = jdbcTemplate.query(sql, new ArticleMapper());
+
+        if (result.size() > 0) {
+            for(Article article : result) {
+                addFeedbackTags(article);
+                addTopics(article);
+                addPosts(article);
+                addSource(article);
+            }
+        }
+
+        return result;
     }
 
     @Override
@@ -47,6 +58,7 @@ public class ArticleJdbcTemplateRepository implements ArticleRepository {
             addFeedbackTags(article);
             addTopics(article);
             addPosts(article);
+            addSource(article);
         }
 
         return article;
@@ -77,7 +89,9 @@ public class ArticleJdbcTemplateRepository implements ArticleRepository {
         if (result.size() > 0) {
             for (Article article : result) {
                 addFeedbackTags(article);
+                addTopics(article);
                 addPosts(article);
+                addSource(article);
             }
         }
 
@@ -198,5 +212,12 @@ public class ArticleJdbcTemplateRepository implements ArticleRepository {
         article.setPosts(posts);
     }
 
+    private void addSource(Article article) {
 
+        final String sql = "select s.source_id, s.source_name, s.website_url, s.`description`"
+                + " from `source` s inner join article a on s.source_id = a.source_id where a.article_id = ?;";
+
+        var source = jdbcTemplate.query(sql, new SourceMapper(), article.getArticleId()).stream().findAny().orElse(null);
+        article.setSource(source);
+    }
 }

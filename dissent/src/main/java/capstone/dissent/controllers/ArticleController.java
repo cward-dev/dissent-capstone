@@ -25,6 +25,7 @@ public class ArticleController {
 
     @GetMapping
     public List<Article> findAll(){
+        List<Article> articles = service.findAll();
         return service.findAll();
     }
 

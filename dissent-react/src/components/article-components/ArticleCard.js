@@ -3,7 +3,7 @@ import './ArticleCard.css';
 
 function ArticleCard ( { article } ) {
 
-  const { articleId, title, description, source, author, articleUrl, articleImageUrl, datePublished, timestamp, topics, posts, feedbackTags } = article;
+  const { articleId, title, description, author, articleUrl, articleImageUrl, datePublished, datePosted, source, topics, posts, feedbackTags } = article;
 
   return (
     <div key={articleId} className="card flex-row flex-wrap text-white bg-dark mb-4">
@@ -15,10 +15,10 @@ function ArticleCard ( { article } ) {
         <p className="card-text">{description}</p>
         <div className="row">
           <div className="col">
-            <p className="source-author-line card-text"><a className="source-link" href="http://www.google.com">{source}</a>. {author}</p>
+            <p className="source-author-line card-text"><a className="source-link" href={source.websiteUrl}>{source.sourceName}</a>. {author}</p>
           </div>
           <div className="col text-right">
-            <p className="source-author-line card-text">{timestamp}</p>
+            <p className="source-author-line card-text">{datePosted}</p>
           </div>
         </div>
       </div>

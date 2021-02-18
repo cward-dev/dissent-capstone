@@ -41,6 +41,7 @@ public class Article {
     LocalDateTime datePosted;
     boolean isActive = true;
 
+    Source source;
     List<Topic> topics = new ArrayList<>();
     List<Post> posts = new ArrayList<>();
     HashMap<FeedbackTag, Integer> feedbackTags = new HashMap<>();
@@ -152,6 +153,14 @@ public class Article {
 
     public void setActive(boolean active) {
         isActive = active;
+    }
+
+    public Source getSource() {
+        return source;
+    }
+
+    public void setSource(Source source) {
+        this.source = source;
     }
 
     public List<Topic> getTopics() {
