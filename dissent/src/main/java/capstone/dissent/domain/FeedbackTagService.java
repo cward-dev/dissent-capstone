@@ -1,4 +1,6 @@
 package capstone.dissent.domain;
 
-public class TagService {
+public class FeedbackTagService {
+
+
 }

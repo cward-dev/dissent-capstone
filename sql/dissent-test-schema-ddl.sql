@@ -25,7 +25,8 @@ CREATE TABLE `user` (
 # ARTICLE TABLES
 CREATE TABLE topic (
     topic_id int PRIMARY KEY AUTO_INCREMENT,
-    topic_name VARCHAR(255) NOT NULL
+    topic_name VARCHAR(255) NOT NULL,
+    is_active BOOL NOT NULL DEFAULT true
 );
 
 CREATE TABLE `source` (
@@ -159,12 +160,13 @@ begin
 		);
         
 	insert into topic 
-		(topic_id, topic_name) 
+		(topic_id, topic_name, is_active) 
 	values
-		(1, 'Science'),
-        (2, 'Philosophy'),
-        (3, 'Economics'),
-        (4, 'Politics');
+		(1, 'Science', 1),
+        (2, 'Philosophy', 1),
+        (3, 'Economics', 1),
+        (4, 'Politics', 1),
+        (5, 'Healthcare', 0);
     
     insert into `source`
 		(source_id, source_name, website_url, `description`) 
