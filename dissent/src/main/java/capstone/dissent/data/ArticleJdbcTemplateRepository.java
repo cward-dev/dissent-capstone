@@ -50,22 +50,22 @@ public class ArticleJdbcTemplateRepository implements ArticleRepository {
         return article;
     }
 
-    @Override
-    public List<Article> findArticleByTopicId(int topicId) {
-        final String sql = "select a.article_id, a.title,a.description, a.source_id, a.author, a.article_url, " +
-                " a.article_image_url, a.date_published, a.date_posted, a.is_active from article a inner join article_topic ar on a.article_id = ar.article_id"
-                + " where ar.topic_id = ?;";
-        var articles = jdbcTemplate.query(sql, new ArticleMapper(), topicId);
-
-        if (articles.size() > 0) {
-            for (Article article : articles) {
-                addFeedbackTags(article);
-                addPosts(article);
-            }
-        }
-
-        return articles;
-    }
+//    @Override // TODO maybe delete?
+//    public List<Article> findArticleByTopicId(int topicId) {
+//        final String sql = "select a.article_id, a.title,a.description, a.source_id, a.author, a.article_url, " +
+//                " a.article_image_url, a.date_published, a.date_posted, a.is_active from article a inner join article_topic ar on a.article_id = ar.article_id"
+//                + " where ar.topic_id = ?;";
+//        var articles = jdbcTemplate.query(sql, new ArticleMapper(), topicId);
+//
+//        if (articles.size() > 0) {
+//            for (Article article : articles) {
+//                addFeedbackTags(article);
+//                addPosts(article);
+//            }
+//        }
+//
+//        return articles;
+//    }
 
     @Override
     public List<Article> findByPostedDateRange(LocalDateTime d1, LocalDateTime d2) {

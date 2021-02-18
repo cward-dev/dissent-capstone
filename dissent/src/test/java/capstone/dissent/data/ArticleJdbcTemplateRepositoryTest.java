@@ -55,17 +55,17 @@ class ArticleJdbcTemplateRepositoryTest {
         assertNull(article);
     }
 
-    @Test
-    void shouldFindArticleByTopicId(){
-        List<Article> articles = repository.findArticleByTopicId(1);
-        assertTrue(articles.size()==1 || articles.size()==2);
-    }
-
-    @Test
-    void shouldNOTFindArticleByTopicId(){
-        List<Article> articles = repository.findArticleByTopicId(99);
-        assertTrue(articles.size()==0);
-    }
+//    @Test  // TODO maybe delete?
+//    void shouldFindArticleByTopicId(){
+//        List<Article> articles = repository.findArticleByTopicId(1);
+//        assertTrue(articles.size()==1 || articles.size()==2);
+//    }
+//
+//    @Test  // TODO maybe delete?
+//    void shouldNOTFindArticleByTopicId(){
+//        List<Article> articles = repository.findArticleByTopicId(99);
+//        assertTrue(articles.size()==0);
+//    }
 
     @Test
     void shouldFindByPostedDateRange(){

@@ -289,3 +289,18 @@ call set_known_good_state;
 set SQL_SAFE_UPDATES = 1;
 
 select * from post_feedback_tag;
+
+select 
+	a.article_id, 
+    a.title, 
+    a.description, 
+    a.source_id, 
+    a.author, 
+    a.article_url,
+	a.article_image_url, 
+    a.date_published, 
+    a.date_posted, 
+    a.is_active
+from article a 
+inner join article_topic ta on a.article_id = ta.article_id
+where ta.topic_id =  1;

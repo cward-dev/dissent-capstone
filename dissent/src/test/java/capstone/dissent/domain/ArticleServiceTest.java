@@ -70,11 +70,11 @@ class ArticleServiceTest {
 
     }
 
-    @Test
-    void findArticleByTopicId() {
-        // TODO: 2/17/2021 How do I test this with MockBean??
-        
-    }
+//    @Test  // TODO maybe delete?
+//    void findArticleByTopicId() {
+//        // TODO: 2/17/2021 How do I test this with MockBean??
+//
+//    }
 
     @Test
     void shouldFindByPostedDateRange() {
