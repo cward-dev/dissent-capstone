@@ -177,6 +177,18 @@ begin
 			'European Southern Observatory', 
             'https://www.eso.org/', 
             'ESO, the European Southern Observatory, is the foremost intergovernmental astronomy organisation in Europe and the world\'s most productive astronomical observatory'
+		),
+        (
+			'a', 
+			'To Update', 
+            'www.update.com', 
+            'This will be updated'
+		),
+        (
+			'b', 
+			'Delete ME', 
+            'https://www.delete.org/', 
+            'This will be deleted!'
 		);
         
 	insert into article
@@ -227,6 +239,10 @@ begin
         (
 			'a',
             1
+        ),
+         (
+			'b',
+            3
         );
         
 	insert into post

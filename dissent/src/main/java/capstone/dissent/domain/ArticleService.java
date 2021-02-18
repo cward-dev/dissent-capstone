@@ -2,7 +2,9 @@ package capstone.dissent.domain;
 
 
 import capstone.dissent.data.ArticleRepository;
+import capstone.dissent.data.ArticleTopicRepository;
 import capstone.dissent.models.Article;
+import capstone.dissent.models.ArticleTopic;
 import org.springframework.stereotype.Service;
 
 import javax.validation.ConstraintViolation;
@@ -18,9 +20,11 @@ import java.util.UUID;
 public class ArticleService {
 
     private final ArticleRepository repository;
+    private final ArticleTopicRepository articleTopicRepository;
 
-    public ArticleService(ArticleRepository repository) {
+    public ArticleService(ArticleRepository repository, ArticleTopicRepository articleTopicRepository) {
         this.repository = repository;
+        this.articleTopicRepository = articleTopicRepository;
     }
 
     ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
@@ -104,6 +108,17 @@ public class ArticleService {
         return repository.inactivateArticle(articleId);
     }
 
+    public Result<Void> addTopic(ArticleTopic articleTopic){
+        Result<Void> result = validateArticleTopic(articleTopic);
+        if(!result.isSuccess()){
+            return result;
+        }
+        if(!articleTopicRepository.add(articleTopic)){
+            result.addMessage("topic not found!", ResultType.INVALID);
+        }
+        return result;
+    }
+
     // Get Tag Data can be called from the object...
 
     private Result<Article> checkForDuplicates(Article article){
@@ -134,6 +149,19 @@ public class ArticleService {
                 }
             }
 
+        }
+        return result;
+    }
+
+    private Result<Void> validateArticleTopic(ArticleTopic articleTopic){
+        Result<Void> result = new Result<>();
+
+        if(articleTopic == null){
+            result.addMessage("articleTopic cannot be null", ResultType.INVALID);
+            return result;
+        }
+        if(articleTopic.getArticleId() == null || articleTopic.getTopicId()<=0){
+            result.addMessage("topicId and articleId cannot be blank or missing!", ResultType.INVALID);
         }
         return result;
     }

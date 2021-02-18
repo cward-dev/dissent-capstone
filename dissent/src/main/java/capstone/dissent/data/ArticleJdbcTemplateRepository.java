@@ -170,15 +170,15 @@ public class ArticleJdbcTemplateRepository implements ArticleRepository {
 
         var feedbackTags = jdbcTemplate.query(sql, new ArticleFeedbackTagMapper(), article.getArticleId());
 
-        HashMap<FeedbackTag, Integer> hm = new HashMap<>();
-        if (feedbackTags.size() > 0) {
-            for (ArticleFeedbackTag i : feedbackTags) {
-                Integer j = hm.get(i);
-                hm.put(i.getFeedbackTag(), (j == null) ? 1 : j + 1);
-            }
-        }
+//        HashMap<FeedbackTag, Integer> hm = new HashMap<>();
+//        if (feedbackTags.size() > 0) {
+//            for (ArticleFeedbackTag i : feedbackTags) {
+//                Integer j = hm.get(i);
+//                hm.put(i.getFeedbackTag(), (j == null) ? 1 : j + 1);
+//            }
+//        }
 
-        article.setFeedbackTags(hm);
+//        article.setFeedbackTags(hm);
     }
 
     private void addTopics(Article article) {

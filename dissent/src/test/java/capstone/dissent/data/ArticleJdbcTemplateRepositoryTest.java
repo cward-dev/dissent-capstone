@@ -49,10 +49,13 @@ class ArticleJdbcTemplateRepositoryTest {
        Article article = repository.findArticleByArticleId("c32bec11-b9a0-434b-bda7-08b9cf2007e2");
        assertNotNull(article);
        assertTrue(article.getAuthor().equalsIgnoreCase("Michael Douglas"));
-       assertEquals(article.getFeedbackTags().size(), 1);
+       int numberOfPosts = article.getPosts().size();
+       assertTrue(numberOfPosts >=3 && numberOfPosts <=4);
+       assertEquals(article.getTopics().size(),1);
 
     }
     @Test
+
     void shouldNotFindArticleByArticleId() {
         Article article = repository.findArticleByArticleId("X");
         assertNull(article);
