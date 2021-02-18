@@ -231,11 +231,12 @@ begin
 		);
         
 	insert into feedback_tag 
-		(feedback_tag_id, feedback_tag_name)
+		(feedback_tag_id, feedback_tag_name, is_active)
     values
-		(1, 'Sound'),
-        (2, 'Fallicious'),
-        (3, 'Biased');
+		(1, 'Sound', 1),
+        (2, 'Fallicious', 1),
+        (3, 'Biased', 1),
+        (4, 'Not Nice', 0);
 	
 	insert into post_feedback_tag 
 		(post_id, user_id, feedback_tag_id)

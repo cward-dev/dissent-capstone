@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 class FeedbackTagJdbcTemplateRepositoryTest {
 
-    final static int NEXT_FEEDBACK_TAG_ID = 4;
+    final static int NEXT_FEEDBACK_TAG_ID = 5;
 
     @Autowired
     FeedbackTagJdbcTemplateRepository repository;
@@ -28,6 +28,14 @@ class FeedbackTagJdbcTemplateRepositoryTest {
 
     @Test
     void shouldFindAll() {
+        List<FeedbackTag> feedbackTags = repository.findAll();
+
+        assertNotNull(feedbackTags);
+        assertTrue(feedbackTags.size() > 0);
+    }
+
+    @Test
+    void shouldFindAllInactive() {
         List<FeedbackTag> feedbackTags = repository.findAll();
 
         assertNotNull(feedbackTags);

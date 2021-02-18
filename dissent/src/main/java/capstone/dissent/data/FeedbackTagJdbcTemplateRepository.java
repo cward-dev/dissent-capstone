@@ -22,7 +22,13 @@ public class FeedbackTagJdbcTemplateRepository implements FeedbackTagRepository 
 
     @Override
     public List<FeedbackTag> findAll() {
-        final String sql = "select feedback_tag_id, feedback_tag_name, is_active from feedback_tag limit 1000;";
+        final String sql = "select feedback_tag_id, feedback_tag_name, is_active from feedback_tag where is_active = true limit 1000;";
+        return jdbcTemplate.query(sql, new FeedbackTagMapper());
+    }
+
+    @Override
+    public List<FeedbackTag> findAllInactive() {
+        final String sql = "select feedback_tag_id, feedback_tag_name, is_active from feedback_tag where is_active = false limit 1000;";
         return jdbcTemplate.query(sql, new FeedbackTagMapper());
     }
 

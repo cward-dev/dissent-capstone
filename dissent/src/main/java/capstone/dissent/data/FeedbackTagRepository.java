@@ -8,6 +8,8 @@ public interface FeedbackTagRepository {
 
     public List<FeedbackTag> findAll();
 
+    public List<FeedbackTag> findAllInactive();
+
     public FeedbackTag findById(int feedbackTagId);
 
     public FeedbackTag add(FeedbackTag feedbackTag);
