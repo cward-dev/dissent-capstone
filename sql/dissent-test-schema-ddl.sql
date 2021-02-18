@@ -266,7 +266,8 @@ begin
 		(1, 'Sound', 1),
         (2, 'Fallicious', 1),
         (3, 'Biased', 1),
-        (4, 'Not Nice', 0);
+        (4, 'Not Nice', 0),
+        (5, 'Too Nice', 0);
 	
 	insert into post_feedback_tag 
 		(post_id, user_id, feedback_tag_id)
@@ -287,4 +288,4 @@ set SQL_SAFE_UPDATES = 0;
 call set_known_good_state;
 set SQL_SAFE_UPDATES = 1;
 
-select * from topic;
+select * from post_feedback_tag;
