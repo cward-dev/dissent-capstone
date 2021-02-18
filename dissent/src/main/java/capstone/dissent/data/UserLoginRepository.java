@@ -13,13 +13,13 @@ public interface UserLoginRepository {
 
     // read
     List<UserLogin> findAll();
-    UserLogin findById(int userLoginId);
+    UserLogin findById(String userLoginId);
 
     // update
     boolean edit(UserLogin userLogin);
 
     // delete
-    boolean deleteById(int userLoginId);
+    boolean deleteById(String userLoginId);
 
     // helpers
     List<User> getUserFromLogin(UserLogin userLogin);
