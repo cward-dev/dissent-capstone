@@ -36,9 +36,9 @@ class PostJdbcTemplateRepositoryTest {
 
     @Test
     void shouldFindById() {
-        Post post = repository.findById("d7e12582-6f81-4f02-9e6e-18190f622264");
-        assertEquals("Wait --- Nevermind, because science.", post.getContent());
-
+        Post post = repository.findById("a7db5cb6-446a-4c8e-836e-006d9ff239b5");
+        assertEquals("I'll have to see this black-hole to believe it!", post.getContent());
+        assertEquals(post.getFeedbackTags().size(), 2);
 
         Post invalidPost = repository.findById("this-leads-to-nothing");
         assertNull(invalidPost);
@@ -48,7 +48,6 @@ class PostJdbcTemplateRepositoryTest {
     void shouldFindByArticleId() {
         List<Post> posts = repository.findByArticleId("c32bec11-b9a0-434b-bda7-08b9cf2007e2");
 
-        assertNotNull(posts);
         assertTrue(posts.size() > 0);
     }
 
@@ -56,7 +55,6 @@ class PostJdbcTemplateRepositoryTest {
     void shouldFindByUserId() {
         List<Post> posts = repository.findByUserId("dffec086-b1e9-455a-aab4-ff6c6611fef0");
 
-        assertNotNull(posts);
         assertTrue(posts.size() > 0);
     }
 

@@ -42,7 +42,7 @@ class PostFeedbackTagJdbcTemplateRepositoryTest {
             repository.add(postFeedbackTag); // must fail
             fail("cannot add the same post/user/feedback tag combination twice.");
         } catch (DataAccessException ex) {
-            // this is expected.
+            // this is expected
         }
     }
 
