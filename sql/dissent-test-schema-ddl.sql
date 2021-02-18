@@ -287,4 +287,4 @@ set SQL_SAFE_UPDATES = 0;
 call set_known_good_state;
 set SQL_SAFE_UPDATES = 1;
 
-select * from topic;
+select * from post_feedback_tag;
