@@ -25,7 +25,8 @@ CREATE TABLE `user` (
 # ARTICLE TABLES
 CREATE TABLE topic (
     topic_id int PRIMARY KEY AUTO_INCREMENT,
-    topic_name VARCHAR(255) NOT NULL
+    topic_name VARCHAR(255) NOT NULL,
+    is_active BOOL NOT NULL DEFAULT true
 );
 
 CREATE TABLE `source` (
@@ -64,7 +65,8 @@ CREATE TABLE article_topic (
 # POST TABLES
 CREATE TABLE feedback_tag (
     feedback_tag_id INT PRIMARY KEY AUTO_INCREMENT,
-    `name` VARCHAR(255) NOT NULL
+    feedback_tag_name VARCHAR(255) NOT NULL,
+    is_active BOOL NOT NULL DEFAULT true
 );
 
 # POST TABLE
@@ -158,12 +160,14 @@ begin
 		);
         
 	insert into topic 
-		(topic_id, topic_name) 
+		(topic_id, topic_name, is_active) 
 	values
-		(1, 'Science'),
-        (2, 'Philosophy'),
-        (3, 'Economics'),
-        (4, 'Politics');
+		(1, 'Science', 1),
+        (2, 'Philosophy', 1),
+        (3, 'Economics', 1),
+        (4, 'Politics', 1),
+        (5, 'Healthcare', 0),
+        (6, 'History', 0);
     
     insert into `source`
 		(source_id, source_name, website_url, `description`) 
@@ -230,11 +234,12 @@ begin
 		);
         
 	insert into feedback_tag 
-		(feedback_tag_id, `name`)
+		(feedback_tag_id, feedback_tag_name, is_active)
     values
-		(1, 'Sound'),
-        (2, 'Fallicious'),
-        (3, 'Biased');
+		(1, 'Sound', 1),
+        (2, 'Fallicious', 1),
+        (3, 'Biased', 1),
+        (4, 'Not Nice', 0);
 	
 	insert into post_feedback_tag 
 		(post_id, user_id, feedback_tag_id)
@@ -255,4 +260,4 @@ set SQL_SAFE_UPDATES = 0;
 call set_known_good_state;
 set SQL_SAFE_UPDATES = 1;
 
-select * from post;
+select * from topic;

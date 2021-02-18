@@ -20,20 +20,43 @@ public class TopicJdbcTemplateRepository implements TopicRepository {
 
     @Override
     public List<Topic> findAll() {
-        final String sql = "select topic_id, topic_name from topic limit 1000;";
+        final String sql = "select topic_id, topic_name, is_active from topic where is_active = true limit 1000;";
+        return jdbcTemplate.query(sql, new TopicMapper());
+    }
+
+    @Override
+    public List<Topic> findAllInactive() {
+        final String sql = "select topic_id, topic_name, is_active from topic where is_active = false limit 1000;";
         return jdbcTemplate.query(sql, new TopicMapper());
     }
 
     @Override
     public Topic findById(int topicId) {
-        final String sql = "select topic_id, topic_name from topic where topic_id = ?;";
+        final String sql = "select topic_id, topic_name, is_active from topic where topic_id = ?;";
 
         return jdbcTemplate.query(sql, new TopicMapper(), topicId).stream()
                 .findAny().orElse(null);
     }
 
     @Override
+    public Topic findInactiveByName(String topicName) {
+        final String sql = "select topic_id, topic_name, is_active from topic where UPPER(topic_name) = UPPER(?) and is_active = false;";
+
+        return jdbcTemplate.query(sql, new TopicMapper(), topicName).stream()
+                .findAny().orElse(null);
+    }
+
+    @Override
     public Topic add(Topic topic) {
+        Topic inactiveTopic = findInactiveByName(topic.getTopicName());
+        if (inactiveTopic != null) {
+            if (activateById(inactiveTopic.getTopicId())) {
+                inactiveTopic.setActive(true);
+                return inactiveTopic;
+            }
+            return null;
+        }
+
         final String sql = "insert into topic (topic_name) values (?);";
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
@@ -62,7 +85,22 @@ public class TopicJdbcTemplateRepository implements TopicRepository {
     }
 
     @Override
+    public boolean activateById(int topicId) {
+
+        final String sql = "update topic set "
+                + "is_active = true "
+                + "where topic_id = ?;";
+
+        return jdbcTemplate.update(sql, topicId) > 0;
+    }
+
+    @Override
     public boolean deleteById(int topicId) {
-        return jdbcTemplate.update("delete from topic where topic_id = ?;", topicId) > 0;
+
+        final String sql = "update topic set "
+                + "is_active = false "
+                + "where topic_id = ?;";
+
+        return jdbcTemplate.update(sql, topicId) > 0;
     }
 }

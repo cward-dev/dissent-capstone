@@ -22,7 +22,7 @@ class FeedbackTagTest {
         Set<ConstraintViolation<FeedbackTag>> violations = validator.validate(tag);
         ConstraintViolation<FeedbackTag> first = violations.stream().findFirst().orElse(null);
         assertEquals(1, violations.size());
-        assertEquals("Tag name cannot be blank!", first.getMessage());
+        assertEquals("Feedback Tag name cannot be blank", first.getMessage());
     }
 
     @Test
@@ -31,7 +31,7 @@ class FeedbackTagTest {
         Set<ConstraintViolation<FeedbackTag>> violations = validator.validate(tag);
         ConstraintViolation<FeedbackTag> first = violations.stream().findFirst().orElse(null);
         assertEquals(1, violations.size());
-        assertEquals("Name has to be between 1 and 255 characters", first.getMessage());
+        assertEquals("Feedback Tag name cannot be blank", first.getMessage());
     }
 
     @Test

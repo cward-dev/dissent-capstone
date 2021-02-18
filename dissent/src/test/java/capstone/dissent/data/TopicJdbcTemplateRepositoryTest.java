@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 class TopicJdbcTemplateRepositoryTest {
 
-    final static int NEXT_TOPIC_ID = 5;
+    final static int NEXT_TOPIC_ID = 7;
 
     @Autowired
     TopicJdbcTemplateRepository repository;
@@ -36,6 +36,14 @@ class TopicJdbcTemplateRepositoryTest {
     }
 
     @Test
+    void shouldFindAllInactive() {
+        List<Topic> topics = repository.findAll();
+
+        assertNotNull(topics);
+        assertTrue(topics.size() > 0);
+    }
+
+    @Test
     void shouldFindById() {
         Topic topic = repository.findById(1);
 
@@ -44,11 +52,28 @@ class TopicJdbcTemplateRepositoryTest {
     }
 
     @Test
+    void shouldFindInactiveByName() {
+        Topic topic = repository.findInactiveByName("Healthcare");
+
+        assertNotNull(topic);
+        assertEquals(5, topic.getTopicId());
+    }
+
+    @Test
     void shouldAdd() {
         Topic topic = makeTopic();
         Topic actual = repository.add(topic);
         assertNotNull(actual);
         assertEquals(NEXT_TOPIC_ID, actual.getTopicId());
+    }
+
+    @Test
+    void shouldReactivateIfAddedExistingInactive() {
+        Topic topic = makeTopic();
+        topic.setTopicName("History");
+        Topic actual = repository.add(topic);
+        assertNotNull(actual);
+        assertEquals(6, actual.getTopicId());
     }
 
     @Test

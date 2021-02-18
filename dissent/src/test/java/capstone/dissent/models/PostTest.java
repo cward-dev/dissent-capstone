@@ -67,7 +67,7 @@ class PostTest {
         Set<ConstraintViolation<Post>> violations = validator.validate(post);
         ConstraintViolation<Post> first = violations.stream().findFirst().orElse(null);
         assertEquals(1, violations.size());
-        assertEquals("Post content must between 1 and 255 characters", first.getMessage());
+        assertEquals("Post content cannot be blank", first.getMessage());
 
     }
 
