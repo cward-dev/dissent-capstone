@@ -1,0 +1,16 @@
+@url = http://localhost:8080/api/article/feedback-tag
+
+POST {{url}} HTTP/1.1
+Content-Type: application/json
+
+{
+    "articleId": "c32bec11-b9a0-434b-bda7-08b9cf2007e2",
+    "userId": "dffec086-b1e9-455a-aab4-ff6c6611fef0",
+    "feedbackTag": {
+        "feedbackTagId": 2
+    }
+}
+
+###
+
+DELETE {{url}}/c32bec11-b9a0-434b-bda7-08b9cf2007e2/dffec086-b1e9-455a-aab4-ff6c6611fef0/2 HTTP/1.1
