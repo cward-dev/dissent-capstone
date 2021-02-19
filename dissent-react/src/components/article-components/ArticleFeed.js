@@ -5,7 +5,7 @@ function ArticleFeed( { articles } ) {
 
   const makeArticle = (article) => {
     return (
-      <ArticleCard article={article} />
+      <ArticleCard key={article.articleId} article={article} />
     );
   };
 

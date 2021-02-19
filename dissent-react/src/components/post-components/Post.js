@@ -1,14 +1,18 @@
-function Post ( { post } ) {
+import FeedbackTagIcon from "../feedback-tag-components/FeedbackTagIcon";
+
+function Post ( { post, postLevel } ) {
+
   return (
-    <div key={post.postId} className="mb-4">
-      <div class="media"><img class="mr-3 rounded-circle" alt="User Picture" src={post.user.photoUrl} />
-        <div class="media-body">
-            <div class="row">
-                <div class="col-7 d-flex">
+    <div>
+      <div className="media">
+        <FeedbackTagIcon />
+        <div className="media-body">
+            <div className="row pr-3">
+                <div className="col-6 d-flex">
                     <h5>{post.user.username}</h5>
                 </div>
-                <div class="col-5 text-right pr-4">
-                    <div class="pull-right row">
+                <div className="col-6 text-right">
+                    <div className="pull-right row">
                       <div className="col">
                         {post.timestamp}
                       </div>
@@ -16,11 +20,13 @@ function Post ( { post } ) {
                     </div>
                 </div>
             </div>
-            <div>
+            <div className="mb-4">
               {post.content}
             </div>
+            {postLevel < 3 ? post.childPosts.map(childPost => <Post key={childPost.postId} post={childPost} postLevel={postLevel + 1} />) : null}
         </div>
       </div>
+      {postLevel >= 3 ? post.childPosts.map(childPost => <Post key={childPost.postId} post={childPost} postLevel={postLevel + 1} />) : null}
     </div>
   );
 }

@@ -31,7 +31,7 @@ public class PostJdbcTemplateRepository implements PostRepository {
                 + "u.user_login_id, u.username as username, u.user_role, u.photo_url, u.country, u.bio, u.is_active "
                 + "from post p "
                 + "inner join `user` u on p.user_id = u.user_id limit 1000;";
-        List<Post> result = jdbcTemplate.query(sql, new PostMapper());
+        List<Post> result = jdbcTemplate.query(sql, new PostMapper(jdbcTemplate));
 
         if (result.size() > 0) {
             for(Post post : result) {
@@ -48,9 +48,9 @@ public class PostJdbcTemplateRepository implements PostRepository {
                 + "u.user_login_id, u.username as username, u.user_role, u.photo_url, u.country, u.bio, u.is_active "
                 + "from post p "
                 + "inner join `user` u on p.user_id = u.user_id "
-                + "where p.article_id = ?;";
+                + "where p.article_id = ? and p.parent_post_id IS NULL;";
 
-        List<Post> result = jdbcTemplate.query(sql, new PostMapper(), articleId);
+        List<Post> result = jdbcTemplate.query(sql, new PostMapper(jdbcTemplate), articleId);
 
         if (result.size() > 0) {
             for(Post post : result) {
@@ -69,7 +69,7 @@ public class PostJdbcTemplateRepository implements PostRepository {
                 + "inner join `user` u on p.user_id = u.user_id "
                 + "where p.user_id = ?;";
 
-        List<Post> result = jdbcTemplate.query(sql, new PostMapper(), userId);
+        List<Post> result = jdbcTemplate.query(sql, new PostMapper(jdbcTemplate), userId);
 
         if (result.size() > 0) {
             for(Post post : result) {
@@ -88,7 +88,7 @@ public class PostJdbcTemplateRepository implements PostRepository {
                 + "inner join `user` u on p.user_id = u.user_id "
                 + "where (p.date_posted between ? and ?);";
 
-        List<Post> result = jdbcTemplate.query(sql, new PostMapper(), start, end);
+        List<Post> result = jdbcTemplate.query(sql, new PostMapper(jdbcTemplate), start, end);
 
         if (result.size() > 0) {
             for(Post post : result) {
@@ -107,7 +107,7 @@ public class PostJdbcTemplateRepository implements PostRepository {
                 + "inner join `user` u on p.user_id = u.user_id "
                 + "where (p.post_id = ?);";
 
-        Post result = jdbcTemplate.query(sql, new PostMapper(), postId).stream()
+        Post result = jdbcTemplate.query(sql, new PostMapper(jdbcTemplate), postId).stream()
                 .findAny().orElse(null);
 
         if (result != null) {

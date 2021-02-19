@@ -8,7 +8,7 @@ function ArticleCard ( { article, articleOpen } ) {
   const { articleId, title, description, author, articleUrl, articleImageUrl, datePublished, datePosted, source, topics, posts, feedbackTags } = article;
 
   return (
-    <div key={articleId} className="card flex-row flex-wrap text-white bg-dark mb-4">
+    <div className="card flex-row flex-wrap text-white bg-dark mb-4">
       <div className="border-0">
         <a href={articleUrl}><img src={articleImageUrl} className="card-img-top" /></a>
       </div>

@@ -5,7 +5,9 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PastOrPresent;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Objects;
 
 public class Post {
@@ -32,6 +34,7 @@ public class Post {
     @NotNull(message = "Post must have a user")
     User user;
 
+    List<Post> childPosts = new ArrayList<>();
     HashMap<String, Integer> feedbackTags = new HashMap<>();
 
     public Post() {
@@ -133,6 +136,14 @@ public class Post {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public List<Post> getChildPosts() {
+        return childPosts;
+    }
+
+    public void setChildPosts(List<Post> childPosts) {
+        this.childPosts = childPosts;
     }
 
     public HashMap<String, Integer> getFeedbackTags() {
