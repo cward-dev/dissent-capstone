@@ -2,6 +2,7 @@ package capstone.dissent.domain;
 
 import capstone.dissent.data.UserRepository;
 import capstone.dissent.models.User;
+import org.springframework.stereotype.Service;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
@@ -11,6 +12,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 
+@Service
 public class UserService {
 
     private final UserRepository repository;
@@ -25,10 +27,6 @@ public class UserService {
 
     public List<User> findAll() {
         return repository.findAll();
-    }
-
-    public User findByUserId(String userId) {
-        return repository.findById(userId);
     }
 
     public User findById(String userId) {
