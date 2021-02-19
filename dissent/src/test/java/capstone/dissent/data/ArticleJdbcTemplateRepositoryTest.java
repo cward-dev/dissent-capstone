@@ -97,7 +97,7 @@ class ArticleJdbcTemplateRepositoryTest {
     @Test
     void shouldAddArticle(){
         Article article = new Article("Yolo","Young Idiots","Jesus",
-                "www.u.com","www.u.com", someday, someday2, TEST_SOURCE);
+                "www.google.com","https://www.yolocounty.org/Home/ShowPublishedImage/17442/637345768397100000", someday, someday2, TEST_SOURCE);
 
         Article addedArticle = repository.addArticle(article);
 
@@ -109,7 +109,7 @@ class ArticleJdbcTemplateRepositoryTest {
     @Test
     void shouldUpdateArticle(){
         Article article = new Article("Yolo","Young Idiots","Jesus",
-                "www.u.com","www.u.com", someday, someday2, TEST_SOURCE);
+                "www.google.com","https://www.yolocounty.org/Home/ShowPublishedImage/17442/637345768397100000", someday, someday2, TEST_SOURCE);
         article.setArticleId("b");
 
         boolean isUpdated = repository.updateArticle(article);
@@ -120,7 +120,7 @@ class ArticleJdbcTemplateRepositoryTest {
     @Test
     void shouldNotUpdateArticle(){
         Article article = new Article("Yolo","Young Idiots","Jesus",
-                "www.u.com","www.u.com", someday, someday2, TEST_SOURCE);
+                "http://www.google.com","https://www.yolocounty.org/Home/ShowPublishedImage/17442/637345768397100000", someday, someday2, TEST_SOURCE);
         article.setArticleId("c");
 
         boolean isUpdated = repository.updateArticle(article);
