@@ -3,6 +3,7 @@ package capstone.dissent.domain;
 import capstone.dissent.data.ArticleRepository;
 import capstone.dissent.models.Article;
 import capstone.dissent.models.Source;
+import org.apache.tomcat.jni.Local;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -67,6 +68,13 @@ class ArticleServiceTest {
         when(repository.findArticleByArticleId("a")).thenReturn(articleIn);
         Article articleOut = service.findById("x");
         assertNull(articleOut);
+
+    }
+    @Test
+    void test(){
+        LocalDateTime test = LocalDateTime.parse("2021-01-01T12:00");
+        System.out.println(test);
+//        System.out.println(DAY1);
 
     }
 
@@ -203,6 +211,7 @@ class ArticleServiceTest {
     }
     @Test
     void shouldNotUpdateArticleWhenYouCannotFindOriginalArticle(){
+
         Article article = makeArticle();
         article.setArticleId("a");
 

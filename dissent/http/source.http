@@ -1,0 +1,49 @@
+@url= http://localhost:8080/api/source/
+
+### return all 
+GET {{url}} HTTP/1.1
+
+###  should return  200
+GET {{url}}/a HTTP/1.1
+
+### should not find 404
+GET {{url}}/abc HTTP/1.1
+
+### should Add
+POST {{url}} HTTP/1.1
+Content-Type: application/json
+
+{
+  "sourceName": "REST ADD",
+  "websiteUrl": "REST ADD",
+  "description": "?"
+}
+
+### should not add with ID
+POST {{url}} HTTP/1.1
+Content-Type: application/json
+
+{
+  "sourceId": "e18a180f-ed4d-40d5-9fa1-2103b0719a26",
+  "sourceName": "REST ADD",
+  "websiteUrl": "REST ADD",
+  "description": "?"
+}
+
+### should Update 204 no content
+PUT {{url}}/a HTTP/1.1
+Content-Type: application/json
+
+{
+  "sourceId": "a",
+  "sourceName": "CHANGE - REST",
+  "websiteUrl": "www.update.com",
+  "description": "This will be updated"
+}
+
+### should Delete 204 no content
+DELETE  {{url}}/a HTTP/1.1
+
+### should not delete Non Existing Id 404 not found 
+
+DELETE  {{url}}/a HTTP/1.1

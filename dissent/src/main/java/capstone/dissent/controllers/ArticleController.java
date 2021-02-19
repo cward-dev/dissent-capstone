@@ -45,8 +45,10 @@ public class ArticleController {
 //    }
 
     @GetMapping("/{date1}/{date2}")
-    public List<Article> findPostedDateRange(@PathVariable LocalDateTime date1, @PathVariable LocalDateTime date2){
-        return service.findByPostedDateRange(date1,date2);
+    public List<Article> findPostedDateRange(@PathVariable String date1, @PathVariable String date2){
+        LocalDateTime dateTime1 = LocalDateTime.parse(date1);
+        LocalDateTime dateTime2 = LocalDateTime.parse(date2);
+        return service.findByPostedDateRange(dateTime1,dateTime2);
     }
 
     @PostMapping

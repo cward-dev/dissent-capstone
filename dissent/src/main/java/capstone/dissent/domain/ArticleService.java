@@ -94,7 +94,7 @@ public class ArticleService {
             result.addMessage(msg,ResultType.NOT_FOUND);
             return result;
         }
-        if(originalArticle.getArticleUrl() != article.getArticleUrl()){
+        if(!originalArticle.getArticleUrl().equalsIgnoreCase(article.getArticleUrl())){
             result.addMessage("Cannot update Article URL", ResultType.INVALID);
             return result;
         }
@@ -147,8 +147,9 @@ public class ArticleService {
         Result<Article> result = new Result<>();
         List<Article>all = findAll();
         for(Article a : all){
-            if(a.getTitle() == article.getTitle() && a.getAuthor() == article.getAuthor()){
+            if(a.getTitle().equalsIgnoreCase(article.getTitle()) && a.getAuthor().equalsIgnoreCase( article.getAuthor())){
                 result.addMessage("Duplicate Articles are not allowed", ResultType.INVALID);
+                return result;
             }
         }
         return result;
