@@ -22,21 +22,20 @@ import java.util.UUID;
 @Service
 public class ArticleService {
 
-
-    private final ArticleRepository repository;
-    private final ArticleTopicRepository articleTopicRepository;
     private final ArticleRepository articleRepository;
+    private final ArticleTopicRepository articleTopicRepository;
     private final ArticleFeedbackTagRepository articleFeedbackTagRepository;
-
-    public ArticleService(ArticleRepository repository, ArticleTopicRepository articleTopicRepository, ArticleRepository articleRepository, ArticleFeedbackTagRepository articleFeedbackTagRepository) {
-        this.repository = repository;
-        this.articleTopicRepository = articleTopicRepository;
-        this.articleRepository = articleRepository;
-        this.articleFeedbackTagRepository = articleFeedbackTagRepository;
-    }
 
     Validator validator;
 
+    public ArticleService(ArticleRepository articleRepository, ArticleTopicRepository articleTopicRepository, ArticleFeedbackTagRepository articleFeedbackTagRepository) {
+        this.articleTopicRepository = articleTopicRepository;
+        this.articleRepository = articleRepository;
+        this.articleFeedbackTagRepository = articleFeedbackTagRepository;
+
+        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+        this.validator = factory.getValidator();
+    }
 
     public List<Article> findAll() {
         return articleRepository.findAllArticles();
@@ -70,9 +69,6 @@ public class ArticleService {
         if(!result.isSuccess()){
             return result;
         }
-
-        UUID uuid = UUID.randomUUID();
-        article.setArticleId(uuid.toString());
 
         article = articleRepository.addArticle(article);
         result.setPayload(article);

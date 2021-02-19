@@ -48,7 +48,7 @@ CREATE TABLE article (
     date_posted DATETIME NOT NULL,
     is_active BOOL NOT NULL DEFAULT true,
     CONSTRAINT fk_article_source_id FOREIGN KEY (source_id)
-        REFERENCES `source` (source_id) ON DELETE CASCADE
+        REFERENCES `source` (source_id)
 );
 
 # ARTICLE-TOPIC BRIDGE TABLE
@@ -176,19 +176,19 @@ begin
 			'd293ae18-63e0-49b7-87fd-9856bcf52884', 
 			'European Southern Observatory', 
             'https://www.eso.org/', 
-            'ESO, the European Southern Observatory, is the foremost intergovernmental astronomy organisation in Europe and the world\'s most productive astronomical observatory'
+            'ESO, the European Southern Observatory, is the foremost intergovernmental astronomy organisation in Europe and the world\'s most productive astronomical observatory.'
 		),
-        (
-			'a', 
-			'To Update', 
-            'www.update.com', 
-            'This will be updated'
+		(
+			'fsdafas8-fsad-fsd8-fsda-413h1hj1a90s', 
+			'CNN', 
+            'https://www.cnn.com/', 
+            'Cable News Network is a multinational news-based pay television channel headquartered in Atlanta.'
 		),
-        (
-			'b', 
-			'Delete ME', 
-            'https://www.delete.org/', 
-            'This will be deleted!'
+		(
+			'fsd67a8s-a512-dfb2-saf6-fsadfas76dfa', 
+			'Associated Press', 
+            'https://www.apnews.com/', 
+            'The Associated Press is an American non-profit news agency headquartered in New York City. Founded in 1846, it operates as a cooperative, unincorporated association. Its members are U.S. newspapers and broadcasters.'
 		);
         
 	insert into article
@@ -240,7 +240,7 @@ begin
 			'a',
             1
         ),
-         (
+		(
 			'b',
             3
         );
@@ -282,7 +282,8 @@ begin
 		(1, 'Sound', 1),
         (2, 'Fallicious', 1),
         (3, 'Biased', 1),
-        (4, 'Not Nice', 0);
+        (4, 'Not Nice', 0),
+        (5, 'Too Nice', 0);
 	
 	insert into post_feedback_tag 
 		(post_id, user_id, feedback_tag_id)
@@ -303,11 +304,10 @@ set SQL_SAFE_UPDATES = 0;
 call set_known_good_state;
 set SQL_SAFE_UPDATES = 1;
 
-select 
-s.source_id, 
-s.source_name, 
-s.website_url, 
-s.`description`
-from `source` s
-inner join article a on s.source_id = a.source_id 
-where a.article_id = "c32bec11-b9a0-434b-bda7-08b9cf2007e2";
+select a.article_id, a.title, a.`description`, a.author, a.article_url,
+a.article_image_url, a.date_published, a.date_posted, a.is_active,
+s.source_id, s.source_name, s.website_url, s.`description`
+from article a
+left outer join `source` s on a.source_id = s.source_id;
+
+select * from article_topic;

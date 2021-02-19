@@ -27,8 +27,11 @@ public class ArticleJdbcTemplateRepository implements ArticleRepository {
 
     @Override
     public List<Article> findAllArticles() {
-        final String sql = "select article_id, title, description,source_id, author, article_url, " +
-                " article_image_url, date_published, date_posted, is_active from article;";
+        final String sql = "select a.article_id, a.title, a.`description`, a.author, a.article_url," +
+                " a.article_image_url, a.date_published, a.date_posted, a.is_active," +
+                " s.source_id, s.source_name, s.website_url, s.`description`" +
+                " from article a" +
+                " left outer join `source` s on a.source_id = s.source_id;";
 
         List<Article> result = jdbcTemplate.query(sql, new ArticleMapper());
 
@@ -37,7 +40,7 @@ public class ArticleJdbcTemplateRepository implements ArticleRepository {
                 addFeedbackTags(article);
                 addTopics(article);
                 addPosts(article);
-                addSource(article);
+//                addSource(article);
             }
         }
 
@@ -46,9 +49,12 @@ public class ArticleJdbcTemplateRepository implements ArticleRepository {
 
     @Override
     public Article findArticleByArticleId(String articleId) {
-        final String sql = "select article_id, title, description, source_id, author, article_url, " +
-                " article_image_url, date_published, date_posted, is_active from article " +
-                " where article_id =  ?;";
+        final String sql = "select a.article_id, a.title, a.`description`, a.author, a.article_url," +
+                " a.article_image_url, a.date_published, a.date_posted, a.is_active," +
+                " s.source_id, s.source_name, s.website_url, s.`description`" +
+                " from article a" +
+                " left outer join `source` s on a.source_id = s.source_id" +
+                " where article_id = ?;";
 
         Article article = jdbcTemplate.query(sql, new ArticleMapper(), articleId).stream()
                 .findFirst().orElse(null);
@@ -83,7 +89,13 @@ public class ArticleJdbcTemplateRepository implements ArticleRepository {
 
     @Override
     public List<Article> findByPostedDateRange(LocalDateTime d1, LocalDateTime d2) {
-        final String sql = "select * from article where date_posted between ? AND ? ";
+        final String sql = "select a.article_id, a.title, a.`description`, a.author, a.article_url," +
+                " a.article_image_url, a.date_published, a.date_posted, a.is_active," +
+                " s.source_id, s.source_name, s.website_url, s.`description`" +
+                " from article a" +
+                " left outer join `source` s on a.source_id = s.source_id" +
+                " where a.date_posted between ? AND ?;";
+
         List<Article> result = jdbcTemplate.query(sql, new ArticleMapper(), d1, d2);
 
         if (result.size() > 0) {
@@ -104,10 +116,12 @@ public class ArticleJdbcTemplateRepository implements ArticleRepository {
         +" article_image_url, date_published, date_posted, is_active) "
         +" values(?,?,?,?,?,?,?,?,?,?);";
 
+        article.setArticleId(java.util.UUID.randomUUID().toString());
+
         int rowsAffected = jdbcTemplate.update(connection -> {
             PreparedStatement ps = connection.prepareStatement(sql, Statement.NO_GENERATED_KEYS);
             ps.setString(1, article.getArticleId());
-            ps.setString(2, article.getSource_id());
+            ps.setString(2, article.getSource().getSourceId());
             ps.setString(3, article.getTitle());
             ps.setString(4,article.getAuthor());
             ps.setString(5,article.getDescription());
@@ -123,7 +137,6 @@ public class ArticleJdbcTemplateRepository implements ArticleRepository {
         }
 
        return article;
-
     }
 
     @Override
@@ -135,7 +148,7 @@ public class ArticleJdbcTemplateRepository implements ArticleRepository {
         return jdbcTemplate.update(sql,
                     article.getTitle(),
                     article.getDescription(),
-                    article.getSource_id(),
+                    article.getSource().getSourceId(),
                     article.getAuthor(),
                     article.getArticleUrl(),
                     article.getArticleImageUrl(),
@@ -143,7 +156,6 @@ public class ArticleJdbcTemplateRepository implements ArticleRepository {
                     article.getDatePosted(),
                     article.isActive(),
                     article.getArticleId()) >0;
-
     }
 
     @Override
@@ -155,21 +167,19 @@ public class ArticleJdbcTemplateRepository implements ArticleRepository {
         return jdbcTemplate.update(sql, false, articleId)>0;
     }
 
-
-
-    @Override
-    public HashMap<FeedbackTag, Integer> getTagData(Article article) {
-        final String sql = "select ft.feedback_tag_id, ft.feedback_tag_name" +
-                " from article_feedback_tag aft inner join feedback_tag ft on  aft.feedback_tag_id = ft.feedback_tag_id"
-                + " where aft.article_id = ?;";
-
-           var allTags = jdbcTemplate.query(sql,new FeedbackTagMapper(),article.getArticleId());
-
-           for(FeedbackTag tag : allTags){
-               article.addFeedbackTagToArticle(tag);
-           }
-        return article.getFeedbackTags();
-    }
+//    @Override
+//    public HashMap<FeedbackTag, Integer> getTagData(Article article) {
+//        final String sql = "select ft.feedback_tag_id, ft.feedback_tag_name" +
+//                " from article_feedback_tag aft inner join feedback_tag ft on  aft.feedback_tag_id = ft.feedback_tag_id"
+//                + " where aft.article_id = ?;";
+//
+//           var allTags = jdbcTemplate.query(sql,new FeedbackTagMapper(),article.getArticleId());
+//
+//           for(FeedbackTag tag : allTags){
+//               article.addFeedbackTagToArticle(tag);
+//           }
+//        return article.getFeedbackTags();
+//    }
 
     private void addFeedbackTags(Article article) {
 
@@ -181,15 +191,15 @@ public class ArticleJdbcTemplateRepository implements ArticleRepository {
 
         var feedbackTags = jdbcTemplate.query(sql, new ArticleFeedbackTagMapper(), article.getArticleId());
 
-//        HashMap<FeedbackTag, Integer> hm = new HashMap<>();
-//        if (feedbackTags.size() > 0) {
-//            for (ArticleFeedbackTag i : feedbackTags) {
-//                Integer j = hm.get(i);
-//                hm.put(i.getFeedbackTag(), (j == null) ? 1 : j + 1);
-//            }
-//        }
+        HashMap<String, Integer> hm = new HashMap<>();
+        if (feedbackTags.size() > 0) {
+            for (ArticleFeedbackTag i : feedbackTags) {
+                Integer j = hm.get(i);
+                hm.put(i.getFeedbackTag().getName(), (j == null) ? 1 : j + 1);
+            }
+        }
 
-//        article.setFeedbackTags(hm);
+        article.setFeedbackTags(hm);
     }
 
     private void addTopics(Article article) {

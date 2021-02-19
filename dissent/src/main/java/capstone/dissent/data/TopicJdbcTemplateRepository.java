@@ -113,13 +113,18 @@ public class TopicJdbcTemplateRepository implements TopicRepository {
     }
 
     private void addArticles(Topic topic) {
-        final String sql = "select a.article_id, a.title, a.description, a.source_id, a.author, a.article_url, "
-                + "a.article_image_url, a.date_published, a.date_posted, a.is_active "
-                + "from article a inner join article_topic ta on a.article_id = ta.article_id "
-                + "where ta.topic_id =  ?;";
+        final String sql = "select a.article_id, a.title, a.`description`, a.source_id, a.author, a.article_url,"
+                + " a.article_image_url, a.date_published, a.date_posted, a.is_active,"
+                + " s.source_id, s.source_name, s.website_url, s.`description`"
+                + " from article a inner join article_topic ta on a.article_id = ta.article_id"
+                + " inner join `source` s on a.source_id = s.source_id"
+                + " where ta.topic_id = ?;";
 
         var topics = jdbcTemplate.query(sql, new ArticleMapper(), topic.getTopicId());
 
         topic.setArticles(topics);
     }
+
+    final String sql = "select s.source_id, s.source_name, s.website_url, s.`description`"
+            + " from `source` s inner join article a on s.source_id = a.source_id where a.article_id = ?;";
 }

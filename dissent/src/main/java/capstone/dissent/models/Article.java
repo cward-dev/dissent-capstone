@@ -16,60 +16,66 @@ public class Article {
 
 
     String articleId;
-    @NotNull(message = "Title cannot be blank!")
-    @Size(max = MAX_CHARACTERS, min = 1, message = "Title must be at least 1 character and cannot exceed 255")
+
+    @NotBlank(message = "Title cannot be blank")
+    @Size(max = MAX_CHARACTERS, message = "Title must be at least 1 character and cannot exceed 255")
     String title;
-    @NotNull(message = "Description cannot be blank!")
-    @Size(max = MAX_CHARACTERS, min =1, message = "Description must be at least 1 character and cannot exceed 255")
+
+    @NotBlank(message = "Description cannot be blank")
+    @Size(max = MAX_CHARACTERS, message = "Description must be at least 1 character and cannot exceed 255")
     String description;
-    @NotNull(message = "Source cannot be blank!")
-    @Size(max = MAX_CHARACTERS, min =1, message = "Source must be at least 1 character and cannot exceed 255")
-    String source_id;
-    @NotNull(message = "Author cannot be blank!")
-    @Size(max = MAX_CHARACTERS, min = 1, message = "Author must be at least 1 character and cannot exceed 255")
+
+    @NotBlank(message = "Author cannot be blank")
+    @Size(max = MAX_CHARACTERS, message = "Author must be at least 1 character and cannot exceed 255")
     String author;
-    @NotNull(message = "Article Url cannot be blank")
-    @Size(max = MAX_CHARACTERS, min = 1, message = "Article Url must be at least 1 character and cannot exceed 255")
+
+    @NotBlank(message = "Article Url cannot be blank")
+    @Size(max = MAX_CHARACTERS, message = "Article Url must be at least 1 character and cannot exceed 255")
     String articleUrl;
     String articleImageUrl;
+
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @NotNull(message = "Article must have published date!")
+    @NotNull(message = "Article must have published date")
     @PastOrPresent(message = "Article cannot have a future published date")
     LocalDateTime datePublished;
+
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @PastOrPresent(message = "Article cannot have a future post date")
     LocalDateTime datePosted;
+
     boolean isActive = true;
 
     Source source;
     List<Topic> topics = new ArrayList<>();
     List<Post> posts = new ArrayList<>();
-    HashMap<FeedbackTag, Integer> feedbackTags = new HashMap<>();
+    HashMap<String, Integer> feedbackTags = new HashMap<>();
 
-    public Article(String title, String description, String source, String author,
-                   String articleUrl, String articleImageUrl, @NotNull(message = "Article must have published date!") @PastOrPresent(message = "Article cannot have a future published date") LocalDateTime datePublished, LocalDateTime datePosted) {
+    public Article(String title, String description, String author,
+                   String articleUrl, String articleImageUrl,
+                   LocalDateTime datePublished, LocalDateTime datePosted,
+                   Source source) {
         this.title = title;
         this.description = description;
-        this.source_id = source;
         this.author = author;
         this.articleUrl = articleUrl;
         this.articleImageUrl = articleImageUrl;
         this.datePublished = datePublished;
         this.datePosted = datePosted;
+        this.source = source;
     }
-    public Article(){}
 
-    public void addFeedbackTagToArticle(FeedbackTag feedbackTag){
+    public Article() {}
 
-        if(feedbackTags.get(feedbackTag)==null){
-            feedbackTags.put(feedbackTag,1);
-        } else{
-            int value = feedbackTags.get(feedbackTag).intValue();
-            feedbackTags.replace(feedbackTag,value+1);
-        }
-
-        setFeedbackTags(feedbackTags);
-    }
+//    public void addFeedbackTagToArticle(String feedbackTag){
+//        if(feedbackTags.get(feedbackTag)==null){
+//            feedbackTags.put(feedbackTag,1);
+//        } else {
+//            int value = feedbackTags.get(feedbackTag).intValue();
+//            feedbackTags.replace(feedbackTag,value+1);
+//        }
+//
+//        setFeedbackTags(feedbackTags);
+//    }
 
     public String getArticleId() {
         return articleId;
@@ -93,14 +99,6 @@ public class Article {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public String getSource_id() {
-        return source_id;
-    }
-
-    public void setSource_id(String source_id) {
-        this.source_id = source_id;
     }
 
     public String getAuthor() {
@@ -178,11 +176,11 @@ public class Article {
     public void setPosts(List<Post> posts) {
         this.posts = posts;
     }
-    public HashMap<FeedbackTag, Integer> getFeedbackTags() {
+    public HashMap<String, Integer> getFeedbackTags() {
         return feedbackTags;
     }
 
-    public void setFeedbackTags(HashMap<FeedbackTag, Integer> feedbackTags) {
+    public void setFeedbackTags(HashMap<String, Integer> feedbackTags) {
         this.feedbackTags = feedbackTags;
     }
 

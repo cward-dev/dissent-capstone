@@ -61,11 +61,11 @@ class SourceJdbcTemplateRepositoryTest {
 
     @Test
     void shouldEdit() {
-        Source source = new Source("a" ,"updated","www.u.com", "I was updated!");
+        Source source = new Source("fsd67a8s-a512-dfb2-saf6-fsadfas76dfa" ,"Associated Press","https://www.apnews.com/", "I was updated!");
 
         boolean success = repository.edit(source);
         assertTrue(success);
-        assertEquals(repository.findById("a").getDescription(),"I was updated!");
+        assertEquals(repository.findById("fsd67a8s-a512-dfb2-saf6-fsadfas76dfa").getDescription(),"I was updated!");
 
     }
 
@@ -82,9 +82,9 @@ class SourceJdbcTemplateRepositoryTest {
 
     @Test
     void shouldDeleteById() {
-        boolean success = repository.deleteById("b");
+        boolean success = repository.deleteById("fsdafas8-fsad-fsd8-fsda-413h1hj1a90s");
         assertTrue(success);
-        assertEquals(null, repository.findById("b"));
+        assertEquals(null, repository.findById("fsdafas8-fsad-fsd8-fsda-413h1hj1a90s"));
     }
 
     @Test

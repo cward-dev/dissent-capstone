@@ -16,11 +16,14 @@ class ArticleTest {
     ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
     Validator validator = factory.getValidator();
 
-   private final  LocalDateTime someday = LocalDateTime.of(2020,01,01,12,00,00);
+    private final  LocalDateTime someday = LocalDateTime.of(2020,01,01,12,00,00);
+
+    final Source TEST_SOURCE = new Source("test-source");
+
     @Test
     void articleShouldPass(){
-        Article article = new Article("Yolo","Young Idiots","CNN","Jesus",
-                "www.u.com","www.u.com", someday,someday);
+        Article article = new Article("Yolo","Young Idiots","Jesus",
+                "www.u.com","www.u.com", someday, someday, TEST_SOURCE);
         Set<ConstraintViolation<Article>> violations = validator.validate(article);
         for(ConstraintViolation<Article>violation : violations){
             System.out.println(violation.getMessage());
@@ -30,92 +33,71 @@ class ArticleTest {
 
     @Test
     void titleShouldNotBeNull(){
-        Article article = new Article( null,"Young Idiots","CNN","Jesus",
-                "www.u.com","www.u.com", someday, someday);
+        Article article = new Article( null,"Young Idiots","Jesus",
+                "www.u.com","www.u.com", someday, someday, TEST_SOURCE);
         Set<ConstraintViolation<Article>> violations = validator.validate(article);
         ConstraintViolation<Article> first = violations.stream().findFirst().orElse(null);
         assertEquals(1, violations.size());
-        assertEquals("Title cannot be blank!", first.getMessage());
+        assertEquals("Title cannot be blank", first.getMessage());
 
     }
     @Test
     void titleShouldNotBeBlank(){
-        Article article = new Article( "","Young Idiots","CNN","Jesus",
-                "www.u.com","www.u.com", someday,someday);
+        Article article = new Article( "","Young Idiots","Jesus",
+                "www.u.com","www.u.com", someday, someday, TEST_SOURCE);
         Set<ConstraintViolation<Article>> violations = validator.validate(article);
         ConstraintViolation<Article> first = violations.stream().findFirst().orElse(null);
         assertEquals(1, violations.size());
-        assertEquals("Title must be at least 1 character and cannot exceed 255", first.getMessage());
+        assertEquals("Title cannot be blank", first.getMessage());
 
     }
 
     @Test
     void descriptionShouldNotBeNull(){
-        Article article = new Article( "xxx",null,"CNN","Jesus",
-                "www.u.com","www.u.com",someday,someday);
+        Article article = new Article( "xxx",null,"Jesus",
+                "www.u.com","www.u.com", someday, someday, TEST_SOURCE);
         Set<ConstraintViolation<Article>> violations = validator.validate(article);
         ConstraintViolation<Article> first = violations.stream().findFirst().orElse(null);
         assertEquals(1, violations.size());
-        assertEquals("Description cannot be blank!", first.getMessage());
+        assertEquals("Description cannot be blank", first.getMessage());
 
     }
 
     @Test
     void descriptionShouldNotBeBlank(){
-        Article article = new Article( "xx","","CNN","Jesus",
-                "www.u.com","www.u.com", someday,someday);
+        Article article = new Article( "xx","","Jesus",
+                "www.u.com","www.u.com", someday, someday, TEST_SOURCE);
         Set<ConstraintViolation<Article>> violations = validator.validate(article);
         ConstraintViolation<Article> first = violations.stream().findFirst().orElse(null);
         assertEquals(1, violations.size());
-        assertEquals("Description must be at least 1 character and cannot exceed 255", first.getMessage());
-
-    }
-
-    @Test
-    void sourceShouldNotBeNull(){
-        Article article = new Article( "xx","xxx",null,"Jesus",
-                "www.u.com","www.u.com",someday,someday);
-        Set<ConstraintViolation<Article>> violations = validator.validate(article);
-        ConstraintViolation<Article> first = violations.stream().findFirst().orElse(null);
-        assertEquals(1, violations.size());
-        assertEquals("Source cannot be blank!", first.getMessage());
-
-    }
-    @Test
-    void sourceShouldNotBeBlank(){
-        Article article = new Article( "xx","xxx","","Jesus",
-                "www.u.com","www.u.com", someday,someday);
-        Set<ConstraintViolation<Article>> violations = validator.validate(article);
-        ConstraintViolation<Article> first = violations.stream().findFirst().orElse(null);
-        assertEquals(1, violations.size());
-        assertEquals("Source must be at least 1 character and cannot exceed 255", first.getMessage());
+        assertEquals("Description cannot be blank", first.getMessage());
 
     }
 
     @Test
     void authorShouldNotBeNull(){
-        Article article = new Article( "xx","xxx","yyy",null,
-                "www.u.com","www.u.com", someday,someday);
+        Article article = new Article( "xx","xxx",null,
+                "www.u.com","www.u.com", someday, someday, TEST_SOURCE);
         Set<ConstraintViolation<Article>> violations = validator.validate(article);
         ConstraintViolation<Article> first = violations.stream().findFirst().orElse(null);
         assertEquals(1, violations.size());
-        assertEquals("Author cannot be blank!", first.getMessage());
+        assertEquals("Author cannot be blank", first.getMessage());
 
     }
     @Test
     void authorShouldNotBeBlank(){
-        Article article = new Article( "xx","xxx","zzzz","",
-                "www.u.com","www.u.com", someday,someday);
+        Article article = new Article( "xx","xxx","",
+                "www.u.com","www.u.com", someday, someday, TEST_SOURCE);
         Set<ConstraintViolation<Article>> violations = validator.validate(article);
         ConstraintViolation<Article> first = violations.stream().findFirst().orElse(null);
         assertEquals(1, violations.size());
-        assertEquals("Author must be at least 1 character and cannot exceed 255", first.getMessage());
+        assertEquals("Author cannot be blank", first.getMessage());
     }
 
     @Test
     void articleUrlShouldNotBeNull(){
-        Article article = new Article( "xx","xxx","sss","Jesus",
-                null,"www.u.com", someday,someday);
+        Article article = new Article( "xx","xxx","Jesus",
+                null,"www.u.com", someday, someday, TEST_SOURCE);
         Set<ConstraintViolation<Article>> violations = validator.validate(article);
         ConstraintViolation<Article> first = violations.stream().findFirst().orElse(null);
         assertEquals(1, violations.size());
@@ -124,30 +106,31 @@ class ArticleTest {
     }
     @Test
     void articleUrlShouldNotBeBlank(){
-        Article article = new Article( "xx","xxx","ccc","Jesus",
-                "","www.u.com", someday,someday);
+        Article article = new Article( "xx","xxx","Jesus",
+                "","www.u.com", someday, someday, TEST_SOURCE);
         Set<ConstraintViolation<Article>> violations = validator.validate(article);
         ConstraintViolation<Article> first = violations.stream().findFirst().orElse(null);
         assertEquals(1, violations.size());
-        assertEquals("Article Url must be at least 1 character and cannot exceed 255", first.getMessage());
+        assertEquals("Article Url cannot be blank", first.getMessage());
 
     }
 
     @Test
     void datePublishedShouldNotBeNull(){
-        Article article = new Article( "xx","xxx","xxx","Jesus",
-                "www.u.com","www.u.com", null,someday);
+        Article article = new Article( "xx","xxx","Jesus",
+                "www.u.com","www.u.com", null, someday, TEST_SOURCE);
         Set<ConstraintViolation<Article>> violations = validator.validate(article);
         ConstraintViolation<Article> first = violations.stream().findFirst().orElse(null);
 
         assertEquals(1, violations.size());
-        assertEquals("Article must have published date!", first.getMessage());
+        assertEquals("Article must have published date", first.getMessage());
     }
 
     @Test
     void datePublishedShouldNotBeInFuture(){
-        Article article = new Article( "xx","xxx","sjsjs","Jesus",
-                "www.u.com","www.u.com",LocalDateTime.of(2029,01,01,12,00,00),someday);
+        Article article = new Article( "xx","xxx","Jesus",
+                "www.u.com","www.u.com",
+                LocalDateTime.of(2029,1,1,12,0,0), someday, TEST_SOURCE);
         Set<ConstraintViolation<Article>> violations = validator.validate(article);
         ConstraintViolation<Article> first = violations.stream().findFirst().orElse(null);
 
@@ -158,8 +141,9 @@ class ArticleTest {
 
     @Test
     void datePostedShouldNotBeInFuture(){
-        Article article = new Article( "xx","xxx","sjsjs","Jesus",
-                "www.u.com","www.u.com", someday,LocalDateTime.of(2029,01,01,12,00,00));
+        Article article = new Article( "xx","xxx","Jesus",
+                "www.u.com","www.u.com", someday,
+                LocalDateTime.of(2029,1,1,12,0,0), TEST_SOURCE);
         Set<ConstraintViolation<Article>> violations = validator.validate(article);
         ConstraintViolation<Article> first = violations.stream().findFirst().orElse(null);
 
