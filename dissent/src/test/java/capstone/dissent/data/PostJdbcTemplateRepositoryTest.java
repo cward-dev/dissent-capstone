@@ -1,6 +1,7 @@
 package capstone.dissent.data;
 
 import capstone.dissent.models.Post;
+import capstone.dissent.models.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -87,7 +88,7 @@ class PostJdbcTemplateRepositoryTest {
         Post post = new Post();
         post.setParentPostId("a7db5cb6-446a-4c8e-836e-006d9ff239b5");
         post.setArticleId("c32bec11-b9a0-434b-bda7-08b9cf2007e2");
-        post.setUserId("dffec086-b1e9-455a-aab4-ff6c6611fef0");
+        post.setUser(new User("dffec086-b1e9-455a-aab4-ff6c6611fef0"));
         post.setDissenting(true);
         post.setTimestamp(LocalDateTime.now());
         post.setContent("Wait, I take that back. There's no such thing as black holes!");

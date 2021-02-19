@@ -212,8 +212,11 @@ public class ArticleJdbcTemplateRepository implements ArticleRepository {
 
     private void addPosts(Article article) {
 
-        final String sql = "select p.post_id, p.parent_post_id, p.article_id, user_id,p.is_dissenting,p.date_posted,p.content, p.is_active "
-                + " from post p inner join article a on p.article_id = a.article_id where p.article_id= ?;";
+        final String sql = "select p.post_id, p.parent_post_id, p.article_id, p.user_id, p.is_dissenting, p.date_posted, p.content, p.is_active, "
+                + "u.user_login_id, u.username as username, u.user_role, u.photo_url, u.country, u.bio, u.is_active "
+                + "from post p "
+                + "inner join `user` u on p.user_id = u.user_id "
+                + "where p.article_id = ?;";
 
         var posts = jdbcTemplate.query(sql, new PostMapper(), article.getArticleId());
         article.setPosts(posts);

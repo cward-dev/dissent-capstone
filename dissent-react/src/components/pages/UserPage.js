@@ -1,5 +1,5 @@
 import UserCard from '../user-components/UserCard.js';
-import Post from '../Post.js';
+import Post from '../post-components/Post.js';
 import './UserPage.css';
 
 function UserDisplay ( { user, posts } ) {

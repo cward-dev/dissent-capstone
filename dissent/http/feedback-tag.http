@@ -1,4 +1,4 @@
-@url = http://localhost:8080/api/feedback-tag
+ @url = http://localhost:8080/api/feedback-tag
 
 GET {{url}} HTTP/1.1
 

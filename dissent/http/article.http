@@ -1,0 +1,199 @@
+@url = http://localhost:8080/api/article/
+
+### return All -
+GET {{url}} HTTP/1.1
+
+
+### should return article
+GET {{url}}/b HTTP/1.1
+
+### should not return article 404
+GET {{url}}/zzz HTTP/1.1
+
+### should find by Date
+GET {{url}}/2021-01-01T12:00/2021-02-19T08:00 HTTP/1.1
+
+### should not fin by date 200 w no data
+GET {{url}}/2020-01-01T12:00/2020-02-19T08:00 HTTP/1.1
+
+
+### should add
+POST {{url}} HTTP/1.1
+Content-Type: application/json
+
+{
+ 
+  "title": "Test-REST",
+  "description": "TTEST - REST",
+  "author": "Michael Douglas",
+  "articleUrl": "https://www.eso.org/public/images/eso1907a/",
+  "articleImageUrl": "https://cdn.eso.org/images/thumb700x/eso1907a.jpg",
+  "datePublished": "1818-04-09T18:00:00",
+  "datePosted": "1818-02-16T06:00:00",
+  "source": {
+    "sourceId": "d293ae18-63e0-49b7-87fd-9856bcf52884",
+    "sourceName": "European Southern Observatory",
+    "websiteUrl": "https://www.eso.org/",
+    "description": "The shadow of a black hole seen here is the closest we can come to an image of the black hole itself"
+  },
+  "topics": [
+    {
+      "topicId": 1,
+      "topicName": "Science",
+      "articles": [],
+      "active": true
+    }
+  ],
+  "posts": [],
+  "feedbackTags": {},
+  "active": true,
+  "max_CHARACTERS": 255
+}
+
+### should NOT ADD Duplicate - 400 
+POST {{url}} HTTP/1.1
+Content-Type: application/json
+
+{
+ 
+  "title": "Test-REST",
+  "description": "TTEST - REST",
+  "author": "Michael Douglas",
+  "articleUrl": "https://www.eso.org/public/images/eso1907a/",
+  "articleImageUrl": "https://cdn.eso.org/images/thumb700x/eso1907a.jpg",
+  "datePublished": "1818-04-09T18:00:00",
+  "datePosted": "1818-02-16T06:00:00",
+  "source": {
+    "sourceId": "d293ae18-63e0-49b7-87fd-9856bcf52884",
+    "sourceName": "European Southern Observatory",
+    "websiteUrl": "https://www.eso.org/",
+    "description": "The shadow of a black hole seen here is the closest we can come to an image of the black hole itself"
+  },
+  "topics": [
+    {
+      "topicId": 1,
+      "topicName": "Science",
+      "articles": [],
+      "active": true
+    }
+  ],
+  "posts": [],
+  "feedbackTags": {},
+  "active": true,
+  "max_CHARACTERS": 255
+}
+
+### should Not Add With ID - 400
+
+POST {{url}} HTTP/1.1
+Content-Type: application/json
+
+{
+  "articleId": "abc1223",
+  "title": "Test-REST",
+  "description": "TTEST - REST",
+  "author": "Michael Douglas",
+  "articleUrl": "https://www.eso.org/public/images/eso1907a/",
+  "articleImageUrl": "https://cdn.eso.org/images/thumb700x/eso1907a.jpg",
+  "datePublished": "1818-04-09T18:00:00",
+  "datePosted": "1818-02-16T06:00:00",
+  "source": {
+    "sourceId": "d293ae18-63e0-49b7-87fd-9856bcf52884",
+    "sourceName": "European Southern Observatory",
+    "websiteUrl": "https://www.eso.org/",
+    "description": "The shadow of a black hole seen here is the closest we can come to an image of the black hole itself"
+  },
+  "topics": [
+    {
+      "topicId": 1,
+      "topicName": "Science",
+      "articles": [],
+      "active": true
+    }
+  ],
+  "posts": [],
+  "feedbackTags": {},
+  "active": true,
+  "max_CHARACTERS": 255
+}
+
+### should Edit 204 No content
+PUT {{url}}/b  HTTP/1.1
+Content-Type: application/json
+
+{
+    "articleId": "b",
+    "title": "Test-Update",
+    "description": "I updated THIS",
+    "author": "Michael Douglas",
+    "articleUrl": "https://www.eso.org/public/images/eso1907a/",
+    "articleImageUrl": "https://cdn.eso.org/images/thumb700x/eso1907a.jpg",
+    "datePublished": "2019-04-09T19:00:00",
+    "datePosted": "2021-02-16T06:00:00",
+    "source": {
+      "sourceId": "d293ae18-63e0-49b7-87fd-9856bcf52884",
+      "sourceName": "European Southern Observatory",
+      "websiteUrl": "https://www.eso.org/",
+      "description": "The shadow of a black hole seen here is the closest we can come to an image of the black hole itself"
+    },
+    "topics": [
+      {
+        "topicId": 3,
+        "topicName": "Economics",
+        "articles": [],
+        "active": true
+      }
+    ],
+    "posts": [],
+    "feedbackTags": {},
+    "active": true,
+    "max_CHARACTERS": 255
+  }
+### should Not Edit updated URL
+PUT {{url}}/b  HTTP/1.1
+Content-Type: application/json
+
+{
+    "articleId": "b",
+    "title": "Test-Update",
+    "description": "I updated THIS",
+    "author": "Michael Douglas",
+    "articleUrl": "updated URL",
+    "articleImageUrl": "https://cdn.eso.org/images/thumb700x/eso1907a.jpg",
+    "datePublished": "2019-04-09T19:00:00",
+    "datePosted": "2021-02-16T06:00:00",
+    "source": {
+      "sourceId": "d293ae18-63e0-49b7-87fd-9856bcf52884",
+      "sourceName": "European Southern Observatory",
+      "websiteUrl": "https://www.eso.org/",
+      "description": "The shadow of a black hole seen here is the closest we can come to an image of the black hole itself"
+    },
+    "topics": [
+      {
+        "topicId": 3,
+        "topicName": "Economics",
+        "articles": [],
+        "active": true
+      }
+    ],
+    "posts": [],
+    "feedbackTags": {},
+    "active": true,
+    "max_CHARACTERS": 255
+  }
+
+### should Delete 204 no content 
+DELETE {{url}}/b  HTTP/1.1
+
+### should Not "delete" 404 not found
+DELETE {{url}}/xyz HTTP/1.1
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,11 @@
+.card {
+    position: relative;
+    display: flex;
+    padding: 20px;
+    flex-direction: column;
+}
+
+.media img {
+    width: 60px;
+    height: 60px
+}

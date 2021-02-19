@@ -21,7 +21,7 @@ class PostTest {
     ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
     Validator validator = factory.getValidator();
 
-    private final Post TEST_POST = new Post(null,"testId", "testId", true, LocalDateTime.now(),"dsjdjdj", true);
+    private final Post TEST_POST = new Post(null,"testId", true, LocalDateTime.now(),"dsjdjdj", true, new User("testId"));
     @Test
     void postShouldPass(){
         Post post = TEST_POST;
@@ -43,7 +43,7 @@ class PostTest {
     @Test
     void postMustNotHaveNullUser(){
         Post post = TEST_POST;
-        post.setUserId(null);
+        post.setUser(null);
         Set<ConstraintViolation<Post>> violations = validator.validate(post);
         ConstraintViolation<Post> first = violations.stream().findFirst().orElse(null);
         assertEquals(1, violations.size());

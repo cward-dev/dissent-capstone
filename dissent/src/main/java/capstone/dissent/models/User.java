@@ -33,9 +33,13 @@ public class User {
 
     }
 
-    public User(String userLoginId, @NotNull(message = "Username cannot be null") @Size(max = MAX_CHARACTERS, message = "Username must not exceed ${MAX_CHARACTERS} characters.") String username) {
+    public User(String userLoginId, String username) {
         this.userLoginId = userLoginId;
         this.username = username;
+    }
+
+    public User(String userId) {
+        this.userId = userId;
     }
 
     // getters/setters
