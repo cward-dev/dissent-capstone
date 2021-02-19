@@ -12,6 +12,10 @@ public class UserLogin {
     public UserLogin() {
     }
 
+    public UserLogin(String email, String password) {
+        this.email = email;
+        this.password = password;
+    }
 
     // getters/setters
     public String getUserLoginId() {

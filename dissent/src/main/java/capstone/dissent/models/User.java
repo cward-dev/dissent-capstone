@@ -33,6 +33,11 @@ public class User {
 
     }
 
+    public User(String userLoginId, String username) {
+        this.userLoginId = userLoginId;
+        this.username = username;
+    }
+
     public User(String userId) {
         this.userId = userId;
     }
