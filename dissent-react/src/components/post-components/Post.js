@@ -26,6 +26,7 @@ function Post ( { post, postLevel } ) {
             <div className="mb-4">
               {post.content}
             </div>
+            <hr></hr>
             {postLevel < 3 ? post.childPosts.map(childPost => <Post key={childPost.postId} post={childPost} postLevel={postLevel + 1} />) : null}
         </div>
       </div>
