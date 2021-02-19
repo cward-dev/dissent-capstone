@@ -1,7 +1,7 @@
 DROP DATABASE IF EXISTS dissent_test;
 CREATE DATABASE dissent_test;
 USE dissent_test;
-set SQL_SAFE_UPDATES = 0;
+
 # USER MANAGEMENT TABLES
 CREATE TABLE user_login (
     user_login_id VARCHAR(255) PRIMARY KEY,
@@ -303,11 +303,3 @@ delimiter ;
 set SQL_SAFE_UPDATES = 0;
 call set_known_good_state;
 set SQL_SAFE_UPDATES = 1;
-
-select a.article_id, a.title, a.`description`, a.author, a.article_url,
-a.article_image_url, a.date_published, a.date_posted, a.is_active,
-s.source_id, s.source_name, s.website_url, s.`description`
-from article a
-left outer join `source` s on a.source_id = s.source_id;
-
-select * from article_topic;
