@@ -1,0 +1,4 @@
+@url = http://localhost:8080/api/user/
+
+### return All -
+GET {{url}} HTTP/1.1
