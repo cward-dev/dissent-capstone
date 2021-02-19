@@ -40,7 +40,6 @@ public class ArticleJdbcTemplateRepository implements ArticleRepository {
                 addFeedbackTags(article);
                 addTopics(article);
                 addPosts(article);
-//                addSource(article);
             }
         }
 
@@ -64,7 +63,6 @@ public class ArticleJdbcTemplateRepository implements ArticleRepository {
             addFeedbackTags(article);
             addTopics(article);
             addPosts(article);
-            addSource(article);
         }
 
         return article;
@@ -103,7 +101,6 @@ public class ArticleJdbcTemplateRepository implements ArticleRepository {
                 addFeedbackTags(article);
                 addTopics(article);
                 addPosts(article);
-                addSource(article);
             }
         }
 
