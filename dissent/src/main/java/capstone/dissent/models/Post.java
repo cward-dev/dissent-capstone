@@ -32,7 +32,7 @@ public class Post {
 
     boolean isActive;
 
-    HashMap<FeedbackTag, Integer> feedbackTags = new HashMap<>();
+    HashMap<String, Integer> feedbackTags = new HashMap<>();
 
     public Post() {
         this.isActive = true;
@@ -58,17 +58,17 @@ public class Post {
         this.isActive = isActive;
     }
 
-    public void addFeedbackTagToPost(FeedbackTag feedbackTag){
-
-        if(feedbackTags.get(feedbackTag)==null){
-            feedbackTags.put(feedbackTag,1);
-        } else{
-            int value = feedbackTags.get(feedbackTag);
-            feedbackTags.replace(feedbackTag,value+1);
-        }
-
-        setFeedbackTags(feedbackTags);
-    }
+//    public void addFeedbackTagToPost(FeedbackTag feedbackTag){
+//
+//        if(feedbackTags.get(feedbackTag)==null){
+//            feedbackTags.put(feedbackTag,1);
+//        } else{
+//            int value = feedbackTags.get(feedbackTag);
+//            feedbackTags.replace(feedbackTag,value+1);
+//        }
+//
+//        setFeedbackTags(feedbackTags);
+//    }
 
     public String getPostId() {
         return postId;
@@ -134,11 +134,11 @@ public class Post {
         isActive = active;
     }
 
-    public HashMap<FeedbackTag, Integer> getFeedbackTags() {
+    public HashMap<String, Integer> getFeedbackTags() {
         return feedbackTags;
     }
 
-    public void setFeedbackTags(HashMap<FeedbackTag, Integer> feedbackTags) {
+    public void setFeedbackTags(HashMap<String, Integer> feedbackTags) {
         this.feedbackTags = feedbackTags;
     }
 

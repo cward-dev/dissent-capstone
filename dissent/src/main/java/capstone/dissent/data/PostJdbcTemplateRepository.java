@@ -28,7 +28,15 @@ public class PostJdbcTemplateRepository implements PostRepository {
     @Override
     public List<Post> findAll() {
         final String sql = "select post_id, parent_post_id, article_id, user_id, is_dissenting, date_posted, content, is_active from post limit 1000;";
-        return jdbcTemplate.query(sql, new PostMapper());
+        List<Post> result = jdbcTemplate.query(sql, new PostMapper());
+
+        if (result.size() > 0) {
+            for(Post post : result) {
+                addFeedbackTags(post);
+            }
+        }
+
+        return result;
     }
 
     @Override
@@ -157,11 +165,11 @@ public class PostJdbcTemplateRepository implements PostRepository {
 
         var feedbackTags = jdbcTemplate.query(sql, new PostFeedbackTagMapper(), post.getPostId());
 
-        HashMap<FeedbackTag, Integer> hm = new HashMap<>();
+        HashMap<String, Integer> hm = new HashMap<>();
         if (feedbackTags.size() > 0) {
             for (PostFeedbackTag i : feedbackTags) {
                 Integer j = hm.get(i);
-                hm.put(i.getFeedbackTag(), (j == null) ? 1 : j + 1);
+                hm.put(i.getFeedbackTag().getName(), (j == null) ? 1 : j + 1);
             }
         }
 
