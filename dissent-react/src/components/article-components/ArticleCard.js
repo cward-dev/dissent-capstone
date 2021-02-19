@@ -7,6 +7,9 @@ function ArticleCard ( { article, articleOpen } ) {
 
   const { articleId, title, description, author, articleUrl, articleImageUrl, datePublished, datePosted, source, topics, posts, feedbackTags } = article;
 
+  const timestampDate = (new Date(article.datePosted)).toISOString().split('T')[0];
+  const timestampTime = (new Date(article.datePosted)).toISOString().split('T')[1];
+
   return (
     <div className="card flex-row flex-wrap text-white bg-dark mb-4">
       <div className="border-0">
@@ -20,17 +23,17 @@ function ArticleCard ( { article, articleOpen } ) {
             <p className="source-author-line card-text"><a className="source-link" href={source.websiteUrl}>{source.sourceName}</a>. {author}</p>
           </div>
           <div className="col text-right">
-            <p className="source-author-line card-text">{datePosted}</p>
+            <p className="source-author-line card-text">{timestampDate === Date.now() ? timestampTime : timestampDate}</p>
           </div>
         </div>
       </div>
       <div className="card-footer w-100 text-muted px-1">
         <div className="row">  
-          {/* <div className="col">
+          <div className="col pl-4">
             <FeedbackTagIcon />
-          </div> */}
+          </div>
           <div className="col text-right">
-            {articleOpen ? <AddPost articleId={articleId} /> : <Link className="btn btn-secondary px-2 py-1 mr-2" to={`/article/${articleId}`}>Discussion ({posts.length})</Link>}
+            {articleOpen ? <AddPost articleId={articleId} /> : <Link className="btn btn-secondary px-2 py-1 mr-2" to={`/article/${articleId}`}>Discussions ({posts.length})</Link>}
           </div>
         </div>
       </div>

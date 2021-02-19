@@ -2,6 +2,9 @@ import FeedbackTagIcon from "../feedback-tag-components/FeedbackTagIcon";
 
 function Post ( { post, postLevel } ) {
 
+  const timestampDate = (new Date(post.timestamp)).toISOString().split('T')[0];
+  const timestampTime = (new Date(post.timestamp)).toISOString().split('T')[1];
+  
   return (
     <div>
       <div className="media">
@@ -14,7 +17,7 @@ function Post ( { post, postLevel } ) {
                 <div className="col-6 text-right">
                     <div className="pull-right row">
                       <div className="col">
-                        {post.timestamp}
+                        {timestampDate === Date.now() ? timestampTime : timestampDate}
                       </div>
                       <a href="#" className="btn btn-secondary btn-sm">Reply</a>
                     </div>
