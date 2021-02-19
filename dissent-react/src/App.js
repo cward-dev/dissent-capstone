@@ -4,6 +4,7 @@ import HomePage from './components/pages/HomePage.js';
 import TopicPage from './components/pages/TopicPage.js';
 import About from './components/pages/About.js';
 import UserPage from './components/pages/UserPage.js';
+import ArticlePage from './components/article-components/ArticlePage.js';
 import NotFound from './components/pages/NotFound.js';
 import Navbar from './components/Navbar.js';
 import './App.css';
@@ -16,6 +17,9 @@ function App() {
         <div className="row">
           <div className="col-8 alert alert-secondary pt-4">
             <Switch>
+              <Route path={'/article/:articleId'}>
+                <ArticlePage />
+              </Route>
               <Route path='/about' exact component={About} />
               <Route path='/topic' exact component={TopicPage} />
               <Route path='/user' exact component={UserPage} />
