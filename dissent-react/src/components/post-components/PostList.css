@@ -1,0 +1,16 @@
+.card {
+    position: relative;
+    display: flex;
+    padding: 20px;
+    flex-direction: column;
+    word-wrap: break-word;
+}
+
+.media img {
+    width: 60px;
+    height: 60px
+}
+
+.reply a {
+    text-decoration: none
+}

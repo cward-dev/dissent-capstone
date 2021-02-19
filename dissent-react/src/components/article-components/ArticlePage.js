@@ -43,7 +43,7 @@ function ArticlePage () {
 
   return (
     <div>
-      <ArticleCard article={article} />
+      <ArticleCard articleOpen={true} article={article} />
       <PostList posts={article.posts} />
     </div>
   );

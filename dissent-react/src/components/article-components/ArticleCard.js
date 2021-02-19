@@ -1,8 +1,9 @@
 import { Link } from 'react-router-dom';
+import AddPost from '../post-components/AddPost';
 import FeedbackTagIcon from '../feedback-tag-components/FeedbackTagIcon';
 import './ArticleCard.css';
 
-function ArticleCard ( { article } ) {
+function ArticleCard ( { article, articleOpen } ) {
 
   const { articleId, title, description, author, articleUrl, articleImageUrl, datePublished, datePosted, source, topics, posts, feedbackTags } = article;
 
@@ -29,7 +30,7 @@ function ArticleCard ( { article } ) {
             <FeedbackTagIcon />
           </div> */}
           <div className="col text-right">
-            <Link className="btn btn-secondary px-2 py-1 mr-2" to={`/article/${articleId}`}>Discussion ({posts.length})</Link>
+            {articleOpen ? <AddPost articleId={articleId} /> : <Link className="btn btn-secondary px-2 py-1 mr-2" to={`/article/${articleId}`}>Discussion ({posts.length})</Link>}
           </div>
         </div>
       </div>

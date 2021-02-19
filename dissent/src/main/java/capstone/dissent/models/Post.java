@@ -17,9 +17,6 @@ public class Post {
     @NotBlank(message = "Post must belong to an article")
     String articleId;
 
-    @NotBlank(message = "Post must have a user")
-    String userId;
-
     boolean isDissenting;
 
     @PastOrPresent(message = "Time posted must not be in future")
@@ -32,30 +29,34 @@ public class Post {
 
     boolean isActive;
 
+    @NotNull(message = "Post must have a user")
+    User user;
+
     HashMap<String, Integer> feedbackTags = new HashMap<>();
 
     public Post() {
         this.isActive = true;
     }
 
-    public Post(String parentPost, String article, String user, boolean isDissenting, LocalDateTime timestamp, String content, boolean isActive) {
+    public Post(String parentPost, String article, boolean isDissenting, LocalDateTime timestamp, String content, boolean isActive, User user) {
         this.parentPostId = parentPost;
         this.articleId = article;
-        this.userId = user;
         this.isDissenting = isDissenting;
         this.timestamp = timestamp;
         this.content = content;
         this.isActive = isActive;
+        this.user = user;
     }
 
-    public Post(String postId, String parentPostId, String articleId, String userId, boolean isDissenting, LocalDateTime timestamp, String content, boolean isActive) {
+    public Post(String postId, String parentPostId, String articleId, boolean isDissenting, LocalDateTime timestamp, String content, boolean isActive, User user) {
+        this.postId = postId;
         this.parentPostId = parentPostId;
         this.articleId = articleId;
-        this.userId = userId;
         this.isDissenting = isDissenting;
         this.timestamp = timestamp;
         this.content = content;
         this.isActive = isActive;
+        this.user = user;
     }
 
 //    public void addFeedbackTagToPost(FeedbackTag feedbackTag){
@@ -94,14 +95,6 @@ public class Post {
         this.articleId = articleId;
     }
 
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
     public boolean isDissenting() {
         return isDissenting;
     }
@@ -132,6 +125,14 @@ public class Post {
 
     public void setActive(boolean active) {
         isActive = active;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public HashMap<String, Integer> getFeedbackTags() {

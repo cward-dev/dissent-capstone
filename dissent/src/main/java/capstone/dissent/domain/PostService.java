@@ -146,8 +146,8 @@ public class PostService {
 
     private boolean checkForSpam(Post post) { // checks for another post by user in last 30 seconds
 
-        List<Post> posts = findByUserId(post.getUserId());
+        List<Post> posts = findByUserId(post.getUser().getUserId());
 
-        return findByUserId(post.getUserId()).stream().anyMatch(p -> p.getTimestamp().isAfter(post.getTimestamp().minusSeconds(30)));
+        return findByUserId(post.getUser().getUserId()).stream().anyMatch(p -> p.getTimestamp().isAfter(post.getTimestamp().minusSeconds(30)));
     }
 }
