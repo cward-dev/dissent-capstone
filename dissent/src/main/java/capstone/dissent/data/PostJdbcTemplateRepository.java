@@ -124,6 +124,7 @@ public class PostJdbcTemplateRepository implements PostRepository {
                 + "values (?,?,?,?,?,?,?);";
 
         post.setPostId(java.util.UUID.randomUUID().toString());
+        post.setTimestamp(LocalDateTime.now());
 
         int rowsAffected = jdbcTemplate.update(connection -> {
             PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);

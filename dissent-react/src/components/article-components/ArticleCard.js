@@ -1,14 +1,17 @@
 import { Link } from 'react-router-dom';
-import AddPost from '../post-components/AddPost';
 import FeedbackTagIcon from '../feedback-tag-components/FeedbackTagIcon';
 import './ArticleCard.css';
 
-function ArticleCard ( { article, articleOpen } ) {
+function ArticleCard ( { article, articleOpen, setAddPost } ) {
 
   const { articleId, title, description, author, articleUrl, articleImageUrl, datePublished, datePosted, source, topics, posts, feedbackTags } = article;
 
   const timestampDate = (new Date(article.datePosted)).toISOString().split('T')[0];
   const timestampTime = (new Date(article.datePosted)).toISOString().split('T')[1];
+
+  const handleAddPost = () => {
+    setAddPost(true);
+  }
 
   return (
     <div className="card flex-row flex-wrap text-white bg-dark mb-4">
@@ -33,7 +36,7 @@ function ArticleCard ( { article, articleOpen } ) {
             <FeedbackTagIcon />
           </div>
           <div className="col text-right">
-            {articleOpen ? <AddPost articleId={articleId} /> : <Link className="btn btn-secondary px-2 py-1 mr-2" to={`/article/${articleId}`}>Discussions ({posts.length})</Link>}
+            {articleOpen ? <button className="btn btn-secondary px-2 py-1 mr-2" onClick={handleAddPost}>Add Post</button> : <Link className="btn btn-secondary px-2 py-1 mr-2" to={`/article/${articleId}`}>Discussions ({posts.length})</Link>}
           </div>
         </div>
       </div>
