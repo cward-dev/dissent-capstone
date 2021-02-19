@@ -26,6 +26,10 @@ public class Source {
 
     }
 
+    public Source(String sourceId) {
+        this.sourceId = sourceId;
+    }
+
     public Source(String sourceId, String sourceName, String websiteUrl, String description) {
         this.sourceId = sourceId;
         this.sourceName = sourceName;

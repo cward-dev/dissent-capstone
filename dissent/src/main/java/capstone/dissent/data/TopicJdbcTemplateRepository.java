@@ -1,6 +1,8 @@
 package capstone.dissent.data;
 
+import capstone.dissent.data.mappers.ArticleMapper;
 import capstone.dissent.data.mappers.TopicMapper;
+import capstone.dissent.models.Article;
 import capstone.dissent.models.Topic;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -34,8 +36,14 @@ public class TopicJdbcTemplateRepository implements TopicRepository {
     public Topic findById(int topicId) {
         final String sql = "select topic_id, topic_name, is_active from topic where topic_id = ?;";
 
-        return jdbcTemplate.query(sql, new TopicMapper(), topicId).stream()
+        Topic result = jdbcTemplate.query(sql, new TopicMapper(), topicId).stream()
                 .findAny().orElse(null);
+
+        if (result != null) {
+            addArticles(result);
+        }
+
+        return result;
     }
 
     @Override
@@ -103,4 +111,20 @@ public class TopicJdbcTemplateRepository implements TopicRepository {
 
         return jdbcTemplate.update(sql, topicId) > 0;
     }
+
+    private void addArticles(Topic topic) {
+        final String sql = "select a.article_id, a.title, a.`description`, a.source_id, a.author, a.article_url,"
+                + " a.article_image_url, a.date_published, a.date_posted, a.is_active,"
+                + " s.source_id, s.source_name, s.website_url, s.`description`"
+                + " from article a inner join article_topic ta on a.article_id = ta.article_id"
+                + " inner join `source` s on a.source_id = s.source_id"
+                + " where ta.topic_id = ?;";
+
+        var topics = jdbcTemplate.query(sql, new ArticleMapper(), topic.getTopicId());
+
+        topic.setArticles(topics);
+    }
+
+    final String sql = "select s.source_id, s.source_name, s.website_url, s.`description`"
+            + " from `source` s inner join article a on s.source_id = a.source_id where a.article_id = ?;";
 }

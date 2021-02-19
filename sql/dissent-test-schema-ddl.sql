@@ -1,7 +1,7 @@
 DROP DATABASE IF EXISTS dissent_test;
 CREATE DATABASE dissent_test;
 USE dissent_test;
-set SQL_SAFE_UPDATES = 0;
+
 # USER MANAGEMENT TABLES
 CREATE TABLE user_login (
     user_login_id VARCHAR(255) PRIMARY KEY,
@@ -48,7 +48,7 @@ CREATE TABLE article (
     date_posted DATETIME NOT NULL,
     is_active BOOL NOT NULL DEFAULT true,
     CONSTRAINT fk_article_source_id FOREIGN KEY (source_id)
-        REFERENCES `source` (source_id) ON DELETE CASCADE
+        REFERENCES `source` (source_id)
 );
 
 # ARTICLE-TOPIC BRIDGE TABLE
@@ -176,7 +176,19 @@ begin
 			'd293ae18-63e0-49b7-87fd-9856bcf52884', 
 			'European Southern Observatory', 
             'https://www.eso.org/', 
-            'ESO, the European Southern Observatory, is the foremost intergovernmental astronomy organisation in Europe and the world\'s most productive astronomical observatory'
+            'ESO, the European Southern Observatory, is the foremost intergovernmental astronomy organisation in Europe and the world\'s most productive astronomical observatory.'
+		),
+		(
+			'fsdafas8-fsad-fsd8-fsda-413h1hj1a90s', 
+			'CNN', 
+            'https://www.cnn.com/', 
+            'Cable News Network is a multinational news-based pay television channel headquartered in Atlanta.'
+		),
+		(
+			'fsd67a8s-a512-dfb2-saf6-fsadfas76dfa', 
+			'Associated Press', 
+            'https://www.apnews.com/', 
+            'The Associated Press is an American non-profit news agency headquartered in New York City. Founded in 1846, it operates as a cooperative, unincorporated association. Its members are U.S. newspapers and broadcasters.'
 		);
         
 	insert into article
@@ -227,6 +239,10 @@ begin
         (
 			'a',
             1
+        ),
+		(
+			'b',
+            3
         );
         
 	insert into post
@@ -266,7 +282,8 @@ begin
 		(1, 'Sound', 1),
         (2, 'Fallicious', 1),
         (3, 'Biased', 1),
-        (4, 'Not Nice', 0);
+        (4, 'Not Nice', 0),
+        (5, 'Too Nice', 0);
 	
 	insert into post_feedback_tag 
 		(post_id, user_id, feedback_tag_id)
@@ -286,5 +303,3 @@ delimiter ;
 set SQL_SAFE_UPDATES = 0;
 call set_known_good_state;
 set SQL_SAFE_UPDATES = 1;
-
-select * from topic;

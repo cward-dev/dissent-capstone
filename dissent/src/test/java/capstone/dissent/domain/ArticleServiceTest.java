@@ -2,6 +2,7 @@ package capstone.dissent.domain;
 
 import capstone.dissent.data.ArticleRepository;
 import capstone.dissent.models.Article;
+import capstone.dissent.models.Source;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -24,13 +25,12 @@ class ArticleServiceTest {
     ArticleRepository repository;
 
 
-    final LocalDateTime DAY1 = LocalDateTime.of(2020,01,01,12,00,00);
-    final LocalDateTime DAY2 = LocalDateTime.of(2021,02,17,12,00,00);
-    final Article TEST_ARTICLE = new Article("Yolo","Young Idiots","d293ae18-63e0-49b7-87fd-9856bcf52884","Jesus",
-            "www.u.com","www.u.com", DAY1,DAY2);
+    final LocalDateTime DAY1 = LocalDateTime.of(2020,1,1,12,0,0);
+    final LocalDateTime DAY2 = LocalDateTime.of(2021,2,17,12,0,0);
+    final Source TEST_SOURCE = new Source("test-source");
 
     @Test
-    void findAll() {
+    void shouldFindAll() {
         List<Article> articles = new ArrayList<>();
         articles.add(new Article());
 
@@ -45,7 +45,7 @@ class ArticleServiceTest {
     @Test
     void shouldFindById() {
         List<Article> articles = new ArrayList<>();
-        Article articleIn =  TEST_ARTICLE;
+        Article articleIn =  makeArticle();
         articleIn.setArticleId("a");
         articles.add(articleIn);
 
@@ -60,7 +60,7 @@ class ArticleServiceTest {
     @Test
     void shouldNotFindById(){
         List<Article> articles = new ArrayList<>();
-        Article articleIn =  TEST_ARTICLE;
+        Article articleIn =  makeArticle();
         articleIn.setArticleId("a");
         articles.add(articleIn);
 
@@ -70,11 +70,11 @@ class ArticleServiceTest {
 
     }
 
-    @Test
-    void findArticleByTopicId() {
-        // TODO: 2/17/2021 How do I test this with MockBean??
-        
-    }
+//    @Test  // TODO maybe delete?
+//    void findArticleByTopicId() {
+//        // TODO: 2/17/2021 How do I test this with MockBean??
+//
+//    }
 
     @Test
     void shouldFindByPostedDateRange() {
@@ -82,7 +82,7 @@ class ArticleServiceTest {
         final LocalDateTime DAY4 = LocalDateTime.of(2021,02,17,17,00,00);
         List<Article> articles = new ArrayList<>();
 
-        Article articleIn =  TEST_ARTICLE;
+        Article articleIn = makeArticle();
         articleIn.setArticleId("a");
         articles.add(articleIn);
 
@@ -101,8 +101,9 @@ class ArticleServiceTest {
 
     @Test
     void shouldAdd() {
-        Article articleIn = TEST_ARTICLE;
-        Article articleOut = new Article();
+        Article articleIn = makeArticle();
+        Article articleOut = makeArticle();
+        articleOut.setArticleId("test-id");
 
         when(repository.addArticle(articleIn)).thenReturn(articleOut);
         Result<Article> result = service.add(articleIn);
@@ -122,7 +123,7 @@ class ArticleServiceTest {
     }
     @Test
     void shouldNotAddWithID(){
-        Article article = TEST_ARTICLE;
+        Article article = makeArticle();
         article.setArticleId("a");
 
         Result<Article> result = service.add(article);
@@ -135,12 +136,12 @@ class ArticleServiceTest {
 
     @Test
     void shouldNotAddDuplicate(){
-        Article article = TEST_ARTICLE;
+        Article article = makeArticle();
         List<Article> articles = List.of(article);
 
         when(service.findAll()).thenReturn(articles);
 
-        Result<Article> result = service.add(TEST_ARTICLE);
+        Result<Article> result = service.add(makeArticle());
 
         assertFalse(result.isSuccess());
         assertEquals(1, result.getMessages().size());
@@ -150,7 +151,7 @@ class ArticleServiceTest {
 
     @Test
     void shouldUpdate() {
-        Article articleIn = TEST_ARTICLE;
+        Article articleIn = makeArticle();
         articleIn.setArticleId("a");
 
         when(repository.updateArticle(articleIn)).thenReturn(true);
@@ -163,7 +164,7 @@ class ArticleServiceTest {
 
     @Test
     void shouldNotUpdateWithNullId(){
-        Article article = TEST_ARTICLE;
+        Article article = makeArticle();
 
         Result<Article> result = service.update(article);
         assertEquals(ResultType.INVALID, result.getType());
@@ -173,10 +174,10 @@ class ArticleServiceTest {
 
     @Test
     void shouldNotUpdateWithDifferentUrl(){
-        Article original = TEST_ARTICLE;
+        Article original = makeArticle();
         original.setArticleId("a");
-        Article article = new Article("Yolo","Young Idiots","d293ae18-63e0-49b7-87fd-9856bcf52884","Jesus",
-                "XXXXXX","www.u.com", DAY1,DAY2);
+        Article article = new Article("Yolo","Young Idiots","Jesus",
+                "XXXXXX","www.u.com", DAY1, DAY2, TEST_SOURCE);
 
         article.setArticleId("a");
 
@@ -190,10 +191,10 @@ class ArticleServiceTest {
 
     @Test
     void shouldNotUpdateArticleThatDoesNotExist(){
-        Article article = TEST_ARTICLE;
+        Article article = makeArticle();
         article.setArticleId("a");
 
-        when(repository.findArticleByArticleId(article.getArticleId())).thenReturn(TEST_ARTICLE);
+        when(repository.findArticleByArticleId(article.getArticleId())).thenReturn(makeArticle());
         when(repository.updateArticle(article)).thenReturn(false);
         Result<Article> result = service.update(article);
 
@@ -202,7 +203,7 @@ class ArticleServiceTest {
     }
     @Test
     void shouldNotUpdateArticleWhenYouCannotFindOriginalArticle(){
-        Article article = TEST_ARTICLE;
+        Article article = makeArticle();
         article.setArticleId("a");
 
         when(repository.findArticleByArticleId(article.getArticleId())).thenReturn(null);
@@ -215,10 +216,8 @@ class ArticleServiceTest {
 
     @Test
     void inactivateArticle() {
-        Article articleIn = TEST_ARTICLE;
+        Article articleIn = makeArticle();
         articleIn.setArticleId("a");
-
-        Article articleOut = TEST_ARTICLE;
 
         when(repository.inactivateArticle("a")).thenReturn(true);
 
@@ -234,4 +233,30 @@ class ArticleServiceTest {
         assertFalse(result);
     }
 
+    @Test
+    void shouldNotAddArticleWithFuturePostDate(){
+        Article article = makeArticle();
+        article.setDatePosted(LocalDateTime.of(2999,01,01,12,00,00));
+
+        Result<Article> result = service.add(article);
+
+        assertFalse(result.isSuccess());
+        assertEquals(1, result.getMessages().size());
+        System.out.println(result.getMessages().get(0));
+        assertTrue(result.getMessages().contains("Article cannot have a future post date"));
+    }
+
+    Article makeArticle() {
+        Article article = new Article();
+        article.setTitle("Yolo");
+        article.setDescription("Young Idiots");
+        article.setAuthor("Jesus");
+        article.setArticleUrl("www.u.com");
+        article.setArticleImageUrl("www.u.com");
+        article.setDatePublished(DAY1);
+        article.setDatePosted(DAY2);
+        article.setSource(TEST_SOURCE);
+
+        return article;
+    }
 }

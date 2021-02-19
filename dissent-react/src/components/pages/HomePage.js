@@ -1,21 +1,5 @@
 import { useState } from 'react';
-import ArticleFeed from '../article-components/ArticleFeed';
-
-const TEST_ARTICLE = {
-  articleId: 1,
-  source: "http://www.google.com",
-  title: "Article Title",
-  description: "A short description of the article.",
-  source: "Google",
-  author: "Author",
-  articleUrl: "www.google.com",
-  articleImageUrl: "https://www.buddhistdoor.net/upload/article/10179/5c3ba1b1aebccea4fd7e4483d81480e2.jpeg",
-  datePublished: "2021-01-01",
-  timestamp: "2021-02-15",
-  topics: [],
-  posts: [], 
-  feedbackTags: []
-};
+import ArticleFetch from '../article-components/ArticleFetch';
 
 const ANONYMOUS_USER = {
   "user_login_id": undefined,
@@ -28,12 +12,11 @@ const ANONYMOUS_USER = {
 
 function HomePage() {
   const [user, setUser] = useState({});
-  const [articles, setArticles] = useState([ TEST_ARTICLE ]);
 
   return (
     <div className="container">
       <div className="sidenav">
-        <ArticleFeed articles={articles} />
+        <ArticleFetch />
       </div>
     </div>
   );

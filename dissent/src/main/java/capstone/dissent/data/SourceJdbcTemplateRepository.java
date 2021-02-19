@@ -56,7 +56,7 @@ public class SourceJdbcTemplateRepository implements SourceRepository {
 
     @Override
     public boolean edit(Source source) {
-        final String sql = " update source set "
+        final String sql = "update source set "
                             + "source_name = ?, "
                             + "website_url = ?, "
                             + "description = ? "

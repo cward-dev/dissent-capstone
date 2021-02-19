@@ -37,7 +37,7 @@ class TopicJdbcTemplateRepositoryTest {
 
     @Test
     void shouldFindAllInactive() {
-        List<Topic> topics = repository.findAll();
+        List<Topic> topics = repository.findAllInactive();
 
         assertNotNull(topics);
         assertTrue(topics.size() > 0);

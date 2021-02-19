@@ -1,7 +1,11 @@
 package capstone.dissent.data;
 
+import capstone.dissent.data.mappers.FeedbackTagMapper;
+import capstone.dissent.data.mappers.PostFeedbackTagMapper;
 import capstone.dissent.data.mappers.PostMapper;
+import capstone.dissent.models.FeedbackTag;
 import capstone.dissent.models.Post;
+import capstone.dissent.models.PostFeedbackTag;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -9,7 +13,9 @@ import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public class PostJdbcTemplateRepository implements PostRepository {
@@ -22,7 +28,15 @@ public class PostJdbcTemplateRepository implements PostRepository {
     @Override
     public List<Post> findAll() {
         final String sql = "select post_id, parent_post_id, article_id, user_id, is_dissenting, date_posted, content, is_active from post limit 1000;";
-        return jdbcTemplate.query(sql, new PostMapper());
+        List<Post> result = jdbcTemplate.query(sql, new PostMapper());
+
+        if (result.size() > 0) {
+            for(Post post : result) {
+                addFeedbackTags(post);
+            }
+        }
+
+        return result;
     }
 
     @Override
@@ -31,7 +45,15 @@ public class PostJdbcTemplateRepository implements PostRepository {
                 + "from post "
                 + "where article_id = ?;";
 
-        return jdbcTemplate.query(sql, new PostMapper(), articleId);
+        List<Post> result = jdbcTemplate.query(sql, new PostMapper(), articleId);
+
+        if (result.size() > 0) {
+            for(Post post : result) {
+                addFeedbackTags(post);
+            }
+        }
+
+        return result;
     }
 
     @Override
@@ -40,7 +62,15 @@ public class PostJdbcTemplateRepository implements PostRepository {
                 + "from post "
                 + "where user_id = ?;";
 
-        return jdbcTemplate.query(sql, new PostMapper(), userId);
+        List<Post> result = jdbcTemplate.query(sql, new PostMapper(), userId);
+
+        if (result.size() > 0) {
+            for(Post post : result) {
+                addFeedbackTags(post);
+            }
+        }
+
+        return result;
     }
 
     @Override
@@ -49,7 +79,15 @@ public class PostJdbcTemplateRepository implements PostRepository {
                 + "from post "
                 + "where (date_posted between ? and ?);";
 
-        return jdbcTemplate.query(sql, new PostMapper(), start, end);
+        List<Post> result = jdbcTemplate.query(sql, new PostMapper(), start, end);
+
+        if (result.size() > 0) {
+            for(Post post : result) {
+                addFeedbackTags(post);
+            }
+        }
+
+        return result;
     }
 
     @Override
@@ -58,8 +96,14 @@ public class PostJdbcTemplateRepository implements PostRepository {
                 + "from post "
                 + "where post_id = ?;";
 
-        return jdbcTemplate.query(sql, new PostMapper(), postId).stream()
+        Post result = jdbcTemplate.query(sql, new PostMapper(), postId).stream()
                 .findAny().orElse(null);
+
+        if (result != null) {
+            addFeedbackTags(result);
+        }
+
+        return result;
     }
 
     @Override
@@ -109,5 +153,26 @@ public class PostJdbcTemplateRepository implements PostRepository {
                 + "where post_id = ? and is_active = true;";
 
         return jdbcTemplate.update(sql, "This post has been deleted.", false, postId) > 0;
+    }
+
+    private void addFeedbackTags(Post post) {
+
+        final String sql = "select pft.post_id, pft.user_id, pft.feedback_tag_id, "
+                + "ft.feedback_tag_id, ft.feedback_tag_name, ft.is_active "
+                + "from post_feedback_tag pft "
+                + "inner join feedback_tag ft on pft.feedback_tag_id = ft.feedback_tag_id "
+                + "where pft.post_id = ?";
+
+        var feedbackTags = jdbcTemplate.query(sql, new PostFeedbackTagMapper(), post.getPostId());
+
+        HashMap<String, Integer> hm = new HashMap<>();
+        if (feedbackTags.size() > 0) {
+            for (PostFeedbackTag i : feedbackTags) {
+                Integer j = hm.get(i);
+                hm.put(i.getFeedbackTag().getName(), (j == null) ? 1 : j + 1);
+            }
+        }
+
+        post.setFeedbackTags(hm);
     }
 }

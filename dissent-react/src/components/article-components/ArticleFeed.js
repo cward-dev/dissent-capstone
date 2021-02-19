@@ -7,7 +7,7 @@ function ArticleFeed( { articles } ) {
     return (
       <ArticleCard article={article} />
     );
-  }
+  };
 
   return (
     <div>
