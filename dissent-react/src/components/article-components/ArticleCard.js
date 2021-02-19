@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import FeedbackTagIcon from '../feedback-tag-components/FeedbackTagIcon';
 import './ArticleCard.css';
 
@@ -8,7 +9,7 @@ function ArticleCard ( { article } ) {
   return (
     <div key={articleId} className="card flex-row flex-wrap text-white bg-dark mb-4">
       <div className="border-0">
-        <a href={articleUrl}><img src={articleImageUrl} class="card-img-top" /></a>
+        <a href={articleUrl}><img src={articleImageUrl} className="card-img-top" /></a>
       </div>
       <div className="col p-3">
         <a href={articleUrl}><h4 className="card-title">{title}</h4></a>
@@ -24,11 +25,11 @@ function ArticleCard ( { article } ) {
       </div>
       <div className="card-footer w-100 text-muted px-1">
         <div className="row">  
-          <div className="col">
+          {/* <div className="col">
             <FeedbackTagIcon />
-          </div>
+          </div> */}
           <div className="col text-right">
-            <a className="nav-link active" aria-current="page" href="/article/1"><button className="btn btn-secondary px-2 py-1">Discussion ({posts.length})</button></a>
+            <Link className="btn btn-secondary px-2 py-1 mr-2" to={`/article/${articleId}`}>Discussion ({posts.length})</Link>
           </div>
         </div>
       </div>
