@@ -2,12 +2,13 @@ import { useState, useEffect } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import Errors from '../Errors.js';
 
-function AddPost ( { articleId, setAddPost, user } ) {
+function AddReplyPost ( { parentPost, articleId, setCurrentOption, user } ) {
 
   const [post, setPost] = useState( {
-    "parentPostId": null,
+    "parentPostId": parentPost.postId,
     "articleId": articleId,
     "dissenting": true,
+    "timestamp": "2021-02-15T06:00:00",
     "content": '',
     "user": user
   } );
@@ -58,15 +59,16 @@ function AddPost ( { articleId, setAddPost, user } ) {
   }
 
   const handleCancel = () => {
-    setAddPost(false);
+    setCurrentOption(0);
   }
 
   return (
     <form onSubmit={handleAddSubmit}>
+      <hr></hr>
       <Errors errors={errors} />
-      <div className="form-row mb-4">
+      <div className="form-row">
         <div className="col-9">
-          <label htmlFor="content" className="pl-2 pt-2">New Post</label>
+          <label htmlFor="content" className="pl-2 pt-2">Reply @{parentPost.user.username}</label>
         </div>
         <div className="col-3">
           <div className="container mb-3">
@@ -78,13 +80,12 @@ function AddPost ( { articleId, setAddPost, user } ) {
         </div>
         <textarea className="form-control mb-4" id="content" name="content" type="textarea" rows="5" onChange={handleChange} />
         <div className="col text-right">
-          <button type="button" className="btn btn-light btn-sm mx-3" onClick={handleCancel}>Cancel</button>
-          <button type="submit" className="btn btn-dark btn-sm">Submit</button>
+          <button type="button" className="btn btn-light btn-sm" onClick={handleCancel}>Cancel</button>
+          <button type="submit" className="btn btn-dark btn-sm mx-2">Submit</button>
         </div>
       </div>
-      <hr></hr>
     </form>
   );
 }
 
-export default AddPost;
+export default AddReplyPost;
