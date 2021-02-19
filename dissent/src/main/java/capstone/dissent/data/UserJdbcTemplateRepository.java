@@ -73,6 +73,17 @@ public class UserJdbcTemplateRepository implements UserRepository {
                 .findAny().orElse(null);
     }
 
+    @Override
+    public User findByUsername(String username) {
+        final String sql = "select * " +
+                "from `user`" +
+                "where username = ?;";
+
+        return jdbcTemplate.query(sql, new UserMapper(), username).stream()
+                .findAny().orElse(null);
+    }
+
+
 
     // update
     @Override

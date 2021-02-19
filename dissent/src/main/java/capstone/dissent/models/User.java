@@ -27,6 +27,8 @@ public class User {
     @Size(max = MAX_CHARACTERS, message = "Bio must not exceed ${MAX_CHARACTERS} characters.")
     private String bio;
 
+    // TODO: isActive tag to mirror database.
+
 
     // constructor(s)
     public User() {
