@@ -16,6 +16,8 @@ public interface UserRepository {
 
     User findById(String userId);
 
+    User findByUsername(String username);
+
     // update
     boolean edit(User user);
 
