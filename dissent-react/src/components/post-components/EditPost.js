@@ -69,7 +69,7 @@ function EditPost ( { originalPost, articleId, setCurrentOption, user } ) {
             </select>
           </div>
         </div>
-        <textarea className="form-control mb-4" id="content" name="content" type="textarea" rows="5" onChange={handleChange} defaultValue={originalPost.content} />
+        <textarea className="form-control mb-3" id="content" name="content" type="textarea" rows="5" onChange={handleChange} defaultValue={originalPost.content} />
         <div className="col text-right">
           <button type="button" className="btn btn-light btn-sm" onClick={handleCancel}>Cancel</button>
           <button type="submit" className="btn btn-dark btn-sm mx-2 px-3">Edit</button>
