@@ -187,7 +187,7 @@ public class ArticleJdbcTemplateRepository implements ArticleRepository {
     private void addFeedbackTags(Article article) {
 
         final String sql = "select aft.article_id, aft.user_id, aft.feedback_tag_id, "
-                + "ft.feedback_tag_id, ft.feedback_tag_name, ft.is_active "
+                + "ft.feedback_tag_id, ft.feedback_tag_name, ft.color_hex, ft.is_active "
                 + "from article_feedback_tag aft "
                 + "inner join feedback_tag ft on aft.feedback_tag_id = ft.feedback_tag_id "
                 + "where aft.article_id = ?";
@@ -198,7 +198,7 @@ public class ArticleJdbcTemplateRepository implements ArticleRepository {
         if (feedbackTags.size() > 0) {
             for (ArticleFeedbackTag i : feedbackTags) {
                 Integer j = hm.get(i);
-                hm.put(i.getFeedbackTag().getName(), (j == null) ? 1 : j + 1);
+                hm.put(String.format("%s&&~&&%s", i.getFeedbackTag().getName(), i.getFeedbackTag().getColorHex()), (j == null) ? 1 : j + 1);
             }
         }
 
