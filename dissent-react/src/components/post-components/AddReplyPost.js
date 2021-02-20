@@ -68,7 +68,7 @@ function AddReplyPost ( { parentPost, articleId, setCurrentOption, user } ) {
       <Errors errors={errors} />
       <div className="form-row">
         <div className="col-9">
-          <label htmlFor="content" className="pl-2 pt-2">Reply @{parentPost.user.username}</label>
+          <label htmlFor="content" className="pl-2 pt-2">Reply To @{parentPost.user.username}</label>
         </div>
         <div className="col-3">
           <div className="container mb-3">

@@ -13,17 +13,8 @@ function DeletePost ( { originalPost, articleId, setCurrentOption, user } ) {
   const handleDeleteSubmit = async (event) => {
     event.preventDefault();
 
-    const init = {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        "Accept": "application/json"
-      },
-      body: JSON.stringify(post)
-    };
-
     try {
-      const response = await fetch(`http://localhost:8080/api/post/${originalPost.postId}`, init);
+      const response = await fetch(`http://localhost:8080/api/post/${originalPost.postId}`, { method: "DELETE" });
 
       if (response.status === 204) {
 
@@ -31,14 +22,13 @@ function DeletePost ( { originalPost, articleId, setCurrentOption, user } ) {
         history.push(`/`);
         history.push(`/article/${articleId}`);
         handleCancel();
-      } else if (response.status === 400) {
-        const data = await response.json();
-        setErrors(data);
+      } else if (response.status === 404) {
+        throw new Error([`Post ID #${originalPost.postId} not found`]);
       } else {
         throw new Error(["Something unexpected went wrong, sorry!"]);
       }
     } catch (error) {
-      setErrors(["Something unexpected went wrong, sorry!"]);
+      setErrors(error);
     }
   }
 

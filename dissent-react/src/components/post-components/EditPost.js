@@ -57,7 +57,7 @@ function EditPost ( { originalPost, articleId, setCurrentOption, user } ) {
     <form onSubmit={handleEditSubmit}>
       <hr></hr>
       <Errors errors={errors} />
-      <div className="form-row mb-4">
+      <div className="form-row">
         <div className="col-9">
           <label htmlFor="content" className="pl-2 pt-2">Edit Post</label>
         </div>
