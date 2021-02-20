@@ -66,6 +66,7 @@ CREATE TABLE article_topic (
 CREATE TABLE feedback_tag (
     feedback_tag_id INT PRIMARY KEY AUTO_INCREMENT,
     feedback_tag_name VARCHAR(255) NOT NULL,
+    color_hex VARCHAR(7) NOT NULL,
     is_active BOOL NOT NULL DEFAULT true
 );
 

@@ -170,7 +170,7 @@ public class PostJdbcTemplateRepository implements PostRepository {
     private void addFeedbackTags(Post post) {
 
         final String sql = "select pft.post_id, pft.user_id, pft.feedback_tag_id, "
-                + "ft.feedback_tag_id, ft.feedback_tag_name, ft.is_active "
+                + "ft.feedback_tag_id, ft.feedback_tag_name, ft.color_hex, ft.is_active "
                 + "from post_feedback_tag pft "
                 + "inner join feedback_tag ft on pft.feedback_tag_id = ft.feedback_tag_id "
                 + "where pft.post_id = ?";
@@ -181,7 +181,7 @@ public class PostJdbcTemplateRepository implements PostRepository {
         if (feedbackTags.size() > 0) {
             for (PostFeedbackTag i : feedbackTags) {
                 Integer j = hm.get(i);
-                hm.put(i.getFeedbackTag().getName(), (j == null) ? 1 : j + 1);
+                hm.put(String.format("%s&&~&&%s", i.getFeedbackTag().getName(), i.getFeedbackTag().getColorHex()), (j == null) ? 1 : j + 1);
             }
         }
 

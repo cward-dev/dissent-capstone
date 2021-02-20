@@ -24,9 +24,9 @@ class FeedbackTagServiceTest {
     @Test
     void shouldFindALl() {
         List<FeedbackTag> expected = List.of(
-                new FeedbackTag(1, "Sound", true),
-                new FeedbackTag(2, "Fallacious", true),
-                new FeedbackTag(3, "Biased", true)
+                new FeedbackTag(1, "Sound", "#000000", true),
+                new FeedbackTag(2, "Fallacious", "#000000", true),
+                new FeedbackTag(3, "Biased", "#000000", true)
         );
         when(repository.findAll()).thenReturn(expected);
         List<FeedbackTag> actual = repository.findAll();
@@ -36,7 +36,7 @@ class FeedbackTagServiceTest {
 
     @Test
     void shouldFindALlInactive() {
-        List<FeedbackTag> expected = List.of(new FeedbackTag(5, "Not Nice", false));
+        List<FeedbackTag> expected = List.of(new FeedbackTag(5, "Not Nice", "#000000", false));
         when(repository.findAllInactive()).thenReturn(expected);
         List<FeedbackTag> actual = repository.findAllInactive();
 
@@ -160,6 +160,7 @@ class FeedbackTagServiceTest {
         FeedbackTag feedbackTag = new FeedbackTag();
         feedbackTag.setFeedbackTagId(1);
         feedbackTag.setName("Super Sound");
+        feedbackTag.setColorHex("#000000");
         return feedbackTag;
     }
 }

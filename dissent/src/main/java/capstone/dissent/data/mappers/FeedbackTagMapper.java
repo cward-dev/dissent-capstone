@@ -14,6 +14,7 @@ public class FeedbackTagMapper implements RowMapper<FeedbackTag> {
         FeedbackTag feedbackTag = new FeedbackTag();
         feedbackTag.setFeedbackTagId(resultSet.getInt("feedback_tag_id"));
         feedbackTag.setName(resultSet.getString("feedback_tag_name"));
+        feedbackTag.setColorHex(resultSet.getString("color_hex"));
         feedbackTag.setActive(resultSet.getBoolean("is_active"));
 
         return feedbackTag;
