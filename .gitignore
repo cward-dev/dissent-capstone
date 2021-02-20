@@ -26,6 +26,9 @@ hs_err_pid*
 **/.idea
 .idea/
 *.properties
+*.classpath
+*.project
+*.settings/
 
 # Maven
 target/
