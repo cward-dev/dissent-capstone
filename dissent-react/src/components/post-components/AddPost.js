@@ -71,15 +71,16 @@ function AddPost ( { articleId, setAddPost, user } ) {
         <div className="col-3">
           <div className="container mb-3">
             <select id="dissenting" name="dissenting" className="form-control" required onChange={handleChange}>
+              <option value="">Stance</option>
               <option value="true">Dissenting</option>
               <option value="false">Accepting</option>
             </select>
           </div>
         </div>
-        <textarea className="form-control mb-3" id="content" name="content" type="textarea" rows="5" onChange={handleChange} />
+        <textarea className="form-control mb-3 mr-3" id="content" name="content" type="textarea" rows="5" onChange={handleChange} />
         <div className="col text-right">
-          <button type="button" className="btn btn-light btn-sm mx-3" onClick={handleCancel}>Cancel</button>
-          <button type="submit" className="btn btn-dark btn-sm">Submit</button>
+          <button type="button" className="btn btn-light btn-sm" onClick={handleCancel}>Cancel</button>
+          <button type="submit" className="btn btn-dark ml-2 mr-3 btn-sm">Submit</button>
         </div>
       </div>
       <hr></hr>
