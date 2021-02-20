@@ -8,6 +8,7 @@ import ArticlePage from './components/article-components/ArticlePage.js';
 import TopicSidebar from './components/topic-components/TopicSidebar.js';
 import NotFound from './components/pages/NotFound.js';
 import Navbar from './components/Navbar.js';
+import AdminBar from './components/AdminBar.js';
 import './App.css';
 
 const DEFAULT_USER = {
@@ -34,6 +35,7 @@ function App() {
   return (      
     <Router>
       <Navbar user={user} />
+      <AdminBar user={user} />
       <div className="container">
         <div className="row">
           <div className="col-8 alert alert-secondary pt-4">
