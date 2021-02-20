@@ -76,7 +76,7 @@ function AddPost ( { articleId, setAddPost, user } ) {
             </select>
           </div>
         </div>
-        <textarea className="form-control mb-4" id="content" name="content" type="textarea" rows="5" onChange={handleChange} />
+        <textarea className="form-control mb-3" id="content" name="content" type="textarea" rows="5" onChange={handleChange} />
         <div className="col text-right">
           <button type="button" className="btn btn-light btn-sm mx-3" onClick={handleCancel}>Cancel</button>
           <button type="submit" className="btn btn-dark btn-sm">Submit</button>

@@ -39,15 +39,11 @@ function DeletePost ( { originalPost, articleId, setCurrentOption, user } ) {
   return (
     <form onSubmit={handleDeleteSubmit}>
       <Errors errors={errors} />
-      <div className="form-row alert alert-danger mb-4">
-        <div className="col">
-          <label htmlFor="content" className="pl-2 pt-1">Are you sure you want to delete this post?</label>
-        </div>
-        <div className="col">
-            <div className="col text-right">
-              <button type="button" className="btn btn-light btn-sm" onClick={handleCancel}>Cancel</button>
-              <button type="submit" className="btn btn-danger btn-sm ml-2 px-3">Delete</button>
-            </div>
+      <div className="form-row alert alert-dark mb-4">
+        <div className="pl-2 py-1">Are you sure? Deletions are permanent.</div>
+        <div className="col text-right">
+          <button type="button" className="btn btn-light btn-sm" onClick={handleCancel}>Cancel</button>
+          <button type="submit" className="btn btn-danger btn-sm mx-2 px-3">Delete</button>
         </div>
       </div>
     </form>

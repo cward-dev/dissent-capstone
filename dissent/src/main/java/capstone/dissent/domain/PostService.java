@@ -148,6 +148,6 @@ public class PostService {
 
         List<Post> posts = findByUserId(post.getUser().getUserId());
 
-        return posts.stream().anyMatch(p -> p.getTimestamp().isAfter(LocalDateTime.now()));
+        return posts.stream().anyMatch(p -> p.getTimestamp().isAfter(LocalDateTime.now().minusSeconds(30)));
     }
 }

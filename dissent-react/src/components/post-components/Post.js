@@ -44,12 +44,12 @@ function Post ( { post, postLevel, user, parentPost } ) {
               {post.active ? <div>{post.content}</div> : <div className="alert alert-dark font-italic mt-3 py-2">{post.content}</div>}
             </div>
             <div className="pr-3 mb-3">
-              {post.active ? <>
-                <button onClick={handleAddReplyPost} className="btn btn-link btn-sm p-0">Reply</button>
-                <button onClick={handleEditPost} className="btn btn-link btn-sm ml-2 p-0">Edit</button>
-                <button onClick={handleDeletePost} className="btn btn-link btn-sm ml-2 p-0">Delete</button>
+              {post.active && post.user.userId === user.userId ? <>
+                <button onClick={handleAddReplyPost} className="btn btn-link btn-sm mr-2 p-0">Reply</button>
+                <button onClick={handleEditPost} className="btn btn-link btn-sm mr-2 p-0">Edit</button>
+                <button onClick={handleDeletePost} className="btn btn-link btn-sm mr-2 p-0">Delete</button>
               </> : null}
-              <button className="btn btn-link btn-sm ml-2 p-0" type="button" data-toggle="collapse" data-target={`.${post.postId}-children`} 
+              <button className="btn btn-link btn-sm p-0" type="button" data-toggle="collapse" data-target={`.${post.postId}-children`} 
                 aria-expanded="true" aria-controls={`${post.postId}-children1 ${post.postId}-children2`}>Collapse</button>
             </div>
             {currentOption === 1 ? <EditPost originalPost={post} articleId={post.articleId} setCurrentOption={setCurrentOption} user={user} /> : null}

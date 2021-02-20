@@ -37,6 +37,10 @@ public class TopicService {
         return repository.findById(topicId);
     }
 
+    public Topic findByTopicName(String topicName) {
+        return repository.findByTopicName(topicName);
+    }
+
     public Result<Topic> add(Topic topic) {
         Result<Topic> result = validate(topic);
         if (!result.isSuccess()) {

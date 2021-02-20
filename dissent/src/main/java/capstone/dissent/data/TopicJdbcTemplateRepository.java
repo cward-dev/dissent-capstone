@@ -17,19 +17,39 @@ import java.util.List;
 public class TopicJdbcTemplateRepository implements TopicRepository {
 
     private final JdbcTemplate jdbcTemplate;
+    private final ArticleRepository articleRepository;
 
-    public TopicJdbcTemplateRepository(JdbcTemplate jdbcTemplate) { this.jdbcTemplate = jdbcTemplate; }
+    public TopicJdbcTemplateRepository(JdbcTemplate jdbcTemplate, ArticleRepository articleRepository) {
+        this.jdbcTemplate = jdbcTemplate;
+        this.articleRepository = articleRepository;
+    }
 
     @Override
     public List<Topic> findAll() {
         final String sql = "select topic_id, topic_name, is_active from topic where is_active = true limit 1000;";
-        return jdbcTemplate.query(sql, new TopicMapper());
+        List<Topic> result = jdbcTemplate.query(sql, new TopicMapper());
+
+        if (result.size() > 0) {
+            for (Topic topic : result) {
+                addArticles(topic);
+            }
+        }
+
+        return result;
     }
 
     @Override
     public List<Topic> findAllInactive() {
         final String sql = "select topic_id, topic_name, is_active from topic where is_active = false limit 1000;";
-        return jdbcTemplate.query(sql, new TopicMapper());
+        List<Topic> result = jdbcTemplate.query(sql, new TopicMapper());
+
+        if (result.size() > 0) {
+            for (Topic topic : result) {
+                addArticles(topic);
+            }
+        }
+
+        return result;
     }
 
     @Override
@@ -47,11 +67,31 @@ public class TopicJdbcTemplateRepository implements TopicRepository {
     }
 
     @Override
+    public Topic findByTopicName(String topicName) {
+        final String sql = "select topic_id, topic_name, is_active from topic where UPPER(topic_name) = UPPER(?);";
+
+        Topic result = jdbcTemplate.query(sql, new TopicMapper(), topicName).stream()
+                .findAny().orElse(null);
+
+        if (result != null) {
+            addArticles(result);
+        }
+
+        return result;
+    }
+
+    @Override
     public Topic findInactiveByName(String topicName) {
         final String sql = "select topic_id, topic_name, is_active from topic where UPPER(topic_name) = UPPER(?) and is_active = false;";
 
-        return jdbcTemplate.query(sql, new TopicMapper(), topicName).stream()
+        Topic result = jdbcTemplate.query(sql, new TopicMapper(), topicName).stream()
                 .findAny().orElse(null);
+
+        if (result != null) {
+            addArticles(result);
+        }
+
+        return result;
     }
 
     @Override
@@ -113,16 +153,17 @@ public class TopicJdbcTemplateRepository implements TopicRepository {
     }
 
     private void addArticles(Topic topic) {
-        final String sql = "select a.article_id, a.title, a.`description`, a.source_id, a.author, a.article_url,"
-                + " a.article_image_url, a.date_published, a.date_posted, a.is_active,"
-                + " s.source_id, s.source_name, s.website_url, s.`description`"
-                + " from article a inner join article_topic ta on a.article_id = ta.article_id"
-                + " inner join `source` s on a.source_id = s.source_id"
-                + " where ta.topic_id = ?;";
-
-        var topics = jdbcTemplate.query(sql, new ArticleMapper(), topic.getTopicId());
-
-        topic.setArticles(topics);
+        topic.setArticles(articleRepository.findArticleByTopicId(topic.getTopicId()));
+//        final String sql = "select a.article_id, a.title, a.`description`, a.source_id, a.author, a.article_url,"
+//                + " a.article_image_url, a.date_published, a.date_posted, a.is_active,"
+//                + " s.source_id, s.source_name, s.website_url, s.`description`"
+//                + " from article a inner join article_topic ta on a.article_id = ta.article_id"
+//                + " inner join `source` s on a.source_id = s.source_id"
+//                + " where ta.topic_id = ?;";
+//
+//        var topics = jdbcTemplate.query(sql, new ArticleMapper(), topic.getTopicId());
+//
+//        topic.setArticles(topics);
     }
 
     final String sql = "select s.source_id, s.source_name, s.website_url, s.`description`"

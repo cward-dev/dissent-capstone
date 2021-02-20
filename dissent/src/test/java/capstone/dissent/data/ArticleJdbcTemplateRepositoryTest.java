@@ -52,7 +52,7 @@ class ArticleJdbcTemplateRepositoryTest {
        assertNotNull(article);
        assertTrue(article.getAuthor().equalsIgnoreCase("Michael Douglas"));
        int numberOfPosts = article.getPosts().size();
-       assertTrue(numberOfPosts >=3 && numberOfPosts <=4);
+       assertTrue(numberOfPosts > 0);
        assertEquals(article.getTopics().size(),1);
 
     }
@@ -63,17 +63,17 @@ class ArticleJdbcTemplateRepositoryTest {
         assertNull(article);
     }
 
-//    @Test  // TODO maybe delete?
-//    void shouldFindArticleByTopicId(){
-//        List<Article> articles = repository.findArticleByTopicId(1);
-//        assertTrue(articles.size()==1 || articles.size()==2);
-//    }
-//
-//    @Test  // TODO maybe delete?
-//    void shouldNOTFindArticleByTopicId(){
-//        List<Article> articles = repository.findArticleByTopicId(99);
-//        assertTrue(articles.size()==0);
-//    }
+    @Test  // TODO maybe delete?
+    void shouldFindArticleByTopicId(){
+        List<Article> articles = repository.findArticleByTopicId(1);
+        assertTrue(articles.size()==1 || articles.size()==2);
+    }
+
+    @Test  // TODO maybe delete?
+    void shouldNOTFindArticleByTopicId(){
+        List<Article> articles = repository.findArticleByTopicId(99);
+        assertTrue(articles.size()==0);
+    }
 
 
     @Test

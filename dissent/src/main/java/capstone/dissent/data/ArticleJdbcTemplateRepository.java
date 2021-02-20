@@ -53,7 +53,7 @@ public class ArticleJdbcTemplateRepository implements ArticleRepository {
                 " s.source_id, s.source_name, s.website_url, s.`description`" +
                 " from article a" +
                 " left outer join `source` s on a.source_id = s.source_id" +
-                " where article_id = ?;";
+                " where a.article_id = ?;";
 
         Article article = jdbcTemplate.query(sql, new ArticleMapper(), articleId).stream()
                 .findFirst().orElse(null);
@@ -68,22 +68,28 @@ public class ArticleJdbcTemplateRepository implements ArticleRepository {
         return article;
     }
 
-//    @Override // TODO maybe delete?
-//    public List<Article> findArticleByTopicId(int topicId) {
-//        final String sql = "select a.article_id, a.title,a.description, a.source_id, a.author, a.article_url, " +
-//                " a.article_image_url, a.date_published, a.date_posted, a.is_active from article a inner join article_topic ar on a.article_id = ar.article_id"
-//                + " where ar.topic_id = ?;";
-//        var articles = jdbcTemplate.query(sql, new ArticleMapper(), topicId);
-//
-//        if (articles.size() > 0) {
-//            for (Article article : articles) {
-//                addFeedbackTags(article);
-//                addPosts(article);
-//            }
-//        }
-//
-//        return articles;
-//    }
+    @Override
+    public List<Article> findArticleByTopicId(int topicId) {
+        final String sql = "select a.article_id, a.title, a.`description`, a.author, a.article_url," +
+                " a.article_image_url, a.date_published, a.date_posted, a.is_active," +
+                " s.source_id, s.source_name, s.website_url, s.`description`" +
+                " from article a" +
+                " left outer join `source` s on a.source_id = s.source_id" +
+                " inner join article_topic ar on a.article_id = ar.article_id" +
+                " where ar.topic_id = ?;";
+
+        var articles = jdbcTemplate.query(sql, new ArticleMapper(), topicId);
+
+        if (articles.size() > 0) {
+            for(Article article : articles) {
+                addFeedbackTags(article);
+                addTopics(article);
+                addPosts(article);
+            }
+        }
+
+        return articles;
+    }
 
     @Override
     public List<Article> findByPostedDateRange(LocalDateTime d1, LocalDateTime d2) {
