@@ -194,11 +194,15 @@ public class ArticleJdbcTemplateRepository implements ArticleRepository {
 
         var feedbackTags = jdbcTemplate.query(sql, new ArticleFeedbackTagMapper(), article.getArticleId());
 
-        HashMap<String, Integer> hm = new HashMap<>();
+        HashMap<String, FeedbackTagHashmapHelper> hm = new HashMap<>();
         if (feedbackTags.size() > 0) {
             for (ArticleFeedbackTag i : feedbackTags) {
-                Integer j = hm.get(i);
-                hm.put(String.format("%s&&~&&%s", i.getFeedbackTag().getName(), i.getFeedbackTag().getColorHex()), (j == null) ? 1 : j + 1);
+                FeedbackTagHashmapHelper feedbackTagHashmapHelper = hm.get(i.getFeedbackTag().getName());
+                Integer j = null;
+                if (feedbackTagHashmapHelper != null) {
+                    j = feedbackTagHashmapHelper.getOccurrences();
+                }
+                hm.put(i.getFeedbackTag().getName(), new FeedbackTagHashmapHelper((j == null) ? 1 : j + 1, i.getFeedbackTag().getColorHex()));
             }
         }
 

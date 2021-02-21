@@ -4,6 +4,7 @@ import capstone.dissent.data.mappers.FeedbackTagMapper;
 import capstone.dissent.data.mappers.PostFeedbackTagMapper;
 import capstone.dissent.data.mappers.PostMapper;
 import capstone.dissent.models.FeedbackTag;
+import capstone.dissent.models.FeedbackTagHashmapHelper;
 import capstone.dissent.models.Post;
 import capstone.dissent.models.PostFeedbackTag;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -177,11 +178,15 @@ public class PostJdbcTemplateRepository implements PostRepository {
 
         var feedbackTags = jdbcTemplate.query(sql, new PostFeedbackTagMapper(), post.getPostId());
 
-        HashMap<String, Integer> hm = new HashMap<>();
+        HashMap<String, FeedbackTagHashmapHelper> hm = new HashMap<>();
         if (feedbackTags.size() > 0) {
             for (PostFeedbackTag i : feedbackTags) {
-                Integer j = hm.get(i);
-                hm.put(String.format("%s&&~&&%s", i.getFeedbackTag().getName(), i.getFeedbackTag().getColorHex()), (j == null) ? 1 : j + 1);
+                FeedbackTagHashmapHelper feedbackTagHashmapHelper = hm.get(i.getFeedbackTag().getName());
+                Integer j = null;
+                if (feedbackTagHashmapHelper != null) {
+                    j = feedbackTagHashmapHelper.getOccurrences();
+                }
+                hm.put(i.getFeedbackTag().getName(), new FeedbackTagHashmapHelper((j == null) ? 1 : j + 1, i.getFeedbackTag().getColorHex()));
             }
         }
 
