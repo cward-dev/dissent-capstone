@@ -46,7 +46,7 @@ function ArticlePage ( { user } ) {
 
   return (
     <div>
-      <ArticleCard articleOpen={true} article={article} setAddPost={setAddPost} />
+      <ArticleCard articleOpen={true} article={article} setAddPost={setAddPost} user={user} />
       <hr></hr>
       {addPost ? <AddPost addPost={addPost} setAddPost={setAddPost} articleId={articleId} user={user} /> : null}
       <PostFeed posts={article.posts} user={user} />

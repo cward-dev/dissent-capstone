@@ -29,7 +29,7 @@ function TopicPage ( { user } ) {
 
   const makeArticle = (article) => {
     return (
-      <ArticleCard key={article.articleId} article={article} />
+      <ArticleCard key={article.articleId} article={article} user={user} />
     );
   };
 

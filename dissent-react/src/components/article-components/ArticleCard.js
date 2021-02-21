@@ -2,11 +2,13 @@ import { useState , useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import FeedbackTagIcon from '../feedback-tag-components/FeedbackTagIcon';
 import FeedbackTagForm from '../feedback-tag-components/FeedbackTagForm';
+import DeleteArticle from './DeleteArticle';
 import './ArticleCard.css';
 
 function ArticleCard ( { article, articleOpen, setAddPost, user } ) {
 
   const [feedbackTagMenuDisplayed, setFeedbackTagMenuDisplayed] = useState(false);
+  const [deleteArticle, setDeleteArticle] = useState(false);
 
   const { articleId, title, description, author, articleUrl, articleImageUrl, datePublished, datePosted, source, topics, posts, feedbackTags } = article;
 
@@ -62,6 +64,10 @@ function ArticleCard ( { article, articleOpen, setAddPost, user } ) {
     setAddPost(true);
   }
 
+  const handleDelete = () => {
+    setDeleteArticle(true);
+  }
+
   return (
     <>
       <div className="article-card card flex-row flex-wrap text-white bg-dark mb-4">
@@ -81,11 +87,15 @@ function ArticleCard ( { article, articleOpen, setAddPost, user } ) {
           </div>
         </div>
         <div className="card-footer w-100 text-muted px-1">
+          {deleteArticle ? <DeleteArticle article={article} setDeleteArticle={setDeleteArticle} user={user} /> : null}
           <div className="row">  
             <div className="col pl-4">
               <FeedbackTagIcon feedbackTagMenuDisplayed={feedbackTags} setFeedbackTagMenuDisplayed={setFeedbackTagMenuDisplayed} object={article} user={user} />
             </div>
-            <div className="col text-right">
+            <div className="mr-3">
+              {user.user_role === "admin" ? <>
+                    <button onClick={handleDelete} className="btn btn-secondary mr-2 px-2 py-1">Delete</button>
+                  </> : null}
               {articleOpen ? <button className="btn btn-secondary px-2 py-1 mr-2" onClick={handleAddPost}>Add Post</button> : <Link className="btn btn-secondary px-2 py-1 mr-2" to={`/article/${articleId}`}>Discussion ({discussionLength})</Link>}
             </div>
           </div>
