@@ -40,6 +40,9 @@ function App() {
         <div className="row">
           <div className="col-8 alert alert-secondary pt-4">
             <Switch>
+              <Route path={'/article/add'} exact>
+                <ArticlePage user={user} />
+              </Route>
               <Route path={'/article/:articleId'} exact>
                 <ArticlePage user={user} />
               </Route>

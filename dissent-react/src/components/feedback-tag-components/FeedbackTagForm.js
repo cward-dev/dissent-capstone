@@ -118,6 +118,7 @@ function FeedbackTagForm ( { object, user } ) {
     <div className="container alert alert-dark">
       <div className="row ">
         <Errors errors = {errors}/>
+        <div className="col-4">
           <form onSubmit={handleSubmit}>
             <label htmlFor="feedbackTagId"><h3>Feedback</h3></label>
             <select id="feedbackTagId" name="feedbackTagId" 

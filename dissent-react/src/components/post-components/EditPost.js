@@ -14,7 +14,6 @@ function EditPost ( { originalPost, articleId, setCurrentOption, user } ) {
     const updatedPost = {...post};
     updatedPost[event.target.name] = event.target.value;
     setPost(updatedPost);
-    console.log(event.target.value);
   };
 
   const handleEditSubmit = async (event) => {
