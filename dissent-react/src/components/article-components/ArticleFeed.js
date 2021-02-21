@@ -1,11 +1,11 @@
 import ArticleCard from './ArticleCard.js';
 import './ArticleFeed.css';
 
-function ArticleFeed( { articles } ) {
+function ArticleFeed( { articles, user } ) {
 
   const makeArticle = (article) => {
     return (
-      <ArticleCard key={article.articleId} article={article} />
+      <ArticleCard key={article.articleId} article={article} user={user} />
     );
   };
 

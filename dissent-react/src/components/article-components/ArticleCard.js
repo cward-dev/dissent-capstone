@@ -1,11 +1,14 @@
+import { useState , useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import FeedbackTagIcon from '../feedback-tag-components/FeedbackTagIcon';
+import FeedbackTagForm from '../feedback-tag-components/FeedbackTagForm';
 import './ArticleCard.css';
 
-function ArticleCard ( { article, articleOpen, setAddPost } ) {
+function ArticleCard ( { article, articleOpen, setAddPost, user } ) {
+
+  const [feedbackTagMenuDisplayed, setFeedbackTagMenuDisplayed] = useState(false);
 
   const { articleId, title, description, author, articleUrl, articleImageUrl, datePublished, datePosted, source, topics, posts, feedbackTags } = article;
-
 
   const getTimePassed = (date) => {
     const timestampDate = new Date(date);
@@ -59,7 +62,6 @@ function ArticleCard ( { article, articleOpen, setAddPost } ) {
     setAddPost(true);
   }
 
-
   return (
     <div className="article-card card flex-row flex-wrap text-white bg-dark mb-4">
       <div className="border-0">
@@ -80,13 +82,13 @@ function ArticleCard ( { article, articleOpen, setAddPost } ) {
       <div className="card-footer w-100 text-muted px-1">
         <div className="row">  
           <div className="col pl-4">
-             {/* I also need a userID */}
-            <FeedbackTagIcon data = {feedbackTags} id = {articleId}/>
+            <FeedbackTagIcon feedbackTagMenuDisplayed={feedbackTags} setFeedbackTagMenuDisplayed={setFeedbackTagMenuDisplayed} object={article} user={user} />
           </div>
           <div className="col text-right">
             {articleOpen ? <button className="btn btn-secondary px-2 py-1 mr-2" onClick={handleAddPost}>Add Post</button> : <Link className="btn btn-secondary px-2 py-1 mr-2" to={`/article/${articleId}`}>Discussion ({discussionLength})</Link>}
           </div>
         </div>
+        {feedbackTagMenuDisplayed ? <FeedbackTagForm object={article} user={user} /> : null}
       </div>
     </div>
   );

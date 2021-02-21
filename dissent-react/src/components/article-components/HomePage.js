@@ -20,7 +20,7 @@ function HomePage( { user } ) {
 
   return (
     <div className="container">
-      <ArticleFeed articles={articles} />
+      <ArticleFeed articles={articles} user={user} />
     </div>
   );
 }
