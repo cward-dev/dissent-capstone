@@ -132,6 +132,7 @@ function FeedbackTagForm ( { object, user } ) {
           </form>
         </div>
       </div>
+    </div>
   );
 
 } export default FeedbackTagForm;
