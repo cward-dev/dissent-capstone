@@ -12,6 +12,8 @@ public interface TopicRepository {
 
     public Topic findById(int topicId);
 
+    public Topic findByTopicName(String topicName);
+
     public Topic findInactiveByName(String topicName);
 
     public Topic add(Topic topic);

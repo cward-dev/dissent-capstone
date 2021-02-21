@@ -4,6 +4,7 @@ import capstone.dissent.data.mappers.FeedbackTagMapper;
 import capstone.dissent.data.mappers.PostFeedbackTagMapper;
 import capstone.dissent.data.mappers.PostMapper;
 import capstone.dissent.models.FeedbackTag;
+import capstone.dissent.models.FeedbackTagHashmapHelper;
 import capstone.dissent.models.Post;
 import capstone.dissent.models.PostFeedbackTag;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -124,6 +125,7 @@ public class PostJdbcTemplateRepository implements PostRepository {
                 + "values (?,?,?,?,?,?,?);";
 
         post.setPostId(java.util.UUID.randomUUID().toString());
+        post.setTimestamp(LocalDateTime.now());
 
         int rowsAffected = jdbcTemplate.update(connection -> {
             PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
@@ -169,18 +171,22 @@ public class PostJdbcTemplateRepository implements PostRepository {
     private void addFeedbackTags(Post post) {
 
         final String sql = "select pft.post_id, pft.user_id, pft.feedback_tag_id, "
-                + "ft.feedback_tag_id, ft.feedback_tag_name, ft.is_active "
+                + "ft.feedback_tag_id, ft.feedback_tag_name, ft.color_hex, ft.is_active "
                 + "from post_feedback_tag pft "
                 + "inner join feedback_tag ft on pft.feedback_tag_id = ft.feedback_tag_id "
                 + "where pft.post_id = ?";
 
         var feedbackTags = jdbcTemplate.query(sql, new PostFeedbackTagMapper(), post.getPostId());
 
-        HashMap<String, Integer> hm = new HashMap<>();
+        HashMap<String, FeedbackTagHashmapHelper> hm = new HashMap<>();
         if (feedbackTags.size() > 0) {
             for (PostFeedbackTag i : feedbackTags) {
-                Integer j = hm.get(i);
-                hm.put(i.getFeedbackTag().getName(), (j == null) ? 1 : j + 1);
+                FeedbackTagHashmapHelper feedbackTagHashmapHelper = hm.get(i.getFeedbackTag().getName());
+                Integer j = null;
+                if (feedbackTagHashmapHelper != null) {
+                    j = feedbackTagHashmapHelper.getOccurrences();
+                }
+                hm.put(i.getFeedbackTag().getName(), new FeedbackTagHashmapHelper((j == null) ? 1 : j + 1, i.getFeedbackTag().getColorHex()));
             }
         }
 

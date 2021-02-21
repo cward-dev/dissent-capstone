@@ -81,6 +81,7 @@ class FeedbackTagJdbcTemplateRepositoryTest {
         FeedbackTag feedbackTag = new FeedbackTag();
         feedbackTag.setFeedbackTagId(2);
         feedbackTag.setName("Very Fallacious");
+        feedbackTag.setColorHex("#000000");
         assertTrue(repository.edit(feedbackTag));
         feedbackTag.setFeedbackTagId(16);
         assertFalse(repository.edit(feedbackTag));
@@ -95,6 +96,7 @@ class FeedbackTagJdbcTemplateRepositoryTest {
     private FeedbackTag makeFeedbackTag() {
         FeedbackTag feedbackTag = new FeedbackTag();
         feedbackTag.setName("Super Sound");
+        feedbackTag.setColorHex("#000000");
         return feedbackTag;
     }
 

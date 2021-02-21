@@ -23,6 +23,7 @@ public class PostFeedbackTagJdbcTemplateRepository implements PostFeedbackTagRep
                 + "pft.user_id as user_id, "
                 + "ft.feedback_tag_id as feedback_tag_id, "
                 + "ft.feedback_tag_name as feedback_tag_name, "
+                + "ft.color_hex as color_hex, "
                 + "ft.is_active as is_active "
                 + "from post_feedback_tag pft "
                 + "inner join feedback_tag ft on pft.feedback_tag_id = ft.feedback_tag_id "

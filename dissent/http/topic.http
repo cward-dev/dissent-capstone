@@ -1,9 +1,5 @@
 @url = http://localhost:8080/api/topic
 
-GET http://localhost:8080/api/article HTTP/1.1
-
-###
-
 GET {{url}} HTTP/1.1
 
 ###

@@ -33,6 +33,10 @@ public class UserService {
         return repository.findById(userId);
     }
 
+    public User findByUsername(String username) {
+        return repository.findByUsername(username);
+    }
+
     public Result<User> add(User user) {
         Result<User> result = validate(user);
         if (!result.isSuccess()) {
@@ -79,6 +83,11 @@ public class UserService {
             return result;
         }
 
+        if (isDuplicateUsername(repository.findAll(), user)) {
+            result.addMessage("Username already exists.", ResultType.INVALID);
+            return result;
+        }
+
         Set<ConstraintViolation<User>> violations = validator.validate(user);
 
         if (!violations.isEmpty()) {
@@ -89,5 +98,12 @@ public class UserService {
         }
 
         return result;
+    }
+
+    private boolean isDuplicateUsername(List<User> users, User user) {
+
+        return users.stream()
+                .filter(u -> !u.getUserId().equals(user.getUserId())) // removes updating user
+                .anyMatch(u -> u.getUsername().equals(user.getUsername()));
     }
 }

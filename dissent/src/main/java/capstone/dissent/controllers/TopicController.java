@@ -40,6 +40,16 @@ public class TopicController {
         return ResponseEntity.ok(topic);
     }
 
+    @GetMapping("/name/{topicName}")
+    public ResponseEntity<Topic> findByTopicName(@PathVariable String topicName) {
+        Topic topic = service.findByTopicName(topicName);
+        if (topic == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        return ResponseEntity.ok(topic);
+    }
+
     @PostMapping
     public ResponseEntity<Object> add(@RequestBody Topic topic) {
         Result<Topic> result = service.add(topic);

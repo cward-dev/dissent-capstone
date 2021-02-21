@@ -1,0 +1,53 @@
+@url = http://localhost:8080/api/user
+
+### return All -
+GET {{url}} HTTP/1.1
+
+###
+GET {{url}}/username/accepter101 HTTP/1.1
+
+###
+GET {{url}}/id/25821ab3-6e6c-4258-911f-177ae9e13b31 HTTP/1.1
+
+### username already exists 400 error
+POST {{url}} HTTP/1.1
+Content-Type: application/json
+
+{
+    "userLoginId": "103a7d9b-f72b-4469-b1a3-bdba2f6356b4",
+    "username": "accepter101",
+    "role": "user",
+    "photoUrl": null,
+    "country": "United States",
+    "bio": null
+}
+
+### should post 
+POST {{url}} HTTP/1.1
+Content-Type: application/json
+
+{
+    "userLoginId": "103a7d9b-f72b-4469-b1a3-bdba2f6356b4",
+    "username": "milan-stoj",
+    "role": "user",
+    "photoUrl": null,
+    "country": "United States",
+    "bio": null
+}
+
+### should Edit 204 No content
+PUT {{url}}/0e4e4bcb-0477-41c1-9ff5-000a7d62b032  HTTP/1.1
+Content-Type: application/json
+
+{
+    "userId": "0e4e4bcb-0477-41c1-9ff5-000a7d62b032",
+    "username": "milan-stoj",
+    "role": "controller",
+    "photoUrl": "-url",
+    "country": "United States",
+    "bio": "hello, world!"
+}
+
+
+### should Delete 204 no content 
+DELETE {{url}}/0e4e4bcb-0477-41c1-9ff5-000a7d62b032  HTTP/1.1

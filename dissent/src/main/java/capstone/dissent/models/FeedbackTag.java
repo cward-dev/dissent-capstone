@@ -11,19 +11,25 @@ public class FeedbackTag {
     @NotBlank(message = "Feedback Tag name cannot be blank")
     @Size(max = MAX_CHARACTERS, message = "Feedback Tag name must be between 1 and 255 characters")
     String name;
+    @NotBlank(message = "Feedback Tag color hex cannot be blank")
+    @Size(min = 7, max=7, message = "Feedback Tag color hex must be 7 characters")
+    String colorHex;
 
     boolean isActive;
 
     public FeedbackTag(){
     }
 
-    public FeedbackTag(String name) {
+    public FeedbackTag(String name, String colorHex) {
         this.name = name;
+        this.colorHex = colorHex;
     }
 
-    public FeedbackTag(int feedbackTagId, String name, boolean isActive) {
+    public FeedbackTag(int feedbackTagId, String name, String colorHex, boolean isActive) {
         this.feedbackTagId = feedbackTagId;
         this.name = name;
+        this.colorHex = colorHex;
+        this.isActive = isActive;
     }
 
     public int getFeedbackTagId() {
@@ -40,6 +46,14 @@ public class FeedbackTag {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getColorHex() {
+        return colorHex;
+    }
+
+    public void setColorHex(String colorHex) {
+        this.colorHex = colorHex;
     }
 
     public boolean isActive() {

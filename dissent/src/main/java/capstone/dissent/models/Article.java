@@ -48,7 +48,7 @@ public class Article {
     Source source;
     List<Topic> topics = new ArrayList<>();
     List<Post> posts = new ArrayList<>();
-    HashMap<String, Integer> feedbackTags = new HashMap<>();
+    HashMap<String, FeedbackTagHashmapHelper> feedbackTags = new HashMap<>();
 
     public Article(String title, String description, String author,
                    String articleUrl, String articleImageUrl,
@@ -176,11 +176,12 @@ public class Article {
     public void setPosts(List<Post> posts) {
         this.posts = posts;
     }
-    public HashMap<String, Integer> getFeedbackTags() {
+
+    public HashMap<String, FeedbackTagHashmapHelper> getFeedbackTags() {
         return feedbackTags;
     }
 
-    public void setFeedbackTags(HashMap<String, Integer> feedbackTags) {
+    public void setFeedbackTags(HashMap<String, FeedbackTagHashmapHelper> feedbackTags) {
         this.feedbackTags = feedbackTags;
     }
 

@@ -19,6 +19,7 @@ class FeedbackTagTest {
     @Test
     public void tagNameShouldNotBeNull(){
         FeedbackTag tag = new FeedbackTag();
+        tag.setColorHex("#000000");
         Set<ConstraintViolation<FeedbackTag>> violations = validator.validate(tag);
         ConstraintViolation<FeedbackTag> first = violations.stream().findFirst().orElse(null);
         assertEquals(1, violations.size());
@@ -27,7 +28,8 @@ class FeedbackTagTest {
 
     @Test
     public void tagNameShouldNotBeBlank(){
-        FeedbackTag tag = new FeedbackTag("");
+        FeedbackTag tag = new FeedbackTag();
+        tag.setColorHex("#000000");
         Set<ConstraintViolation<FeedbackTag>> violations = validator.validate(tag);
         ConstraintViolation<FeedbackTag> first = violations.stream().findFirst().orElse(null);
         assertEquals(1, violations.size());
@@ -36,7 +38,7 @@ class FeedbackTagTest {
 
     @Test
     public void ShouldPass(){
-        FeedbackTag tag = new FeedbackTag("12112121");
+        FeedbackTag tag = new FeedbackTag("12112121", "#000000");
         Set<ConstraintViolation<FeedbackTag>> violations = validator.validate(tag);
         assertEquals(0, violations.size());
     }
