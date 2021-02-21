@@ -1,9 +1,9 @@
-import { useState , useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import FeedbackTagIcon from './FeedbackTagIcon.js';
-import AddFeedbackTag from './AddFeedbackTag.js';
 import Article from '../article-components/ArticleCard';
 import { PieChart } from 'react-minimal-pie-chart';
-import Errors  from '../Errors.js';
+import Errors from '../Errors.js';
+
 // JSON
 const DEFAULT_TAG = {
   "articleId": "",
@@ -16,11 +16,11 @@ const DEFAULT_TAG = {
   }
 };
 
-const DEF_FB_TAG ={
+const DEF_FB_TAG = {
   "feedbackTagId": 0,
 }
 
-function FeedbackTagForm ( { object, user } ) {
+function FeedbackTagForm({ object, user }) {
   const [hasSelected, setSelected] = useState(false);
   const [tag, setTag] = useState(DEFAULT_TAG);
   const [errors, setErrors] = useState([]);
@@ -28,14 +28,17 @@ function FeedbackTagForm ( { object, user } ) {
   const { feedbackTagId, name } = feedbackTagJSON;
 
 
+
+
+
   const addFeedbackTag = async (tag) => {
     console.log(tag);
 
-       const addedTag = {
-        "articleId": tag.articleId,
-        "userId": tag.userId,
-        "feedbackTag": tag.feedbackTag
-      }
+    const addedTag = {
+      "articleId": tag.articleId,
+      "userId": tag.userId,
+      "feedbackTag": tag.feedbackTag
+    }
 
 
     const init = {
@@ -54,28 +57,28 @@ function FeedbackTagForm ( { object, user } ) {
       if (response.status === 201 || response.status === 400) {
         // maybe fetch data go back to article fetch and get data...?
         setErrors([]);
-      } else if(response.status ===500){
+      } else if (response.status === 500) {
         throw new Error(["Duplicate Entries are not allowed"])
-      }else  {
+      } else {
         throw new Error(["Something unexpected went wrong, sorry!"]);
       }
     } catch (error) {
       console.log(error);
       if (error.message === "Failed to fetch") {
         setErrors(["Something went wrong with our database, sorry!"])
-      } else if(error.message ==="Duplicate Entries are not allowed"){
-          setErrors(["Duplicate Entries are not allowed"])
+      } else if (error.message === "Duplicate Entries are not allowed") {
+        setErrors(["Duplicate Entries are not allowed"])
       } else {
         setErrors(["Something unexpected went wrong, sorry!"]);
       }
     }
   }
 
-  const updateTag = async (tag) =>  {
+  const deleteTag = async (tag) => {
     console.log(tag);
 
     fetch(`http://localhost:8080/api/article/feedback-tag/${tag.articleId}/${user.userId}/${feedbackTagId}`, {
-      method: "DELETE"      
+      method: "DELETE"
     })
       .then(response => {
         if (response.status === 204) {
@@ -86,11 +89,7 @@ function FeedbackTagForm ( { object, user } ) {
           Promise.reject('Shoot! Something unexpected went wrong :(');
         }
       })
-      // {articleId}/{userId}/{feedbackTagId}
       .catch(error => console.log(error));
-
-      addFeedbackTag(tag);
-
   }
 
   const handleSubmit = (event) => {
@@ -98,25 +97,58 @@ function FeedbackTagForm ( { object, user } ) {
     tag.articleId = object.articleId;
     tag.userId = user.userId;
     tag.feedbackTag = feedbackTagJSON;
-    if(!hasSelected){
-    addFeedbackTag(tag);
+    if (!hasSelected) {
+      addFeedbackTag(tag);
     } else {
 
     }
     console.log(tag);
   };
 
-  const onChangeHandler = (event) =>{
-    event.preventDefault();
-    const newFeedbackTagJSON= {...feedbackTagJSON};
-    newFeedbackTagJSON[event.target.name] = event.target.value;
-    
+  const onChangeHandler = (event) => {
+    // event.preventDefault();
+    const newFeedbackTagJSON = { ...feedbackTagJSON };
+    // newFeedbackTagJSON[event.target.name] = event.target.value;
     setFeedbackTagJSON(newFeedbackTagJSON);
+    console.log(feedbackTagJSON);
+
   };
+
+  const [isToggledSound, setToogleSound] = useState(false);
+  const [isToggledFallacious, setToogleFallacious] = useState(false);
+  const [isToggledBiased, setToogleBiased] = useState(false);
+  const toggleTrueFalseSound = () => setToogleSound(!isToggledSound);
+  const toggleTrueFalseFallacious = () => setToogleFallacious(!isToggledFallacious);
+  const toggleTrueFalseBiased = () => setToogleBiased(!isToggledBiased);
+
+
 
   return (
     <div className="container alert alert-dark">
       <div className="row ">
+      
+        <Errors errors={errors} />
+        <form onSubmit={handleSubmit}>
+          <label htmlFor="feedbackTagId"><h3>Feedback</h3></label>
+          <select id="feedbackTagId" name="feedbackTagId"
+            onChange={onChangeHandler} value={feedbackTagId}>
+            <option value="">--Give Feedback--</option>
+            <option value="1">Sound</option>
+            <option value="2">Fallacious</option>
+            <option value="3">Biased</option>
+          </select>
+          <button type="submit">Submit</button>
+        </form>
+
+        <div>
+
+        <button onClick={toggleTrueFalseSound}>Sound </button>
+        <button onClick={toggleTrueFalseFallacious}>Fallacious</button>
+        <button onClick={toggleTrueFalseBiased}>Biased</button>
+
+
+
+
         <Errors errors = {errors}/>
         <div className="col-4">
           <form onSubmit={handleSubmit}>
@@ -130,6 +162,7 @@ function FeedbackTagForm ( { object, user } ) {
             </select>
             <button type="submit">Submit</button>
           </form>
+
         </div>
       </div>
     </div>
