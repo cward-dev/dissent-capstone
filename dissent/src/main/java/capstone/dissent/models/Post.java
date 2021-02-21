@@ -35,7 +35,7 @@ public class Post {
     User user;
 
     List<Post> childPosts = new ArrayList<>();
-    HashMap<String, Integer> feedbackTags = new HashMap<>();
+    HashMap<String, FeedbackTagHashmapHelper> feedbackTags = new HashMap<>();
 
     public Post() {
         this.isActive = true;
@@ -146,11 +146,11 @@ public class Post {
         this.childPosts = childPosts;
     }
 
-    public HashMap<String, Integer> getFeedbackTags() {
+    public HashMap<String, FeedbackTagHashmapHelper> getFeedbackTags() {
         return feedbackTags;
     }
 
-    public void setFeedbackTags(HashMap<String, Integer> feedbackTags) {
+    public void setFeedbackTags(HashMap<String, FeedbackTagHashmapHelper> feedbackTags) {
         this.feedbackTags = feedbackTags;
     }
 
