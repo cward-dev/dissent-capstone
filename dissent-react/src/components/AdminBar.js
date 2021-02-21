@@ -30,7 +30,7 @@ function AdminBar ( { user } ) {
         <div className="mr-auto align-self-center"><h5 className="pt-1 mr-4">Admin</h5></div>
         <button className="btn btn-dark mr-2" onClick={onAddTopic}>Add Topic</button>
         <div className="ml-2" />
-        <Link className="btn btn-dark mr-2" to="./article/add">Add Articles</Link>
+        <Link className="btn btn-dark mr-2" to="/article/add">Add Articles</Link>
         <div className="ml-2" />
         <button className="btn btn-dark mr-2" onClick={onViewUsers}>View Users</button>
       </div>
