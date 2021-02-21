@@ -68,6 +68,7 @@ function ArticleCard ( { article, articleOpen, setAddPost, user } ) {
         <div className="border-0">
           <a href={articleUrl}><img src={articleImageUrl} className="card-img-top" /></a>
         </div>
+
         <div className="col p-3">
           <a href={articleUrl}><h4 className="card-title">{title}</h4></a>
           <p className="card-text">{description}</p>
@@ -78,6 +79,7 @@ function ArticleCard ( { article, articleOpen, setAddPost, user } ) {
             <div className="col-4 text-right align-bottom">
               <p className="source-author-line card-text"><br />{timePassed}</p>
             </div>
+
           </div>
         </div>
         <div className="card-footer w-100 text-muted px-1">
