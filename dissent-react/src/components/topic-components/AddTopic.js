@@ -2,14 +2,10 @@ import { useState, useEffect } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import Errors from '../Errors.js';
 
-function AddPost ( { articleId, setAddPost, user } ) {
+function AddTopic ( { setAdminBarSelection, user } ) {
 
-  const [post, setPost] = useState( {
-    "parentPostId": null,
-    "articleId": articleId,
-    "dissenting": true,
-    "content": '',
-    "user": user
+  const [topic, setTopic] = useState( {
+    "topicName": ''
   } );
 
   const [errors, setErrors] = useState([]);
@@ -17,9 +13,9 @@ function AddPost ( { articleId, setAddPost, user } ) {
   const history = useHistory();
 
   const handleChange = (event) => {
-    const updatedPost = {...post};
-    updatedPost[event.target.name] = event.target.value;
-    setPost(updatedPost);
+    const updatedTopic = {...topic};
+    updatedTopic[event.target.name] = event.target.value;
+    setTopic(updatedTopic);
   };
 
   const handleAddSubmit = async (event) => {
@@ -31,19 +27,19 @@ function AddPost ( { articleId, setAddPost, user } ) {
         "Content-Type": "application/json",
         "Accept": "application/json"
       },
-      body: JSON.stringify(post)
+      body: JSON.stringify(topic)
     };
 
     try {
-      const response = await fetch("http://localhost:8080/api/post", init);
+      const response = await fetch("http://localhost:8080/api/topic", init);
 
       if (response.status === 201 || response.status === 400) {
         const data = await response.json();
 
-        if (data.postId) {
+        if (data.topicId) {
           // kinda hokey
           history.push(`/`);
-          history.push(`/article/${articleId}`);
+          history.push(`/t/${topic.topicName}`);
           handleCancel();
         } else {
           setErrors(data);
@@ -57,7 +53,7 @@ function AddPost ( { articleId, setAddPost, user } ) {
   }
 
   const handleCancel = () => {
-    setAddPost(false);
+    setAdminBarSelection(0);
   }
 
   return (
@@ -65,26 +61,16 @@ function AddPost ( { articleId, setAddPost, user } ) {
       <Errors errors={errors} />
       <div className="form-row mb-4">
         <div className="col-9">
-          <label htmlFor="content" className="pl-2 pt-2">New Post</label>
+          <label htmlFor="content" className="pl-2 pt-2">New Topic</label>
         </div>
-        <div className="col-3">
-          <div className="container mb-3">
-            <select id="dissenting" name="dissenting" className="form-control" required onChange={handleChange}>
-              <option value="">Stance</option>
-              <option value="true">Dissenting</option>
-              <option value="false">Accepting</option>
-            </select>
-          </div>
-        </div>
-        <textarea className="form-control mb-3 mr-3" id="content" name="content" type="textarea" rows="5" onChange={handleChange} />
+        <input type="text" className="form-control mb-3 mx-3" id="topicName" name="topicName" onChange={handleChange} />
         <div className="col text-right">
           <button type="button" className="btn btn-light btn-sm" onClick={handleCancel}>Cancel</button>
           <button type="submit" className="btn btn-dark ml-2 mr-3 btn-sm">Submit</button>
         </div>
       </div>
-      <hr></hr>
     </form>
   );
 }
 
-export default AddPost;
+export default AddTopic;

@@ -1,25 +1,18 @@
 import { useState, useEffect } from 'react';
-import { Link, useHistory, useParams } from 'react-router-dom';
-import Errors from '../Errors.js';
-import ArticleCard from '../article-components/ArticleCard.js';
-import AddPost from '../post-components/AddPost.js';
-import PostFeed from '../post-components/PostFeed.js';
+import ArticleCard from './ArticleCard.js';
+import './ArticleFeed.css';
 
-function TopicPage ( { user } ) {
-  const { topicName } = useParams();
-  const [topic, setTopic] = useState({});
+function NewsAPIFeed ( { user } ) {
+
   const [articles, setArticles] = useState([]);
   const [errors, setErrors] = useState([]);
-  const history = useHistory();
-
+  
   useEffect(() => {
     const getData = async () => {
       try {
-        const response = await fetch(`http://localhost:8080/api/topic/name/${topicName}`);
+        const response = await fetch("https://newsapi.org/v2/top-headlines?country=us&apiKey=46f374bc4801471fa5acc0956d739b7c");
         const data = await response.json();
-        setTopic(data);
-        setArticles(data.articles);
-
+        setArticles(data);
       } catch (error) {
         setErrors(["Something went wrong with our database, sorry!"]);
       }
@@ -35,13 +28,12 @@ function TopicPage ( { user } ) {
 
   return (
     <div>
-      <Errors errors={errors} />
       <div className="alert alert-dark mb-4 text-center">
-        <h2>{topic.topicName} Articles</h2>
+        <h2>Add New Articles</h2>
       </div>
       {articles.sort((a, b) => (new Date(a.datePosted) < new Date(b.datePosted)) ? 1 : -1).map(article => makeArticle(article))}
     </div>
   );
 }
 
-export default TopicPage;
+export default NewsAPIFeed;

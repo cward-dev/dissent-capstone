@@ -126,6 +126,7 @@ function FeedbackTagForm({ object, user }) {
   return (
     <div className="container alert alert-dark">
       <div className="row ">
+      
         <Errors errors={errors} />
         <form onSubmit={handleSubmit}>
           <label htmlFor="feedbackTagId"><h3>Feedback</h3></label>
@@ -146,6 +147,21 @@ function FeedbackTagForm({ object, user }) {
         <button onClick={toggleTrueFalseBiased}>Biased</button>
 
 
+
+
+        <Errors errors = {errors}/>
+        <div className="col-4">
+          <form onSubmit={handleSubmit}>
+            <label htmlFor="feedbackTagId"><h3>Feedback</h3></label>
+            <select id="feedbackTagId" name="feedbackTagId" 
+            onChange={onChangeHandler} value = {feedbackTagId}>
+              <option value="">--Give Feedback--</option>
+              <option value="1">Sound</option>
+              <option value="2">Fallacious</option>
+              <option value="3">Biased</option>
+            </select>
+            <button type="submit">Submit</button>
+          </form>
 
         </div>
       </div>

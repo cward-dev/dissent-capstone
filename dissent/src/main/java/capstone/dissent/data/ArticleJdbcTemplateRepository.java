@@ -34,7 +34,8 @@ public class ArticleJdbcTemplateRepository implements ArticleRepository {
                 " a.article_image_url, a.date_published, a.date_posted, a.is_active," +
                 " s.source_id, s.source_name, s.website_url, s.`description`" +
                 " from article a" +
-                " left outer join `source` s on a.source_id = s.source_id;";
+                " left outer join `source` s on a.source_id = s.source_id" +
+                " where a.is_active = true;";
 
         List<Article> result = jdbcTemplate.query(sql, new ArticleMapper());
 

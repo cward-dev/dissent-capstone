@@ -15,7 +15,7 @@ const DEFAULT_USER = {
   "userId": "dffec086-b1e9-455a-aab4-ff6c6611fef0",
   "userLoginId": "103a7d9b-f72b-4469-b1a3-bdba2f6356b4",
   "username": "dissenter101",
-  "user_role": "user",
+  "user_role": "admin",
   "photo_url": "https://www.birdnote.org/sites/default/files/Daffy_Duck-2-warner-bros-625.jpg", 
   "country": "United States", 
   "bio": "The truth is out there."
@@ -40,6 +40,9 @@ function App() {
         <div className="row">
           <div className="col-8 alert alert-secondary pt-4">
             <Switch>
+              <Route path={'/article/add'} exact>
+                <ArticlePage user={user} />
+              </Route>
               <Route path={'/article/:articleId'} exact>
                 <ArticlePage user={user} />
               </Route>
