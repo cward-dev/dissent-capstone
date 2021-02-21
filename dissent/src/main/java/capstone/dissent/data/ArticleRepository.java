@@ -12,7 +12,7 @@ public interface ArticleRepository {
 
     Article findArticleByArticleId(String articleId);
 
-//    List<Article> findArticleByTopicId(int topicId);
+    List<Article> findArticleByTopicId(int topicId);
 
     List<Article> findByPostedDateRange(LocalDateTime d1, LocalDateTime d2);
 
@@ -22,5 +22,5 @@ public interface ArticleRepository {
 
     boolean inactivateArticle(String articleId);
 
-//    HashMap<FeedbackTag, Integer> getTagData(Article article);
+//    HashMap<String, Integer> getTagData(Article article);
 }

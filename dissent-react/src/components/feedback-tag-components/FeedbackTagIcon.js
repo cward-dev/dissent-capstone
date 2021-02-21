@@ -1,7 +1,35 @@
-function FeedbackTagIcon() {
-  return (
-    <a href="http://www.google.com"><img className="mr-3 rounded-circle tag-pie-chart" src="http://www.pngpix.com/wp-content/uploads/2016/10/PNGPIX-COM-Pie-Chart-PNG-Image.png" /></a>
-  );
-}
+import {useState , useEffect} from 'react';
+import { PieChart } from 'react-minimal-pie-chart';
+import Article from '../article-components/ArticleCard';
+import FeedbackForm from './FeedbackTagForm';
+import './FeedbackTagIcon.css';
+ 
+function FeedbackTagIcon( { feedbackTagMenuDisplayed, setFeedbackTagMenuDisplayed, object, user } ) {
 
+  let handleClick = () => {
+    if (feedbackTagMenuDisplayed) {
+      setFeedbackTagMenuDisplayed(false);
+    } else {
+      setFeedbackTagMenuDisplayed(true);
+    }
+  }
+ 
+  return(
+    <div>
+      <button onClick={handleClick} className="btn btn-link btn-small">
+        <div className="container feedbackTagIcon">
+          <PieChart
+            center={[1, 1]}
+            animate
+            animationDuration={500}
+            data={object.feedbackTags}
+            radius={1}
+            viewBoxSize={[2, 2]}
+          />
+        </div>
+        </button>
+    </div>
+  );
+
+}
 export default FeedbackTagIcon;

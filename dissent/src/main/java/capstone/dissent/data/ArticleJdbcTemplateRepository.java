@@ -7,13 +7,13 @@ import capstone.dissent.models.*;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.sql.Timestamp;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 
 @Repository
@@ -21,8 +21,11 @@ public class ArticleJdbcTemplateRepository implements ArticleRepository {
 
     private final JdbcTemplate jdbcTemplate;
 
-    public ArticleJdbcTemplateRepository(JdbcTemplate jdbcTemplate) {
+    private final PostRepository postRepository;
+
+    public ArticleJdbcTemplateRepository(JdbcTemplate jdbcTemplate, PostRepository postRepository) {
         this.jdbcTemplate = jdbcTemplate;
+        this.postRepository = postRepository;
     }
 
     @Override
@@ -31,7 +34,8 @@ public class ArticleJdbcTemplateRepository implements ArticleRepository {
                 " a.article_image_url, a.date_published, a.date_posted, a.is_active," +
                 " s.source_id, s.source_name, s.website_url, s.`description`" +
                 " from article a" +
-                " left outer join `source` s on a.source_id = s.source_id;";
+                " left outer join `source` s on a.source_id = s.source_id" +
+                " where a.is_active = true;";
 
         List<Article> result = jdbcTemplate.query(sql, new ArticleMapper());
 
@@ -53,7 +57,7 @@ public class ArticleJdbcTemplateRepository implements ArticleRepository {
                 " s.source_id, s.source_name, s.website_url, s.`description`" +
                 " from article a" +
                 " left outer join `source` s on a.source_id = s.source_id" +
-                " where article_id = ?;";
+                " where a.article_id = ?;";
 
         Article article = jdbcTemplate.query(sql, new ArticleMapper(), articleId).stream()
                 .findFirst().orElse(null);
@@ -68,22 +72,28 @@ public class ArticleJdbcTemplateRepository implements ArticleRepository {
         return article;
     }
 
-//    @Override // TODO maybe delete?
-//    public List<Article> findArticleByTopicId(int topicId) {
-//        final String sql = "select a.article_id, a.title,a.description, a.source_id, a.author, a.article_url, " +
-//                " a.article_image_url, a.date_published, a.date_posted, a.is_active from article a inner join article_topic ar on a.article_id = ar.article_id"
-//                + " where ar.topic_id = ?;";
-//        var articles = jdbcTemplate.query(sql, new ArticleMapper(), topicId);
-//
-//        if (articles.size() > 0) {
-//            for (Article article : articles) {
-//                addFeedbackTags(article);
-//                addPosts(article);
-//            }
-//        }
-//
-//        return articles;
-//    }
+    @Override
+    public List<Article> findArticleByTopicId(int topicId) {
+        final String sql = "select a.article_id, a.title, a.`description`, a.author, a.article_url," +
+                " a.article_image_url, a.date_published, a.date_posted, a.is_active," +
+                " s.source_id, s.source_name, s.website_url, s.`description`" +
+                " from article a" +
+                " left outer join `source` s on a.source_id = s.source_id" +
+                " inner join article_topic ar on a.article_id = ar.article_id" +
+                " where ar.topic_id = ?;";
+
+        var articles = jdbcTemplate.query(sql, new ArticleMapper(), topicId);
+
+        if (articles.size() > 0) {
+            for(Article article : articles) {
+                addFeedbackTags(article);
+                addTopics(article);
+                addPosts(article);
+            }
+        }
+
+        return articles;
+    }
 
     @Override
     public List<Article> findByPostedDateRange(LocalDateTime d1, LocalDateTime d2) {
@@ -165,7 +175,7 @@ public class ArticleJdbcTemplateRepository implements ArticleRepository {
     }
 
 //    @Override
-//    public HashMap<FeedbackTag, Integer> getTagData(Article article) {
+//    public HashMap<String, Integer> getTagData(Article article) {
 //        final String sql = "select ft.feedback_tag_id, ft.feedback_tag_name" +
 //                " from article_feedback_tag aft inner join feedback_tag ft on  aft.feedback_tag_id = ft.feedback_tag_id"
 //                + " where aft.article_id = ?;";
@@ -173,7 +183,7 @@ public class ArticleJdbcTemplateRepository implements ArticleRepository {
 //           var allTags = jdbcTemplate.query(sql,new FeedbackTagMapper(),article.getArticleId());
 //
 //           for(FeedbackTag tag : allTags){
-//               article.addFeedbackTagToArticle(tag);
+//               article.addFeedbackTagToArticle(tag.getName());
 //           }
 //        return article.getFeedbackTags();
 //    }
@@ -181,22 +191,38 @@ public class ArticleJdbcTemplateRepository implements ArticleRepository {
     private void addFeedbackTags(Article article) {
 
         final String sql = "select aft.article_id, aft.user_id, aft.feedback_tag_id, "
-                + "ft.feedback_tag_id, ft.feedback_tag_name, ft.is_active "
+                + "ft.feedback_tag_id, ft.feedback_tag_name, ft.color_hex, ft.is_active "
                 + "from article_feedback_tag aft "
                 + "inner join feedback_tag ft on aft.feedback_tag_id = ft.feedback_tag_id "
                 + "where aft.article_id = ?";
 
         var feedbackTags = jdbcTemplate.query(sql, new ArticleFeedbackTagMapper(), article.getArticleId());
 
-        HashMap<String, Integer> hm = new HashMap<>();
+        List<FeedbackTagHelper> list = new ArrayList<>();
         if (feedbackTags.size() > 0) {
             for (ArticleFeedbackTag i : feedbackTags) {
-                Integer j = hm.get(i);
-                hm.put(i.getFeedbackTag().getName(), (j == null) ? 1 : j + 1);
+                if (list.size() == 0) {
+                    list.add(new FeedbackTagHelper(i.getFeedbackTag().getName(), 1, i.getFeedbackTag().getColorHex()));
+                    continue;
+                }
+
+                boolean found = false;
+
+                for (FeedbackTagHelper feedbackTagHelper : list) {
+                    if (feedbackTagHelper.getTitle().equalsIgnoreCase(i.getFeedbackTag().getName())) {
+                        feedbackTagHelper.setValue(feedbackTagHelper.getValue() + 1);
+                        found = true;
+                        break;
+                    }
+                }
+
+                if (!found) {
+                    list.add(new FeedbackTagHelper(i.getFeedbackTag().getName(), 1, i.getFeedbackTag().getColorHex()));
+                }
             }
         }
 
-        article.setFeedbackTags(hm);
+        article.setFeedbackTags(list);
     }
 
     private void addTopics(Article article) {
@@ -218,7 +244,7 @@ public class ArticleJdbcTemplateRepository implements ArticleRepository {
                 + "inner join `user` u on p.user_id = u.user_id "
                 + "where p.article_id = ?;"; // fixed issue where only top-level post reply was being added to article.
 
-        var posts = jdbcTemplate.query(sql, new PostMapper(jdbcTemplate), article.getArticleId());
+        List<Post> posts = postRepository.findByArticleId(article.getArticleId());
         article.setPosts(posts);
     }
 

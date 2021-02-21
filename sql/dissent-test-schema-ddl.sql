@@ -66,6 +66,7 @@ CREATE TABLE article_topic (
 CREATE TABLE feedback_tag (
     feedback_tag_id INT PRIMARY KEY AUTO_INCREMENT,
     feedback_tag_name VARCHAR(255) NOT NULL,
+	color_hex VARCHAR(7) NOT NULL,
     is_active BOOL NOT NULL DEFAULT true
 );
 
@@ -281,13 +282,13 @@ begin
 		);
         
 	insert into feedback_tag 
-		(feedback_tag_id, feedback_tag_name, is_active)
-    values
-		(1, 'Sound', 1),
-        (2, 'Fallicious', 1),
-        (3, 'Biased', 1),
-        (4, 'Not Nice', 0),
-        (5, 'Too Nice', 0);
+		(feedback_tag_id, feedback_tag_name, color_hex, is_active)
+	values
+		(1, 'Sound', '#00ff00', 1),
+		(2, 'Fallacious', '#ffa500', 1),
+		(3, 'Biased', '#FF0000', 1),
+		(4, 'Not Nice', '#800000', 0),
+		(5, 'Too Nice', '#000000', 0);
 	
 	insert into post_feedback_tag 
 		(post_id, user_id, feedback_tag_id)

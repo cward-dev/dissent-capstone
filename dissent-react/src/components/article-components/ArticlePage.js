@@ -2,7 +2,8 @@ import { useState, useEffect } from 'react';
 import { Link, useHistory, useParams } from 'react-router-dom';
 import Errors from '../Errors.js';
 import ArticleCard from './ArticleCard.js';
-import PostList from '../post-components/PostList.js';
+import AddPost from '../post-components/AddPost.js';
+import PostFeed from '../post-components/PostFeed.js';
 
 const PLACEHOLDER_ARTICLE = {
   "title": "PlaceHolder",
@@ -22,9 +23,11 @@ const PLACEHOLDER_ARTICLE = {
   "posts": []
 };
 
-function ArticlePage () {
+function ArticlePage ( { user } ) {
   const { articleId } = useParams();
+  const [posts, setPosts] = useState([]);
   const [article, setArticle] = useState(PLACEHOLDER_ARTICLE);
+  const [addPost, setAddPost] = useState(false);
   const [errors, setErrors] = useState([]);
   const history = useHistory();
 
@@ -43,8 +46,10 @@ function ArticlePage () {
 
   return (
     <div>
-      <ArticleCard articleOpen={true} article={article} />
-      <PostList posts={article.posts} />
+      <ArticleCard articleOpen={true} article={article} setAddPost={setAddPost} user={user} />
+      <hr></hr>
+      {addPost ? <AddPost addPost={addPost} setAddPost={setAddPost} articleId={articleId} user={user} /> : null}
+      <PostFeed posts={article.posts} user={user} />
     </div>
   );
 }

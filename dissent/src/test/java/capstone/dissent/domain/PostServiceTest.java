@@ -141,7 +141,7 @@ class PostServiceTest {
     void shouldNotAddNewPostWithin30SecondsOfLast() {
         Post lastPost = makePost();
         lastPost.setPostId(java.util.UUID.randomUUID().toString());
-        lastPost.setTimestamp(LocalDateTime.now().minusSeconds(29));
+        lastPost.setTimestamp(LocalDateTime.now());
 
         Post actual = makePost();
         actual.setPostId(null);

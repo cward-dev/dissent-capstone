@@ -66,6 +66,7 @@ CREATE TABLE article_topic (
 CREATE TABLE feedback_tag (
     feedback_tag_id INT PRIMARY KEY AUTO_INCREMENT,
     feedback_tag_name VARCHAR(255) NOT NULL,
+    color_hex VARCHAR(7) NOT NULL,
     is_active BOOL NOT NULL DEFAULT true
 );
 
@@ -106,7 +107,7 @@ CREATE TABLE article_feedback_tag (
     article_id VARCHAR(255) NOT NULL,
     user_id VARCHAR(255) NOT NULL,
     feedback_tag_id INT NOT NULL,
-    CONSTRAINT pk_article_feedback_tag PRIMARY KEY (article_id , feedback_tag_id),
+    CONSTRAINT pk_article_feedback_tag PRIMARY KEY (article_id, user_id, feedback_tag_id),
     CONSTRAINT fk_article_feedback_tag_article_id FOREIGN KEY (article_id)
         REFERENCES article (article_id),
     CONSTRAINT fk_article_feedback_tag_user_id FOREIGN KEY (user_id)

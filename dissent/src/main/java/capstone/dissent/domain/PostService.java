@@ -2,6 +2,7 @@ package capstone.dissent.domain;
 
 import capstone.dissent.data.PostFeedbackTagRepository;
 import capstone.dissent.data.PostRepository;
+import capstone.dissent.models.ArticleFeedbackTag;
 import capstone.dissent.models.Post;
 import capstone.dissent.models.PostFeedbackTag;
 import org.springframework.stereotype.Service;
@@ -50,6 +51,10 @@ public class PostService {
         return postRepository.findById(postId);
     }
 
+    public List<PostFeedbackTag> findUserFeedbackForPost(String postId, String userId) {
+        return postFeedbackTagRepository.findUserFeedbackForPost(postId, userId);
+    }
+
     public Result<Post> add(Post post) {
         Result<Post> result = validate(post);
         if (!result.isSuccess()) {
@@ -66,6 +71,7 @@ public class PostService {
             return result;
         }
 
+        post.setTimestamp(LocalDateTime.now());
         post = postRepository.add(post);
         result.setPayload(post);
         return result;
@@ -86,6 +92,7 @@ public class PostService {
             result.addMessage(String.format("Post ID: %s, not found", post.getPostId()), ResultType.NOT_FOUND);
         }
 
+        post.setTimestamp(LocalDateTime.now());
         return result;
     }
 
@@ -148,6 +155,6 @@ public class PostService {
 
         List<Post> posts = findByUserId(post.getUser().getUserId());
 
-        return findByUserId(post.getUser().getUserId()).stream().anyMatch(p -> p.getTimestamp().isAfter(post.getTimestamp().minusSeconds(30)));
+        return posts.stream().anyMatch(p -> p.getTimestamp().isAfter(LocalDateTime.now().minusSeconds(10)));
     }
 }
