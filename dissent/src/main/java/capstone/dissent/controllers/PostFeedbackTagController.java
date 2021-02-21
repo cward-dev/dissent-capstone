@@ -2,10 +2,13 @@ package capstone.dissent.controllers;
 
 import capstone.dissent.domain.PostService;
 import capstone.dissent.domain.Result;
+import capstone.dissent.models.ArticleFeedbackTag;
 import capstone.dissent.models.PostFeedbackTag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @CrossOrigin(origins = {"http://localhost:3000"})
@@ -16,6 +19,11 @@ public class PostFeedbackTagController {
 
     public PostFeedbackTagController(PostService service) {
         this.service = service;
+    }
+
+    @GetMapping("/{postId}/{userId}")
+    public List<PostFeedbackTag> add(@PathVariable String postId, @PathVariable String userId) {
+        return service.findUserFeedbackForPost(postId, userId);
     }
 
     @PostMapping

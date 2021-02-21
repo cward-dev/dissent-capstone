@@ -2,6 +2,7 @@ package capstone.dissent.domain;
 
 import capstone.dissent.data.PostFeedbackTagRepository;
 import capstone.dissent.data.PostRepository;
+import capstone.dissent.models.ArticleFeedbackTag;
 import capstone.dissent.models.Post;
 import capstone.dissent.models.PostFeedbackTag;
 import org.springframework.stereotype.Service;
@@ -48,6 +49,10 @@ public class PostService {
 
     public Post findById(String postId) {
         return postRepository.findById(postId);
+    }
+
+    public List<PostFeedbackTag> findUserFeedbackForPost(String postId, String userId) {
+        return postFeedbackTagRepository.findUserFeedbackForPost(postId, userId);
     }
 
     public Result<Post> add(Post post) {

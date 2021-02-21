@@ -1,6 +1,8 @@
 package capstone.dissent.data;
 
+import capstone.dissent.data.mappers.ArticleFeedbackTagMapper;
 import capstone.dissent.data.mappers.PostFeedbackTagMapper;
+import capstone.dissent.models.ArticleFeedbackTag;
 import capstone.dissent.models.PostFeedbackTag;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -31,6 +33,23 @@ public class PostFeedbackTagJdbcTemplateRepository implements PostFeedbackTagRep
 
         return jdbcTemplate.query(
                 sql, new PostFeedbackTagMapper(), postId);
+    }
+
+    @Override
+    public List<PostFeedbackTag> findUserFeedbackForPost(String postId, String userId) {
+        final String sql = "select "
+                + "pft.post_id as post_id, "
+                + "pft.user_id as user_id, "
+                + "ft.feedback_tag_id as feedback_tag_id, "
+                + "ft.feedback_tag_name as feedback_tag_name, "
+                + "ft.color_hex as color_hex, "
+                + "ft.is_active as is_active "
+                + "from post_feedback_tag pft "
+                + "inner join feedback_tag ft on pft.feedback_tag_id = ft.feedback_tag_id "
+                + "where pft.post_id = ? and pft.user_id = ?;";
+
+        return jdbcTemplate.query(
+                sql, new PostFeedbackTagMapper(), postId, userId);
     }
 
     @Override
