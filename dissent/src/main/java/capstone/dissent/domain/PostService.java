@@ -66,6 +66,7 @@ public class PostService {
             return result;
         }
 
+        post.setTimestamp(LocalDateTime.now());
         post = postRepository.add(post);
         result.setPayload(post);
         return result;
@@ -86,6 +87,7 @@ public class PostService {
             result.addMessage(String.format("Post ID: %s, not found", post.getPostId()), ResultType.NOT_FOUND);
         }
 
+        post.setTimestamp(LocalDateTime.now());
         return result;
     }
 

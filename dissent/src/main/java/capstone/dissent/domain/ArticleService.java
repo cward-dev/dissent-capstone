@@ -102,12 +102,12 @@ public class ArticleService {
             String msg = String.format("Article:  %s  by %s, was not found! ",article.getTitle(),article.getAuthor());
             result.addMessage(msg,ResultType.NOT_FOUND);
         }
+        article.setDatePosted(LocalDateTime.now());
         return result;
 
     }
 
     public boolean inactivateArticle(String articleId){
-
         return articleRepository.inactivateArticle(articleId);
     }
 
