@@ -15,7 +15,7 @@ public class FeedbackTag {
     @Size(min = 7, max=7, message = "Feedback Tag color hex must be 7 characters")
     String colorHex;
 
-    boolean isActive;
+    boolean isActive = true;
 
     public FeedbackTag(){
     }

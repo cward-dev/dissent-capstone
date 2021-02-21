@@ -82,7 +82,7 @@ function ArticleCard ( { article, articleOpen, setAddPost, user } ) {
       <div className="card-footer w-100 text-muted px-1">
         <div className="row">  
           <div className="col pl-4">
-            <FeedbackTagIcon feedbackTagMenuDisplayed={feedbackTags} setFeedbackTagMenuDisplayed={setFeedbackTagMenuDisplayed} object={article} user={user} />
+            <FeedbackTagIcon feedbackTagMenuDisplayed={feedbackTagMenuDisplayed} setFeedbackTagMenuDisplayed={setFeedbackTagMenuDisplayed} object={article} user={user} />
           </div>
           <div className="col text-right">
             {articleOpen ? <button className="btn btn-secondary px-2 py-1 mr-2" onClick={handleAddPost}>Add Post</button> : <Link className="btn btn-secondary px-2 py-1 mr-2" to={`/article/${articleId}`}>Discussion ({discussionLength})</Link>}

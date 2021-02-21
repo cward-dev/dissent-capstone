@@ -3,10 +3,10 @@ import FeedbackTagIcon from './FeedbackTagIcon.js';
 import AddFeedbackTag from './AddFeedbackTag.js';
 import Article from '../article-components/ArticleCard';
 import { PieChart } from 'react-minimal-pie-chart';
-
+import Errors  from '../Errors.js';
 // JSON
 const DEFAULT_TAG = {
-  "id": "",
+  "articleId": "",
   "userId": "",
   "feedbackTag": {
     "feedbackTagId": {
@@ -18,64 +18,28 @@ const DEFAULT_TAG = {
 
 const DEF_FB_TAG ={
   "feedbackTagId": 0,
-  "name": "",
-  "colorHex": "",
-  "active": false
 }
 
 function FeedbackTagForm ( { object, user } ) {
+  const [hasSelected, setSelected] = useState(false);
   const [tag, setTag] = useState(DEFAULT_TAG);
   const [errors, setErrors] = useState([]);
   const [feedbackTagJSON, setFeedbackTagJSON] = useState(DEF_FB_TAG);
   const { feedbackTagId, name } = feedbackTagJSON;
 
-  
-  let objectId = '';
-
-  if (object.articleId) {
-    objectId = object.articleId;
-  } else if (object.postId) {
-    objectId = object.postId;
-  }
-
-  // useEffect(() => {
-  //   const getFeedbackTagObject = async () => {
-  //     try {
-  //       const response = await fetch("http://localhost:8080/api/feedback-tag");
-  //       const data = await response.json();
-  //       setFeedbackTags(data);
-  //     } catch (error) {
-  //       setErrors(["Something went wrong with our database, sorry!"]);
-  //     }
-  //   };
-  //   getFeedbackTagObject();
-  // }, []);
-
-  // let populateDataSet = new Array();
-  // let dataPoint = {};
-
-  // for (let feedbackTag in object.feedbackTags) {
-
-  //   for(var i in feedbackTag) {
-  //     dataPoint = { 
-  //     "title": i.title, 
-  //     "value": i.value, 
-  //     "color": i.color 
-  //     }
-  //   }
-
-  //   populateDataSet.push(dataPoint);
-  // }
-
 
   const addFeedbackTag = async (tag) => {
-    const addedTag = {
-      "id": tag.id,
-      "userId": user.userId,
-      "feedbackTag": tag.feedbackTag
-    };
+    console.log(tag);
+
+       const addedTag = {
+        "articleId": tag.articleId,
+        "userId": tag.userId,
+        "feedbackTag": tag.feedbackTag
+      }
+
 
     const init = {
+      method: "POST",
       headers: {
         "Content-Type": "application/json",
         "Accept": "application/json"
@@ -84,65 +48,76 @@ function FeedbackTagForm ( { object, user } ) {
     };
 
     try {
-      const response = await fetch("http://localhost:8080/api/feedback-tag", init);
 
+      const response = await fetch("http://localhost:8080/api/article/feedback-tag", init);
+      console.log(response);
       if (response.status === 201 || response.status === 400) {
-        const data = await response.json();
-      } else {
+        // maybe fetch data go back to article fetch and get data...?
+        setErrors([]);
+      } else if(response.status ===500){
+        throw new Error(["Duplicate Entries are not allowed"])
+      }else  {
         throw new Error(["Something unexpected went wrong, sorry!"]);
       }
     } catch (error) {
+      console.log(error);
       if (error.message === "Failed to fetch") {
         setErrors(["Something went wrong with our database, sorry!"])
+      } else if(error.message ==="Duplicate Entries are not allowed"){
+          setErrors(["Duplicate Entries are not allowed"])
       } else {
         setErrors(["Something unexpected went wrong, sorry!"]);
       }
     }
   }
 
+  const updateTag = async (tag) =>  {
+    console.log(tag);
+
+    fetch(`http://localhost:8080/api/article/feedback-tag/${tag.articleId}/${user.userId}/${feedbackTagId}`, {
+      method: "DELETE"      
+    })
+      .then(response => {
+        if (response.status === 204) {
+          setErrors([]);
+        } else if (response.status === 404) {
+          Promise.reject('Tag for article not found.');
+        } else {
+          Promise.reject('Shoot! Something unexpected went wrong :(');
+        }
+      })
+      // {articleId}/{userId}/{feedbackTagId}
+      .catch(error => console.log(error));
+
+      addFeedbackTag(tag);
+
+  }
+
   const handleSubmit = (event) => {
     event.preventDefault();
-    tag.id = objectId;
-    tag.userId ='103a7d9b-f72b-4469-b1a3-bdba2f6356b4';
-
+    tag.articleId = object.articleId;
+    tag.userId = user.userId;
     tag.feedbackTag = feedbackTagJSON;
+    if(!hasSelected){
     addFeedbackTag(tag);
+    } else {
+
+    }
     console.log(tag);
   };
 
   const onChangeHandler = (event) =>{
     event.preventDefault();
-
-    console.log(event.target.name);
-    console.log(event.target.value);
-
     const newFeedbackTagJSON= {...feedbackTagJSON};
     newFeedbackTagJSON[event.target.name] = event.target.value;
-    console.log(newFeedbackTagJSON.feedbackTagId);
+    
     setFeedbackTagJSON(newFeedbackTagJSON);
   };
 
   return (
     <div className="container alert alert-dark">
       <div className="row ">
-        <div className="col-8">
-          <PieChart
-            center={[5, 5]}
-            data={object.feedbackTags}
-            radius={5}
-            // label={(data) => data.dataEntry.title}
-            // lineWidth={55}
-            paddingAngle={0}
-            // viewBoxSize={[50, 50]}
-            labelStyle={{
-              fontSize: "5px",
-              fontColor: "FFFFFA",
-              fontWeight: "500"
-            }}
-            // labelPosition={65} 
-          />
-        </div>
-        <div className="col-4">
+        <Errors errors = {errors}/>
           <form onSubmit={handleSubmit}>
             <label htmlFor="feedbackTagId"><h3>Feedback</h3></label>
             <select id="feedbackTagId" name="feedbackTagId" 
@@ -156,7 +131,6 @@ function FeedbackTagForm ( { object, user } ) {
           </form>
         </div>
       </div>
-    </div>
   );
 
 } export default FeedbackTagForm;
