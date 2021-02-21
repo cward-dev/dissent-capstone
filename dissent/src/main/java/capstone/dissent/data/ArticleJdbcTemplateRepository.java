@@ -7,13 +7,13 @@ import capstone.dissent.models.*;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.sql.Timestamp;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 
 @Repository
@@ -21,8 +21,11 @@ public class ArticleJdbcTemplateRepository implements ArticleRepository {
 
     private final JdbcTemplate jdbcTemplate;
 
-    public ArticleJdbcTemplateRepository(JdbcTemplate jdbcTemplate) {
+    private final PostRepository postRepository;
+
+    public ArticleJdbcTemplateRepository(JdbcTemplate jdbcTemplate, PostRepository postRepository) {
         this.jdbcTemplate = jdbcTemplate;
+        this.postRepository = postRepository;
     }
 
     @Override
@@ -194,19 +197,31 @@ public class ArticleJdbcTemplateRepository implements ArticleRepository {
 
         var feedbackTags = jdbcTemplate.query(sql, new ArticleFeedbackTagMapper(), article.getArticleId());
 
-        HashMap<String, FeedbackTagHashmapHelper> hm = new HashMap<>();
+        List<FeedbackTagHelper> list = new ArrayList<>();
         if (feedbackTags.size() > 0) {
             for (ArticleFeedbackTag i : feedbackTags) {
-                FeedbackTagHashmapHelper feedbackTagHashmapHelper = hm.get(i.getFeedbackTag().getName());
-                Integer j = null;
-                if (feedbackTagHashmapHelper != null) {
-                    j = feedbackTagHashmapHelper.getOccurrences();
+                if (list.size() == 0) {
+                    list.add(new FeedbackTagHelper(i.getFeedbackTag().getName(), 1, i.getFeedbackTag().getColorHex()));
+                    continue;
                 }
-                hm.put(i.getFeedbackTag().getName(), new FeedbackTagHashmapHelper((j == null) ? 1 : j + 1, i.getFeedbackTag().getColorHex()));
+
+                boolean found = false;
+
+                for (FeedbackTagHelper feedbackTagHelper : list) {
+                    if (feedbackTagHelper.getTitle().equalsIgnoreCase(i.getFeedbackTag().getName())) {
+                        feedbackTagHelper.setValue(feedbackTagHelper.getValue() + 1);
+                        found = true;
+                        break;
+                    }
+                }
+
+                if (!found) {
+                    list.add(new FeedbackTagHelper(i.getFeedbackTag().getName(), 1, i.getFeedbackTag().getColorHex()));
+                }
             }
         }
 
-        article.setFeedbackTags(hm);
+        article.setFeedbackTags(list);
     }
 
     private void addTopics(Article article) {
@@ -222,13 +237,15 @@ public class ArticleJdbcTemplateRepository implements ArticleRepository {
 
     private void addPosts(Article article) {
 
-        final String sql = "select p.post_id, p.parent_post_id, p.article_id, p.user_id, p.is_dissenting, p.date_posted, p.content, p.is_active, "
-                + "u.user_login_id, u.username as username, u.user_role, u.photo_url, u.country, u.bio, u.is_active "
-                + "from post p "
-                + "inner join `user` u on p.user_id = u.user_id "
-                + "where p.article_id = ? and p.parent_post_id IS NULL;";
+//        final String sql = "select p.post_id, p.parent_post_id, p.article_id, p.user_id, p.is_dissenting, p.date_posted, p.content, p.is_active, "
+//                + "u.user_login_id, u.username as username, u.user_role, u.photo_url, u.country, u.bio, u.is_active, "
+//                + "from post p "
+//                + "inner join `user` u on p.user_id = u.user_id "
+//                + "where p.article_id = ? and p.parent_post_id IS NULL;";
+//
+//        var posts = jdbcTemplate.query(sql, new PostMapper(jdbcTemplate), article.getArticleId());
 
-        var posts = jdbcTemplate.query(sql, new PostMapper(jdbcTemplate), article.getArticleId());
+        List<Post> posts = postRepository.findByArticleId(article.getArticleId());
         article.setPosts(posts);
     }
 

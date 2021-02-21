@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
-import FeedbackTagIcon from "../feedback-tag-components/FeedbackTagIcon";
+import FeedbackTagIcon from "../feedback-tag-components/FeedbackTagIcon.js";
+import FeedbackTagForm from "../feedback-tag-components/FeedbackTagForm.js";
 import AddReplyPost from "./AddReplyPost.js";
 import EditPost from "./EditPost.js";
 import DeletePost from "./DeletePost.js";
@@ -7,6 +8,7 @@ import "./Post.css";
 
 function Post ( { post, postLevel, user, parentPost } ) {
 
+  const [feedbackTagMenuDisplayed, setFeedbackTagMenuDisplayed] = useState(false);
   const [currentOption, setCurrentOption] = useState(0);
 
   const getTimePassed = (date) => {
@@ -48,8 +50,9 @@ function Post ( { post, postLevel, user, parentPost } ) {
 
   return (
     <div>
+      {feedbackTagMenuDisplayed ? <FeedbackTagForm object={post} user={user} /> : null}
       <div className="media">
-        <FeedbackTagIcon />
+        <FeedbackTagIcon objectId={post.postId} feedbackTagMenuDisplayed={feedbackTagMenuDisplayed} setFeedbackTagMenuDisplayed={setFeedbackTagMenuDisplayed} object={post} user={user} />
         <div className="media-body">
             <div className="pr-3">
                 <div className="d-flex">

@@ -171,10 +171,8 @@ insert into feedback_tag
 	(feedback_tag_id, feedback_tag_name, color_hex, is_active)
 values
 	(1, 'Sound', '#00ff00', 1),
-	(2, 'Fallicious', '#ffa500', 1),
-	(3, 'Biased', '#FF0000', 1),
-	(4, 'Not Nice', '#800000', 0),
-	(5, 'Too Nice', '#000000', 0);
+	(2, 'Fallacious', '#ffa500', 1),
+	(3, 'Biased', '#E71A43', 1);
 
 insert into post_feedback_tag 
 	(post_id, user_id, feedback_tag_id)

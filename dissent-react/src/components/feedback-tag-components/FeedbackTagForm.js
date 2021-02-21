@@ -1,59 +1,77 @@
-import FeedbackTagIcon from './FeedbackTagIcon';
+import { useState , useEffect } from 'react';
+import FeedbackTagIcon from './FeedbackTagIcon.js';
+import AddFeedbackTag from './AddFeedbackTag.js';
 import Article from '../article-components/ArticleCard';
 import { PieChart } from 'react-minimal-pie-chart';
-import{useState } from 'react';
 
-const COLOR_PALETTE = {
-  "Sound": "#00FF00",
-  "Fallacious": "#ffa500",
-  "Biased": "#E71A43",
-  "Other": "#ffff00",
-  "No-FeedBack": "#FFFFFF"
-};
 // JSON
 const DEFAULT_TAG = {
   "id": "",
   "userId": "",
   "feedbackTag": {
-    "feedbackTagId": 0
+    "feedbackTagId": {
+      "count": 0,
+      "colorHex": "#000000"
+    }
   }
 };
 
 const DEF_FB_TAG ={
   "feedbackTagId": 0,
   "name": "",
+  "colorHex": "",
+  "active": false
 }
 
+function FeedbackTagForm ( { object, user } ) {
+  const [tag, setTag] = useState(DEFAULT_TAG);
+  const [errors, setErrors] = useState([]);
+  const [feedbackTagJSON, setFeedbackTagJSON] = useState(DEF_FB_TAG);
+  const { feedbackTagId, name } = feedbackTagJSON;
 
-function FeedbackForm({ listOfTags,  objectId, feedbackTagObjects }) {
-const [tag, setTag] = useState(DEFAULT_TAG);
-const [feedbackTagJSON, setFeedbackTag] = useState(DEF_FB_TAG);
-const{feedbackTagId, name} = feedbackTagJSON;
-const{id, userId, feedbackTag} = tag;
-const [errors, setErrors] = useState([]);
+  
+  let objectId = '';
 
-
-
-  const populateDataSet = new Array();
-  let dataPoint = {}
-
-  if (listOfTags != undefined) {
-    const { key, value } = listOfTags;
-
-    for (const prop in listOfTags) {
-      dataPoint = { name: `${prop}`, value: `${listOfTags[prop]}`, color: COLOR_PALETTE[`${prop}`] }
-      populateDataSet.push(dataPoint);
-    }
-  } else {
-    dataPoint = { name: "NO DATA", value: 1, color: COLOR_PALETTE["No-FeedBack"] }
-    populateDataSet.push(dataPoint);
+  if (object.articleId) {
+    objectId = object.articleId;
+  } else if (object.postId) {
+    objectId = object.postId;
   }
 
+  // useEffect(() => {
+  //   const getFeedbackTagObject = async () => {
+  //     try {
+  //       const response = await fetch("http://localhost:8080/api/feedback-tag");
+  //       const data = await response.json();
+  //       setFeedbackTags(data);
+  //     } catch (error) {
+  //       setErrors(["Something went wrong with our database, sorry!"]);
+  //     }
+  //   };
+  //   getFeedbackTagObject();
+  // }, []);
+
+  // let populateDataSet = new Array();
+  // let dataPoint = {};
+
+  // for (let feedbackTag in object.feedbackTags) {
+
+  //   for(var i in feedbackTag) {
+  //     dataPoint = { 
+  //     "title": i.title, 
+  //     "value": i.value, 
+  //     "color": i.color 
+  //     }
+  //   }
+
+  //   populateDataSet.push(dataPoint);
+  // }
+
+
   const addFeedbackTag = async (tag) => {
-    
     const addedTag = {
       "id": tag.id,
-      "userId": tag.userId,
+      "userId": user.userId,
       "feedbackTag": tag.feedbackTag
     };
 
@@ -80,10 +98,7 @@ const [errors, setErrors] = useState([]);
         setErrors(["Something unexpected went wrong, sorry!"]);
       }
     }
-  
   }
-
- 
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -104,30 +119,28 @@ const [errors, setErrors] = useState([]);
     const newFeedbackTagJSON= {...feedbackTagJSON};
     newFeedbackTagJSON[event.target.name] = event.target.value;
     console.log(newFeedbackTagJSON.feedbackTagId);
-    setFeedbackTag(newFeedbackTagJSON);
+    setFeedbackTagJSON(newFeedbackTagJSON);
   };
 
-
-
   return (
-    <div className="container">
-
+    <div className="container alert alert-dark">
       <div className="row ">
         <div className="col-8">
           <PieChart
-            center={[50, 50]}
-            data={populateDataSet}
-            radius={50}
-            label={(data) => data.dataEntry.name}
-            lineWidth={55}
+            center={[5, 5]}
+            data={object.feedbackTags}
+            radius={5}
+            // label={(data) => data.dataEntry.title}
+            // lineWidth={55}
             paddingAngle={0}
-            viewBoxSize={[100, 100]}
+            // viewBoxSize={[50, 50]}
             labelStyle={{
               fontSize: "5px",
               fontColor: "FFFFFA",
               fontWeight: "500"
             }}
-            labelPosition={65} />
+            // labelPosition={65} 
+          />
         </div>
         <div className="col-4">
           <form onSubmit={handleSubmit}>
@@ -146,4 +159,4 @@ const [errors, setErrors] = useState([]);
     </div>
   );
 
-} export default FeedbackForm;
+} export default FeedbackTagForm;

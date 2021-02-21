@@ -1,10 +1,9 @@
 package capstone.dissent.data;
 
-import capstone.dissent.data.mappers.FeedbackTagMapper;
 import capstone.dissent.data.mappers.PostFeedbackTagMapper;
 import capstone.dissent.data.mappers.PostMapper;
-import capstone.dissent.models.FeedbackTag;
-import capstone.dissent.models.FeedbackTagHashmapHelper;
+import capstone.dissent.models.ArticleFeedbackTag;
+import capstone.dissent.models.FeedbackTagHelper;
 import capstone.dissent.models.Post;
 import capstone.dissent.models.PostFeedbackTag;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -14,9 +13,9 @@ import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Repository
 public class PostJdbcTemplateRepository implements PostRepository {
@@ -168,7 +167,7 @@ public class PostJdbcTemplateRepository implements PostRepository {
         return jdbcTemplate.update(sql, "This post has been deleted.", false, postId) > 0;
     }
 
-    private void addFeedbackTags(Post post) {
+    public void addFeedbackTags(Post post) {
 
         final String sql = "select pft.post_id, pft.user_id, pft.feedback_tag_id, "
                 + "ft.feedback_tag_id, ft.feedback_tag_name, ft.color_hex, ft.is_active "
@@ -178,18 +177,44 @@ public class PostJdbcTemplateRepository implements PostRepository {
 
         var feedbackTags = jdbcTemplate.query(sql, new PostFeedbackTagMapper(), post.getPostId());
 
-        HashMap<String, FeedbackTagHashmapHelper> hm = new HashMap<>();
+        List<FeedbackTagHelper> list = new ArrayList<>();
         if (feedbackTags.size() > 0) {
             for (PostFeedbackTag i : feedbackTags) {
-                FeedbackTagHashmapHelper feedbackTagHashmapHelper = hm.get(i.getFeedbackTag().getName());
-                Integer j = null;
-                if (feedbackTagHashmapHelper != null) {
-                    j = feedbackTagHashmapHelper.getOccurrences();
+                if (list.size() == 0) {
+                    list.add(new FeedbackTagHelper(i.getFeedbackTag().getName(), 1, i.getFeedbackTag().getColorHex()));
+                    continue;
                 }
-                hm.put(i.getFeedbackTag().getName(), new FeedbackTagHashmapHelper((j == null) ? 1 : j + 1, i.getFeedbackTag().getColorHex()));
+
+                boolean found = false;
+
+                for (FeedbackTagHelper feedbackTagHelper : list) {
+                    if (feedbackTagHelper.getTitle().equalsIgnoreCase(i.getFeedbackTag().getName())) {
+                        feedbackTagHelper.setValue(feedbackTagHelper.getValue() + 1);
+                        found = true;
+                        break;
+                    }
+                }
+
+                if (!found) {
+                    list.add(new FeedbackTagHelper(i.getFeedbackTag().getName(), 1, i.getFeedbackTag().getColorHex()));
+                }
             }
         }
 
-        post.setFeedbackTags(hm);
+        post.setFeedbackTags(list);
+
+//        HashMap<String, FeedbackTagHelper> hm = new HashMap<>();
+//        if (feedbackTags.size() > 0) {
+//            for (PostFeedbackTag i : feedbackTags) {
+//                FeedbackTagHelper feedbackTagHashmapHelper = hm.get(i.getFeedbackTag().getName());
+//                Integer j = null;
+//                if (feedbackTagHashmapHelper != null) {
+//                    j = feedbackTagHashmapHelper.getValue();
+//                }
+//                hm.put(i.getFeedbackTag().getName(), new FeedbackTagHelper(i.getFeedbackTag().getName(), (j == null) ? 1 : j + 1, i.getFeedbackTag().getColorHex()));
+//            }
+//        }
+//
+//        post.setFeedbackTags(hm);
     }
 }

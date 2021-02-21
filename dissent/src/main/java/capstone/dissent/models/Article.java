@@ -3,12 +3,8 @@ package capstone.dissent.models;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.*;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 public class Article {
 
@@ -48,7 +44,7 @@ public class Article {
     Source source;
     List<Topic> topics = new ArrayList<>();
     List<Post> posts = new ArrayList<>();
-    HashMap<String, FeedbackTagHashmapHelper> feedbackTags = new HashMap<>();
+    List<FeedbackTagHelper> feedbackTags = new ArrayList<>();
 
     public Article(String title, String description, String author,
                    String articleUrl, String articleImageUrl,
@@ -66,16 +62,16 @@ public class Article {
 
     public Article() {}
 
-    public void addFeedbackTagToArticle(String feedbackTag){
-        if(feedbackTags.get(feedbackTag)==null){
-            feedbackTags.put(feedbackTag,1);
-        } else {
-            int value = feedbackTags.get(feedbackTag).intValue();
-            feedbackTags.replace(feedbackTag,value+1);
-        }
-
-        setFeedbackTags(feedbackTags);
-    }
+//    public void addFeedbackTagToArticle(String feedbackTag){
+//        if(feedbackTags.get(feedbackTag)==null){
+//            feedbackTags.put(feedbackTag,1);
+//        } else {
+//            int value = feedbackTags.get(feedbackTag).intValue();
+//            feedbackTags.replace(feedbackTag,value+1);
+//        }
+//
+//        setFeedbackTags(feedbackTags);
+//    }
 
     public String getArticleId() {
         return articleId;
@@ -177,11 +173,11 @@ public class Article {
         this.posts = posts;
     }
 
-    public HashMap<String, FeedbackTagHashmapHelper> getFeedbackTags() {
+    public List<FeedbackTagHelper> getFeedbackTags() {
         return feedbackTags;
     }
 
-    public void setFeedbackTags(HashMap<String, FeedbackTagHashmapHelper> feedbackTags) {
+    public void setFeedbackTags(List<FeedbackTagHelper> feedbackTags) {
         this.feedbackTags = feedbackTags;
     }
 
