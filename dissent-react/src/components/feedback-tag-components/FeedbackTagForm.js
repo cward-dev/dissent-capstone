@@ -38,36 +38,6 @@ function FeedbackTagForm ( { object, user } ) {
     objectId = object.postId;
   }
 
-  // useEffect(() => {
-  //   const getFeedbackTagObject = async () => {
-  //     try {
-  //       const response = await fetch("http://localhost:8080/api/feedback-tag");
-  //       const data = await response.json();
-  //       setFeedbackTags(data);
-  //     } catch (error) {
-  //       setErrors(["Something went wrong with our database, sorry!"]);
-  //     }
-  //   };
-  //   getFeedbackTagObject();
-  // }, []);
-
-  // let populateDataSet = new Array();
-  // let dataPoint = {};
-
-  // for (let feedbackTag in object.feedbackTags) {
-
-  //   for(var i in feedbackTag) {
-  //     dataPoint = { 
-  //     "title": i.title, 
-  //     "value": i.value, 
-  //     "color": i.color 
-  //     }
-  //   }
-
-  //   populateDataSet.push(dataPoint);
-  // }
-
-
   const addFeedbackTag = async (tag) => {
     const addedTag = {
       "id": tag.id,
@@ -125,23 +95,6 @@ function FeedbackTagForm ( { object, user } ) {
   return (
     <div className="container alert alert-dark">
       <div className="row ">
-        <div className="col-8">
-          <PieChart
-            center={[5, 5]}
-            data={object.feedbackTags}
-            radius={5}
-            // label={(data) => data.dataEntry.title}
-            // lineWidth={55}
-            paddingAngle={0}
-            // viewBoxSize={[50, 50]}
-            labelStyle={{
-              fontSize: "5px",
-              fontColor: "FFFFFA",
-              fontWeight: "500"
-            }}
-            // labelPosition={65} 
-          />
-        </div>
         <div className="col-4">
           <form onSubmit={handleSubmit}>
             <label htmlFor="feedbackTagId"><h3>Feedback</h3></label>
