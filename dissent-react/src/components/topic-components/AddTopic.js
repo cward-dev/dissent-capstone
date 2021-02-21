@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import Errors from '../Errors.js';
 
-function AddTopic ( { articleId, setAddTopic, user } ) {
+function AddTopic ( { setAdminBarSelection, user } ) {
 
   const [topic, setTopic] = useState( {
     "topicName": ''
@@ -16,7 +16,6 @@ function AddTopic ( { articleId, setAddTopic, user } ) {
     const updatedTopic = {...topic};
     updatedTopic[event.target.name] = event.target.value;
     setTopic(updatedTopic);
-    console.log(event.target.value);
   };
 
   const handleAddSubmit = async (event) => {
@@ -40,7 +39,7 @@ function AddTopic ( { articleId, setAddTopic, user } ) {
         if (data.topicId) {
           // kinda hokey
           history.push(`/`);
-          history.push(`/t/${topicId}`);
+          history.push(`/t/${topic.topicName}`);
           handleCancel();
         } else {
           setErrors(data);
@@ -54,7 +53,7 @@ function AddTopic ( { articleId, setAddTopic, user } ) {
   }
 
   const handleCancel = () => {
-    setAddTopic(false);
+    setAdminBarSelection(0);
   }
 
   return (
@@ -64,13 +63,12 @@ function AddTopic ( { articleId, setAddTopic, user } ) {
         <div className="col-9">
           <label htmlFor="content" className="pl-2 pt-2">New Topic</label>
         </div>
-        <input type="text" className="form-control mb-3 mr-3" id="content" name="content" type="textarea" rows="5" onChange={handleChange} />
+        <input type="text" className="form-control mb-3 mx-3" id="topicName" name="topicName" onChange={handleChange} />
         <div className="col text-right">
           <button type="button" className="btn btn-light btn-sm" onClick={handleCancel}>Cancel</button>
           <button type="submit" className="btn btn-dark ml-2 mr-3 btn-sm">Submit</button>
         </div>
       </div>
-      <hr></hr>
     </form>
   );
 }

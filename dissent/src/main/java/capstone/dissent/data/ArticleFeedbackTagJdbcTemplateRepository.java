@@ -34,6 +34,23 @@ public class ArticleFeedbackTagJdbcTemplateRepository implements ArticleFeedback
     }
 
     @Override
+    public List<ArticleFeedbackTag> findUserFeedbackForArticle(String articleId, String userId) {
+        final String sql = "select "
+                + "aft.article_id as article_id, "
+                + "aft.user_id as user_id, "
+                + "ft.feedback_tag_id as feedback_tag_id, "
+                + "ft.feedback_tag_name as feedback_tag_name, "
+                + "ft.color_hex as color_hex, "
+                + "ft.is_active as is_active "
+                + "from article_feedback_tag aft "
+                + "inner join feedback_tag ft on aft.feedback_tag_id = ft.feedback_tag_id "
+                + "where aft.article_id = ? and aft.user_id = ?;";
+
+        return jdbcTemplate.query(
+                sql, new ArticleFeedbackTagMapper(), articleId, userId);
+    }
+
+    @Override
     public boolean add(ArticleFeedbackTag articleFeedbackTag) {
 
         final String sql = "insert into article_feedback_tag (article_id, user_id, feedback_tag_id) values "

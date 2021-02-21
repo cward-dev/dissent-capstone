@@ -53,6 +53,9 @@ public class ArticleService {
         return articleRepository.findByPostedDateRange(d1, d2);
     }
 
+    public List<ArticleFeedbackTag> findUserFeedbackForArticle(String articleId, String userId) {
+        return articleFeedbackTagRepository.findUserFeedbackForArticle(articleId, userId);
+    }
 
     public Result<Article> add(Article article) {
         Result<Article> result = validate(article);

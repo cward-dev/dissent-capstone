@@ -20,7 +20,6 @@ function AddPost ( { articleId, setAddPost, user } ) {
     const updatedPost = {...post};
     updatedPost[event.target.name] = event.target.value;
     setPost(updatedPost);
-    console.log(event.target.value);
   };
 
   const handleAddSubmit = async (event) => {
