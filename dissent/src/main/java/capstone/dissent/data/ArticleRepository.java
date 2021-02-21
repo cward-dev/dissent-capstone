@@ -22,5 +22,5 @@ public interface ArticleRepository {
 
     boolean inactivateArticle(String articleId);
 
-//    HashMap<FeedbackTag, Integer> getTagData(Article article);
+//    HashMap<String, Integer> getTagData(Article article);
 }

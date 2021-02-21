@@ -66,16 +66,16 @@ public class Article {
 
     public Article() {}
 
-//    public void addFeedbackTagToArticle(String feedbackTag){
-//        if(feedbackTags.get(feedbackTag)==null){
-//            feedbackTags.put(feedbackTag,1);
-//        } else {
-//            int value = feedbackTags.get(feedbackTag).intValue();
-//            feedbackTags.replace(feedbackTag,value+1);
-//        }
-//
-//        setFeedbackTags(feedbackTags);
-//    }
+    public void addFeedbackTagToArticle(String feedbackTag){
+        if(feedbackTags.get(feedbackTag)==null){
+            feedbackTags.put(feedbackTag,1);
+        } else {
+            int value = feedbackTags.get(feedbackTag).intValue();
+            feedbackTags.replace(feedbackTag,value+1);
+        }
+
+        setFeedbackTags(feedbackTags);
+    }
 
     public String getArticleId() {
         return articleId;

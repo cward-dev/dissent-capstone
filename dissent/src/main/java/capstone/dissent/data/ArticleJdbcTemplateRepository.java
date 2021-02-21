@@ -165,7 +165,7 @@ public class ArticleJdbcTemplateRepository implements ArticleRepository {
     }
 
 //    @Override
-//    public HashMap<FeedbackTag, Integer> getTagData(Article article) {
+//    public HashMap<String, Integer> getTagData(Article article) {
 //        final String sql = "select ft.feedback_tag_id, ft.feedback_tag_name" +
 //                " from article_feedback_tag aft inner join feedback_tag ft on  aft.feedback_tag_id = ft.feedback_tag_id"
 //                + " where aft.article_id = ?;";
@@ -173,7 +173,7 @@ public class ArticleJdbcTemplateRepository implements ArticleRepository {
 //           var allTags = jdbcTemplate.query(sql,new FeedbackTagMapper(),article.getArticleId());
 //
 //           for(FeedbackTag tag : allTags){
-//               article.addFeedbackTagToArticle(tag);
+//               article.addFeedbackTagToArticle(tag.getName());
 //           }
 //        return article.getFeedbackTags();
 //    }

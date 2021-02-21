@@ -6,7 +6,6 @@ import './ArticleCard.css';
 function ArticleCard ( { article, articleOpen } ) {
 
   const { articleId, title, description, author, articleUrl, articleImageUrl, datePublished, datePosted, source, topics, posts, feedbackTags } = article;
-
   const timestampDate = (new Date(article.datePosted)).toISOString().split('T')[0];
   const timestampTime = (new Date(article.datePosted)).toISOString().split('T')[1];
 
@@ -30,7 +29,8 @@ function ArticleCard ( { article, articleOpen } ) {
       <div className="card-footer w-100 text-muted px-1">
         <div className="row">  
           <div className="col pl-4">
-            <FeedbackTagIcon />
+             {/* I also need a userID */}
+            <FeedbackTagIcon data = {feedbackTags} id = {articleId}/>
           </div>
           <div className="col text-right">
             {articleOpen ? <AddPost articleId={articleId} /> : <Link className="btn btn-secondary px-2 py-1 mr-2" to={`/article/${articleId}`}>Discussions ({posts.length})</Link>}
