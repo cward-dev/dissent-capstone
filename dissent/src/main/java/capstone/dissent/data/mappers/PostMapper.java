@@ -36,7 +36,7 @@ public class PostMapper implements RowMapper<Post> {
     private void addChildPosts(Post post) {
 
         final String sql = "select cp.post_id, cp.parent_post_id, cp.article_id, cp.user_id, cp.is_dissenting, cp.date_posted, cp.content, cp.is_active, "
-                + "cu.user_login_id, cu.username as username, cu.user_role, cu.photo_url, cu.country, cu.bio, cu.is_active "
+                + "cu.user_role_id, cu.username as username, cu.photo_url, cu.country, cu.bio, cu.is_active "
                 + "from post cp "
                 + "inner join `user` cu on cp.user_id = cu.user_id "
                 + "where (cp.parent_post_id = ?);";

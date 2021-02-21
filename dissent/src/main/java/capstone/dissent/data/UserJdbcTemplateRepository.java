@@ -31,20 +31,21 @@ public class UserJdbcTemplateRepository implements UserRepository {
     public User add(User user) {
 
         final String sql = "insert into user " +
-                "(user_id, user_login_id, username, user_role, photo_url, country, bio) " +
-                "values (?,?,?,?,?,?,?);";
+                "(user_id, user_role_id, email, `password`, username, photo_url, country, bio) " +
+                "values (?,?,?,?,?,?,?,?);";
 
         user.setUserId(java.util.UUID.randomUUID().toString());
 
         int rowsAffected = jdbcTemplate.update(connection -> {
             PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             ps.setString(1, user.getUserId());
-            ps.setString(2, user.getUserLoginId());
-            ps.setString(3, user.getUsername());
-            ps.setString(4, user.getRole());
-            ps.setString(5, user.getPhotoUrl());
-            ps.setString(6, user.getCountry());
-            ps.setString(7, user.getBio());
+            ps.setInt(2, user.getUserRoleId());
+            ps.setString(3, user.getEmail());
+            ps.setString(4, user.getPassword());
+            ps.setString(5, user.getUsername());
+            ps.setString(6, user.getPhotoUrl());
+            ps.setString(7, user.getCountry());
+            ps.setString(8, user.getBio());
             return ps;
         });
 
@@ -108,7 +109,7 @@ public class UserJdbcTemplateRepository implements UserRepository {
     public boolean deleteById(String userId) {
         final String sql = "update user set "
                 + "username = 'deleted', "
-                + "user_role = 'deleted', "
+                + "user_role_id = 3, "
                 + "photo_url = null, "
                 + "country = null, "
                 + "bio = null "

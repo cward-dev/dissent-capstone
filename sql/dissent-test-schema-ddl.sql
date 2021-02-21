@@ -3,23 +3,23 @@ CREATE DATABASE dissent_test;
 USE dissent_test;
 
 # USER MANAGEMENT TABLES
-CREATE TABLE user_login (
-    user_login_id VARCHAR(255) PRIMARY KEY,
-    email VARCHAR(255) NOT NULL,
-    `password` VARCHAR(255) NOT NULL
+CREATE TABLE user_role (
+    user_role_id INT PRIMARY KEY AUTO_INCREMENT,
+    `name` VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE `user` (
     user_id VARCHAR(255) PRIMARY KEY,
-    user_login_id VARCHAR(255) NOT NULL,
+    user_role_id INT NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    `password` VARCHAR(255) NOT NULL,
     username VARCHAR(255) NOT NULL,
-    user_role VARCHAR(255) NOT NULL,
     photo_url VARCHAR(255),
     country VARCHAR(255),
     bio VARCHAR(255),
-    is_active BOOL NOT NULL DEFAULT true,
-    CONSTRAINT fk_user_user_login_id FOREIGN KEY (user_login_id)
-        REFERENCES user_login (user_login_id)
+    is_active BOOL NOT NULL DEFAULT TRUE,
+    CONSTRAINT fk_user_user_role_id FOREIGN KEY (user_role_id)
+        REFERENCES user_role (user_role_id)
 );
 
 # ARTICLE TABLES
@@ -138,22 +138,26 @@ begin
     ALTER TABLE topic AUTO_INCREMENT = 1;
     
     delete from `user`;
-    delete from user_login;
+    delete from user_role;
+    ALTER TABLE user_role AUTO_INCREMENT = 1;
     
 # Populate Tables
-    insert into user_login 
-		(user_login_id, email, `password`) 
+    insert into user_role 
+		(`name`) 
 	values
-		('103a7d9b-f72b-4469-b1a3-bdba2f6356b4', 'user@dissent.com', 'test0000');
+		('ADMIN'),
+        ('USER'),
+        ('GUEST');
     
     insert into `user`
-		(user_id, user_login_id, username, user_role, photo_url, country, bio) 
+		(user_id, user_role_id, username, email, `password`, photo_url, country, bio) 
 	values
         (
 			'dffec086-b1e9-455a-aab4-ff6c6611fef0', 
-			'103a7d9b-f72b-4469-b1a3-bdba2f6356b4', 
+			2, 
             'dissenter101', 
-            'user', 
+            'milan@stoj.com', 
+			'testPass', 
             'https://cdn.eso.org/images/thumb700x/eso1907a.jpg', 
             'United States', 
             'The truth is out there.'

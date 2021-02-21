@@ -1,38 +1,41 @@
 USE dissent;
 
-insert into user_login 
-	(user_login_id, email, `password`) 
+insert into user_role 
+	(`name`) 
 values
-	('103a7d9b-f72b-4469-b1a3-bdba2f6356b4', 'user@dissent.com', 'test0000'),
-	('dsaf8a9a-sdf6-sa82-fakc-pgfdu2jds128', 'user2@dissent.com', 'test0000'),
-	('dsfadsa7-193n-d9a0-m6ks-pdivcxn289ak', 'user3@dissent.com', 'test0000');
+	('ADMIN'),
+	('USER'),
+	('GUEST');
 
 insert into `user`
-	(user_id, user_login_id, username, user_role, photo_url, country, bio) 
+	(user_id, user_role_id, email, `password`, username, photo_url, country, bio) 
 values
 	(
 		'dffec086-b1e9-455a-aab4-ff6c6611fef0', 
-		'103a7d9b-f72b-4469-b1a3-bdba2f6356b4', 
+		1,
+        'admin@dissent.com',
+        'd1ssent',
 		'dissenter101', 
-		'user', 
 		'https://www.birdnote.org/sites/default/files/Daffy_Duck-2-warner-bros-625.jpg', 
 		'United States', 
 		'The truth is out there.'
 	),
 	(
 		'fhsajk21-czxm-fsa7-zzlq-sa8cxzkj11s9', 
-		'dsaf8a9a-sdf6-sa82-fakc-pgfdu2jds128', 
-		'dissenter102', 
-		'user', 
+		2,
+        'dissenter102@gmail.com',
+        'goodpassword',
+		'dissenter102',
 		'https://cdn.eso.org/images/thumb700x/eso1907a.jpg', 
 		'United States', 
 		'I don''t believe anything I read.'
 	),
 	(
 		'11786jks-sjal-s7a9-msdh-sd2isdksaoia', 
-		'dsfadsa7-193n-d9a0-m6ks-pdivcxn289ak', 
-		'dissenter103', 
-		'user', 
+		2, 
+		'dissenter103@gmail.com',
+        'goodpassword',
+        'dissenter103',
 		'https://lumiere-a.akamaihd.net/v1/images/ct_mickeymouseandfriends_goofy_ddt-16970_5d1d64dc.jpeg?region=0,0,600,600&width=480', 
 		'United States', 
 		'What is a dissenter?'

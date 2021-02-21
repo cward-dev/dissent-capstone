@@ -3,23 +3,23 @@ CREATE DATABASE dissent;
 USE dissent;
 
 # USER MANAGEMENT TABLES
-CREATE TABLE user_login (
-    user_login_id VARCHAR(255) PRIMARY KEY,
-    email VARCHAR(255) NOT NULL,
-    `password` VARCHAR(255) NOT NULL
+CREATE TABLE user_role (
+    user_role_id int PRIMARY KEY AUTO_INCREMENT,
+    `name` VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE `user` (
     user_id VARCHAR(255) PRIMARY KEY,
-    user_login_id VARCHAR(255) NOT NULL,
+    user_role_id int NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    `password` VARCHAR(255) NOT NULL,
     username VARCHAR(255) NOT NULL,
-    user_role VARCHAR(255) NOT NULL,
     photo_url VARCHAR(255),
     country VARCHAR(255),
     bio VARCHAR(255),
     is_active BOOL NOT NULL DEFAULT true,
-    CONSTRAINT fk_user_user_login_id FOREIGN KEY (user_login_id)
-        REFERENCES user_login (user_login_id)
+    CONSTRAINT fk_user_user_role_id FOREIGN KEY (user_role_id)
+        REFERENCES user_role (user_role_id)
 );
 
 # ARTICLE TABLES

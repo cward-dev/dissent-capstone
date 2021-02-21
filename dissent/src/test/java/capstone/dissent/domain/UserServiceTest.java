@@ -24,9 +24,9 @@ class UserServiceTest {
     @MockBean
     UserRepository repository;
 
-    final User USER_1 = new User("TestLoginID1", "user101");
-    final User USER_2 = new User("TestLoginID2", "user102");
-    final User USER_3 = new User("TestLoginID3", "user103");
+    final User USER_1 = new User(1, "user101");
+    final User USER_2 = new User(2, "user102");
+    final User USER_3 = new User(3, "user103");
     List<User> users = new ArrayList<>(Arrays.asList(USER_1, USER_2, USER_3));
 
     @Test
@@ -49,7 +49,7 @@ class UserServiceTest {
     }
 
     @Test
-    void shouldAdd() {
+    void shouldNotAddEmptyUsernameAndPassword() {
         User userIn = USER_2;
         userIn.setUserId(null);
         User userOut = new User();
@@ -57,15 +57,28 @@ class UserServiceTest {
         when(repository.add(userIn)).thenReturn(userOut);
         Result<User> result = service.add(userIn);
 
-        assertTrue(result.isSuccess());
-        assertNotNull(result.getPayload());
-        assertEquals(userOut, result.getPayload());
+        assertFalse(result.isSuccess());
+    }
 
+    @Test
+    void shouldAdd() {
+        User userIn = USER_2;
+        userIn.setUserId(null);
+        User userOut = new User();
+        userIn.setEmail("test@email.com");
+        userIn.setPassword("Passwrod");
+
+        when(repository.add(userIn)).thenReturn(userOut);
+        Result<User> result = service.add(userIn);
+
+        assertTrue(result.isSuccess());
     }
 
     @Test
     void shouldNotAddWithSetId(){
         User user = USER_2;
+        user.setEmail("test@email.com");
+        user.setPassword("Passwrod");
         user.setUserId("TEST_USER_ID");
         Result<User> result = service.add(user);
 
@@ -77,6 +90,8 @@ class UserServiceTest {
     void shouldEdit() {
         User user = USER_1;
         user.setUsername("newUser1Update");
+        user.setEmail("test@email.com");
+        user.setPassword("Passwrod");
         user.setUserId("TEST_USER_ID");
 
         when(repository.edit(user)).thenReturn(true);
