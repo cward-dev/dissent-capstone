@@ -74,7 +74,7 @@ function FeedbackTagForm ( { object, user } ) {
   const updateTag = async (tag) =>  {
     console.log(tag);
 
-    fetch(`http://localhost:8080/api/article/feedback-tag/${tag.articleId}/${user.userId}/${feedbackTagId}`, {
+    fetch(`http://localhost:8080/api/article/feedback-tag/${tag.articleId}/${user.userId}/${tag.tagID}`, {
       method: "DELETE"      
     })
       .then(response => {
@@ -86,10 +86,8 @@ function FeedbackTagForm ( { object, user } ) {
           Promise.reject('Shoot! Something unexpected went wrong :(');
         }
       })
-      // {articleId}/{userId}/{feedbackTagId}
       .catch(error => console.log(error));
 
-      addFeedbackTag(tag);
 
   }
 
@@ -110,8 +108,8 @@ function FeedbackTagForm ( { object, user } ) {
     event.preventDefault();
     const newFeedbackTagJSON= {...feedbackTagJSON};
     newFeedbackTagJSON[event.target.name] = event.target.value;
-    
     setFeedbackTagJSON(newFeedbackTagJSON);
+    
   };
 
   return (
