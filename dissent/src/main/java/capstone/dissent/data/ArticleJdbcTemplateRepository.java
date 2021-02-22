@@ -239,7 +239,7 @@ public class ArticleJdbcTemplateRepository implements ArticleRepository {
     private void addPosts(Article article) {
 
         final String sql = "select p.post_id, p.parent_post_id, p.article_id, p.user_id, p.is_dissenting, p.date_posted, p.content, p.is_active, "
-                + "u.username as username, u.photo_url, u.country, u.bio, u.is_active "
+                + "u.username as username, u.email, u.password_hash, u.photo_url, u.country, u.bio, u.is_active "
                 + "from post p "
                 + "inner join `user` u on p.user_id = u.user_id "
                 + "where p.article_id = ?;"; // fixed issue where only top-level post reply was being added to article.
