@@ -28,7 +28,7 @@ public class PostJdbcTemplateRepository implements PostRepository {
     @Override
     public List<Post> findAll() {
         final String sql = "select p.post_id, p.parent_post_id, p.article_id, p.user_id, p.is_dissenting, p.date_posted, p.content, p.is_active, "
-                + "u.user_login_id, u.username as username, u.user_role, u.photo_url, u.country, u.bio, u.is_active "
+                + "u.username as username, u.photo_url, u.country, u.bio, u.is_active "
                 + "from post p "
                 + "inner join `user` u on p.user_id = u.user_id limit 1000;";
         List<Post> result = jdbcTemplate.query(sql, new PostMapper(jdbcTemplate));
@@ -45,7 +45,7 @@ public class PostJdbcTemplateRepository implements PostRepository {
     @Override
     public List<Post> findByArticleId(String articleId) {
         final String sql = "select p.post_id, p.parent_post_id, p.article_id, p.user_id, p.is_dissenting, p.date_posted, p.content, p.is_active, "
-                + "u.user_login_id, u.username as username, u.user_role, u.photo_url, u.country, u.bio, u.is_active "
+                + "u.username as username, u.photo_url, u.country, u.bio, u.is_active "
                 + "from post p "
                 + "inner join `user` u on p.user_id = u.user_id "
                 + "where p.article_id = ? and p.parent_post_id IS NULL;";
@@ -64,7 +64,7 @@ public class PostJdbcTemplateRepository implements PostRepository {
     @Override
     public List<Post> findByUserId(String userId) {
         final String sql = "select p.post_id, p.parent_post_id, p.article_id, p.user_id, p.is_dissenting, p.date_posted, p.content, p.is_active, "
-                + "u.user_login_id, u.username as username, u.user_role, u.photo_url, u.country, u.bio, u.is_active "
+                + "u.username as username, u.photo_url, u.country, u.bio, u.is_active "
                 + "from post p "
                 + "inner join `user` u on p.user_id = u.user_id "
                 + "where p.user_id = ?;";
@@ -83,7 +83,7 @@ public class PostJdbcTemplateRepository implements PostRepository {
     @Override
     public List<Post> findByTimestampRange(LocalDateTime start, LocalDateTime end) {
         final String sql = "select p.post_id, p.parent_post_id, p.article_id, p.user_id, p.is_dissenting, p.date_posted, p.content, p.is_active, "
-                + "u.user_login_id, u.username as username, u.user_role, u.photo_url, u.country, u.bio, u.is_active "
+                + "u.username as username, u.photo_url, u.country, u.bio, u.is_active "
                 + "from post p "
                 + "inner join `user` u on p.user_id = u.user_id "
                 + "where (p.date_posted between ? and ?);";
@@ -102,7 +102,7 @@ public class PostJdbcTemplateRepository implements PostRepository {
     @Override
     public Post findById(String postId) {
         final String sql = "select p.post_id, p.parent_post_id, p.article_id, p.user_id, p.is_dissenting, p.date_posted, p.content, p.is_active, "
-                + "u.user_login_id, u.username as username, u.user_role, u.photo_url, u.country, u.bio, u.is_active "
+                + "u.username as username, u.photo_url, u.country, u.bio, u.is_active "
                 + "from post p "
                 + "inner join `user` u on p.user_id = u.user_id "
                 + "where (p.post_id = ?);";

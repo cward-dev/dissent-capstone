@@ -9,10 +9,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.ValidationException;
+import java.util.HashMap;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = {"http://localhost:3000"})
 @RequestMapping("/api/user")
 public class UserController {
 
@@ -45,12 +46,19 @@ public class UserController {
         return ResponseEntity.ok(user);
     }
 
-    @PostMapping
-    public ResponseEntity<Object> add(@RequestBody User user) {
+    @PostMapping("/create-account")
+    public ResponseEntity<?> add(@RequestBody User user) {
+
+        user.getRoles().add("USER");
+
         Result<User> result = service.add(user);
         if (result.isSuccess()) {
-            return new ResponseEntity<>(result.getPayload(), HttpStatus.CREATED);
+            // happy path
+            HashMap<String, String> map = new HashMap<>();
+            map.put("appUserId", String.valueOf(user.getUserId()));
+            return new ResponseEntity<>(map, HttpStatus.CREATED);
         }
+
         return ErrorResponse.build(result);
     }
 

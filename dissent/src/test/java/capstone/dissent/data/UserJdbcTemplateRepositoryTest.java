@@ -82,9 +82,10 @@ class UserJdbcTemplateRepositoryTest {
 
     private User makeUser() {
         User user = new User();
-        user.setUserLoginId("103a7d9b-f72b-4469-b1a3-bdba2f6356b4");
         user.setUsername("accepter101");
-        user.setRole("user");
+        user.setEmail("new@gmail.com");
+        user.setPassword("test_pass");
+
         return user;
     }
 

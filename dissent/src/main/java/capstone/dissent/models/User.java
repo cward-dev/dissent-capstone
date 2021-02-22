@@ -1,7 +1,10 @@
 package capstone.dissent.models;
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.ArrayList;
+import java.util.List;
 
 public class User {
 
@@ -9,16 +12,20 @@ public class User {
     private final int MAX_CHARACTERS = 255;
 
     private String userId;
-    private String userLoginId;
+
+    private List<String> roles = new ArrayList<>();
+
+    @NotNull(message = "Email cannot be null")
+    @Email
+    private String email;
+
+    @NotNull(message = "Password cannot be null")
+    private String password;
 
     @NotNull(message = "Username cannot be null")
     @Size(max = MAX_CHARACTERS, message = "Username must not exceed ${MAX_CHARACTERS} characters.")
     private String username;
 
-    //    private Role role;
-    //    TODO: discuss making Role a model
-
-    private String role;
     private String photoUrl;
 
     @Size(max = MAX_CHARACTERS, message = "Country must not exceed ${MAX_CHARACTERS} characters.")
@@ -27,16 +34,15 @@ public class User {
     @Size(max = MAX_CHARACTERS, message = "Bio must not exceed ${MAX_CHARACTERS} characters.")
     private String bio;
 
-    // TODO: isActive tag to mirror database.
-
+    private boolean isActive;
 
     // constructor(s)
     public User() {
 
     }
 
-    public User(String userLoginId, String username) {
-        this.userLoginId = userLoginId;
+    public User(List<String> roles, String username) {
+        this.roles = roles;
         this.username = username;
     }
 
@@ -53,12 +59,33 @@ public class User {
         this.userId = userId;
     }
 
-    public String getUserLoginId() {
-        return userLoginId;
+    public List<String> getRoles() {
+        return roles;
     }
 
-    public void setUserLoginId(String userLogin) {
-        this.userLoginId = userLogin;
+    public void setRoles(List<String> roles) {
+        this.roles = roles;
+    }
+
+    public boolean hasRole(String role) {
+        if (roles == null) return false;
+        return roles.contains(role);
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getUsername() {
@@ -67,14 +94,6 @@ public class User {
 
     public void setUsername(String username) {
         this.username = username;
-    }
-
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
     }
 
     public String getPhotoUrl() {
@@ -99,5 +118,13 @@ public class User {
 
     public void setBio(String bio) {
         this.bio = bio;
+    }
+
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setActive(boolean active) {
+        isActive = active;
     }
 }

@@ -13,11 +13,11 @@ public class UserMapper implements RowMapper<User> {
 
         User user = new User();
 
-        // TODO: discuss user.setUserLogin
-
         user.setUserId(resultSet.getString("user_id"));
+        user.setEmail(resultSet.getString("email"));
+        user.setPassword(resultSet.getString("password_hash"));
         user.setUsername(resultSet.getString("username"));
-        user.setRole(resultSet.getString("user_role"));
+        user.setActive(resultSet.getBoolean("is_active"));
 
         if (resultSet.getString("bio") != null) {
             user.setBio(resultSet.getString("bio"));

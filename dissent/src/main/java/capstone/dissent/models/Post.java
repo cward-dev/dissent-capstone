@@ -31,6 +31,7 @@ public class Post {
 
     boolean isActive;
 
+    // TODO: Discuss User vs userId.
     @NotNull(message = "Post must have a user")
     User user;
 
