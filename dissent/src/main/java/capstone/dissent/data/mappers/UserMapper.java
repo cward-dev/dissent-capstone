@@ -13,11 +13,8 @@ public class UserMapper implements RowMapper<User> {
 
         User user = new User();
 
-        // TODO: discuss user.setUserLogin
-
         user.setUserId(resultSet.getString("user_id"));
         user.setUsername(resultSet.getString("username"));
-        user.setUserRoleId(resultSet.getInt("user_role_id"));
 
         if (resultSet.getString("bio") != null) {
             user.setBio(resultSet.getString("bio"));

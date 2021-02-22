@@ -97,6 +97,11 @@ public class UserService implements UserDetailsService {
             return result;
         }
 
+        result = validatePassword(user);
+        if (!result.isSuccess()) {
+            return result;
+        }
+
         if (user.getUserId() == null || user.getUserId().isBlank()) {
             result.addMessage("User ID must be set for `edit` operation", ResultType.INVALID);
             return result;
@@ -142,29 +147,29 @@ public class UserService implements UserDetailsService {
         String password = user.getPassword();
 
         // Regex's to check valid password.
-        String regexDigit = "^(?=.*[0-9])$";
-        String regexLowerCase = "^(?=.*[a-z])(?=.*[A-Z])$";
-        String regexLength = "^(?=\\S+$).{8,20}$";
-        String regexSpecial = "^(?=.*[!@#$%^&+=])$";
+        String regexDigit = ".*\\d.*";
+        String regexLowerCase = ".*[a-zA-Z]";
+        String regexLength = "(?=\\S+$).{8,20}";
+        String regexSpecial = "[a-zA-Z0-9]*";
 
         if (password == null) {
             result.addMessage("Password cannot be empty.", ResultType.INVALID);
             return result;
         }
 
-        if (!Pattern.compile(regexDigit).matcher(password).matches()) {
+        if (!password.matches(regexDigit)) {
             result.addMessage("Password must contain a digit 0-9.", ResultType.INVALID);
         }
 
-        if (!Pattern.compile(regexLowerCase).matcher(password).matches()) {
+        if (!password.matches(regexLowerCase)) {
             result.addMessage("Password must contain an upper and lowercase letter.", ResultType.INVALID);
         }
 
-        if (!Pattern.compile(regexLength).matcher(password).matches()) {
+        if (!password.matches(regexLength)) {
             result.addMessage("Password must be between 8 and 20 characters with no white space.", ResultType.INVALID);
         }
 
-        if (!Pattern.compile(regexSpecial).matcher(password).matches()) {
+        if (password.matches(regexSpecial)) {
             result.addMessage("Password must contain at least one special character [!@#$%^&-+=()]", ResultType.INVALID);
         }
 

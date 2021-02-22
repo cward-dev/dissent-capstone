@@ -40,12 +40,12 @@ public class UserJdbcTemplateRepository implements UserRepository {
         int rowsAffected = jdbcTemplate.update(connection -> {
             PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             ps.setString(1, user.getUserId());
-            ps.setString(3, user.getEmail());
-            ps.setString(4, user.getPassword());
-            ps.setString(5, user.getUsername());
-            ps.setString(6, user.getPhotoUrl());
-            ps.setString(7, user.getCountry());
-            ps.setString(8, user.getBio());
+            ps.setString(2, user.getEmail());
+            ps.setString(3, user.getPassword());
+            ps.setString(4, user.getUsername());
+            ps.setString(5, user.getPhotoUrl());
+            ps.setString(6, user.getCountry());
+            ps.setString(7, user.getBio());
             return ps;
         });
 
@@ -125,11 +125,16 @@ public class UserJdbcTemplateRepository implements UserRepository {
     public boolean deleteById(String userId) {
         final String sql = "update user set "
                 + "username = 'deleted', "
-                + "user_role_id = 3, "
+                + "email = 'deleted', "
+                + "password_hash = 'deleted', "
                 + "photo_url = null, "
                 + "country = null, "
                 + "bio = null "
                 + "where user_id = ?";
+
+        // remove role relationships
+        deleteRoles(findById(userId));
+
         return jdbcTemplate.update(sql, userId) > 0;
     }
 
@@ -143,7 +148,7 @@ public class UserJdbcTemplateRepository implements UserRepository {
     private void updateRoles(User user) {
 
         // delete all roles, then re-add (scorched-earth method {safe})
-        jdbcTemplate.update("delete from user_role where user_id = ?;");
+        deleteRoles(user);
 
         if (user.getRoles() == null) return;
 
@@ -154,6 +159,10 @@ public class UserJdbcTemplateRepository implements UserRepository {
             jdbcTemplate.update(sql, user.getUserId(), role);
         }
 
+    }
+
+    private void deleteRoles(User user) {
+        jdbcTemplate.update("delete from user_role where user_id = ?;", user.getUserId());
     }
 
     private List<String> getRolesByUserId(String userId) {

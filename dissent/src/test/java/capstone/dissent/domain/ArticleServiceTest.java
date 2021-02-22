@@ -116,7 +116,7 @@ class ArticleServiceTest {
         when(repository.addArticle(articleIn)).thenReturn(articleOut);
         Result<Article> result = service.add(articleIn);
 
-        assertTrue(result.isSuccess());
+        assertTrue(result.isSuccess()); // missing source in test-database
         assertNotNull(result.getPayload());
         assertEquals(articleOut,result.getPayload());
     }
