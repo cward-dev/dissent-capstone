@@ -1,22 +1,60 @@
 package capstone.dissent.controllers;
 
-import org.springframework.stereotype.Controller;
+import capstone.dissent.security.JwtConverter;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ControllerAdvice;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.*;
 
-@Controller
+import java.sql.SQLOutput;
+import java.util.HashMap;
+import java.util.Map;
+
+@RestController
+@CrossOrigin(origins = {"http://localhost:3000"})
 public class AuthController {
 
-    @GetMapping("/login")
-    public String login() {
-        return "security/login";
+    private final AuthenticationManager authenticationManager;
+    private final JwtConverter jwtConverter;
+
+    public AuthController(AuthenticationManager authenticationManager, JwtConverter jwtConverter) {
+        this.authenticationManager = authenticationManager;
+        this.jwtConverter = jwtConverter;
     }
 
-    @GetMapping("/login-err")
-    public String loginErr(Model model) {
-        model.addAttribute("loginError", true);
-        return "security/login";
+    @PostMapping("/authenticate")
+    public ResponseEntity<?> authenticate(@RequestBody Map<String, String> credentials) {
+
+        UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
+                credentials.get("username"), credentials.get("password")
+        );
+
+        try {
+            Authentication authentication = authenticationManager
+                    .authenticate(authToken);
+
+            // check to see if authentication succeeded.
+            if (authentication.isAuthenticated()) { // Fails || exception.
+                User user = (User)authentication.getPrincipal();
+
+                String jwtToken = jwtConverter.getTokenFromUser(user);
+
+                HashMap<String, String> map = new HashMap<>();
+                map.put("jwt_token", jwtToken);
+
+                return new ResponseEntity<>(map, HttpStatus.OK);
+            }
+
+        } catch (AuthenticationException ex) {
+            ex.printStackTrace();
+        }
+
+        return new ResponseEntity<>(HttpStatus.FORBIDDEN);
     }
 
 }
