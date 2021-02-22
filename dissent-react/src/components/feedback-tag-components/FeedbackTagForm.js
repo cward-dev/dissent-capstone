@@ -189,6 +189,7 @@ for(const articlefeedbackTag in userFeedBackTagsForArticle){
       tag.feedbackTag = feedbackTagJSON;
   
       addFeedbackTag(tag);
+
       setFeedbackTagJSON(DEF_FB_TAG);
 
     } else {
@@ -211,7 +212,6 @@ for(const articlefeedbackTag in userFeedBackTagsForArticle){
   }
 
   return (
-
     <div className="container alert alert-dark">
       {/* <div className="row ">
     
@@ -229,10 +229,6 @@ for(const articlefeedbackTag in userFeedBackTagsForArticle){
         </form>
 
         <div> */}
-
-
-  
-
     
     <Errors errors={errors} />
     <div className="d-flex flex-row justify-content-center col-4 alert alert-dark mt-1 mb-3 mx-2">
@@ -242,6 +238,7 @@ for(const articlefeedbackTag in userFeedBackTagsForArticle){
     </div>
   
     </div>
+
   );
 
 } export default FeedbackTagForm;

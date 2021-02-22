@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import Errors from '../Errors.js';
 
-function DeletePost ( { originalPost, articleId, setCurrentOption, user } ) {
+function DeletePost ( { originalPost, articleId, setCurrentOption, user, handlePostAdded } ) {
 
   const [errors, setErrors] = useState([]);
 
@@ -17,8 +17,7 @@ function DeletePost ( { originalPost, articleId, setCurrentOption, user } ) {
       if (response.status === 204) {
 
         // TODO kinda hokey
-        history.push(`/`);
-        history.push(`/article/${articleId}`);
+        handlePostAdded();
         handleCancel();
       } else if (response.status === 404) {
         throw new Error([`Post ID #${originalPost.postId} not found`]);
