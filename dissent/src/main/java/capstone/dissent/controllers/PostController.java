@@ -5,6 +5,7 @@ import capstone.dissent.domain.Result;
 import capstone.dissent.models.Post;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -57,7 +58,7 @@ public class PostController {
     }
 
     @PostMapping
-    public ResponseEntity<Object> add(@RequestBody Post post) {
+    public ResponseEntity<Object> add(@RequestBody Post post, UsernamePasswordAuthenticationToken principal) {
         Result<Post> result = service.add(post);
         if (result.isSuccess()) {
             return new ResponseEntity<>(result.getPayload(), HttpStatus.CREATED);

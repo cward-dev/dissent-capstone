@@ -14,6 +14,8 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter { // 2
@@ -43,6 +45,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter { // 2
                         "/api/post/*",
                         "/api/topic/*",
                         "/api/source/*")
+                .hasAnyRole("USER", "ADMIN")
+
+                .antMatchers(HttpMethod.POST,
+                        "/api/post",
+                        "/api/post/",
+                        "/api/post/*")
                 .hasAnyRole("USER", "ADMIN")
 
                 .antMatchers("/**").denyAll() // forces explicit security declaration of all http endpoints (no leaks!)
@@ -77,4 +85,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter { // 2
 //                .withUser(userBuilder)
 //                .withUser(adminBuilder);
 //    }
+
+    @Bean
+    public WebMvcConfigurer corsConfigurer() {
+
+        return new WebMvcConfigurer() {
+
+            @Override
+            public void addCorsMappings(CorsRegistry registry) {
+                registry.addMapping("/**")
+                        .allowedOrigins("http://localhost:3000")
+                        .allowedMethods("*");
+            }
+        };
+    }
 }

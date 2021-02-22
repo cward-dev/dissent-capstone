@@ -31,7 +31,7 @@ public class Post {
 
     boolean isActive;
 
-    @NotNull(message = "Post must have a user")
+    // TODO: Discuss User vs userId.
     User user;
 
     List<Post> childPosts = new ArrayList<>();

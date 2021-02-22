@@ -11,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = {"http://localhost:3000"})
 @RequestMapping("/api/source")
 public class SourceController {
 
