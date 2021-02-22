@@ -31,25 +31,30 @@ function ArticlePage ( { user } ) {
   const [errors, setErrors] = useState([]);
   const history = useHistory();
 
+  const getData = async () => {
+    try {
+      const response = await fetch(`http://localhost:8080/api/article/${articleId}`);
+      const data = await response.json();
+      setArticle(data);
+    } catch (error) {
+      setErrors(["Something went wrong with our database, sorry!"]);
+    }
+  };
+
   useEffect(() => {
-    const getData = async () => {
-      try {
-        const response = await fetch(`http://localhost:8080/api/article/${articleId}`);
-        const data = await response.json();
-        setArticle(data);
-      } catch (error) {
-        setErrors(["Something went wrong with our database, sorry!"]);
-      }
-    };
     getData();
   }, []);
+
+  const handlePostAdded = () => {
+    getData();
+  }
 
   return (
     <div>
       <ArticleCard articleOpen={true} article={article} setAddPost={setAddPost} user={user} />
       <hr></hr>
-      {addPost ? <AddPost addPost={addPost} setAddPost={setAddPost} articleId={articleId} user={user} /> : null}
-      <PostFeed posts={article.posts} user={user} />
+      {addPost ? <AddPost addPost={addPost} setAddPost={setAddPost} articleId={articleId} user={user} handlePostAdded={handlePostAdded} /> : null}
+      <PostFeed posts={article.posts} user={user} handlePostAdded={handlePostAdded} />
     </div>
   );
 }

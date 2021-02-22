@@ -35,7 +35,7 @@ function ArticleCard ( { article, articleOpen, setAddPost, user } ) {
     return Math.trunc(daysSincePosted / 365) + " years ago"
   };
   
-  const timePassed = getTimePassed(datePosted);
+  const timePassed = getTimePassed(datePublished);
 
   const getDiscussionLength = () => {
     let counter = 0;

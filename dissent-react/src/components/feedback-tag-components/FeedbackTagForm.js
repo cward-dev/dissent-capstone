@@ -25,15 +25,29 @@ function FeedbackTagForm({ object, user }) {
   const [tag, setTag] = useState(DEFAULT_TAG);
   const [errors, setErrors] = useState([]);
   const [feedbackTagJSON, setFeedbackTagJSON] = useState(DEF_FB_TAG);
-  const { feedbackTagId, name } = feedbackTagJSON;
+  const {feedbackTagId} = feedbackTagJSON;
 
   const [userFeedBackTagsForArticle, setUserFeedbackTagsForArticle] = useState([]);
+  
+  const [isToggledSound, setToggleSound] = useState(false); // the use state will want to check for the tag already selected instead of defaulting to false
+  const [isToggledFallacious, setToggleFallacious] = useState(false); // the use state will want to check for the tag already selected instead of defaulting to false
+  const [isToggledBiased, setToggleBiased] = useState(false); // the use state will want to check for the tag already selected instead of defaulting to false
+
+// console.log("XXXX " + userFeedBackTagsForArticle  + " XXXX");
+  
+function checkForTagsByUser(){ 
+for(const articlefeedbackTag in userFeedBackTagsForArticle){
+  console.log(articlefeedbackTag);
+  if(articlefeedbackTag.feedbackTag.feedbackTagId ===1){
+    setToggleSound(true);
+    console.log(isToggledSound);
+  }
+}
 
 
- // grabs all user feedback for article
- 
+}
+ // grabs all user feedback for article (works)
  useEffect(()=> {
-
   fetch(`http://localhost:8080/api/article/feedback-tag/${object.articleId}/${user.userId}`)
   .then (response => {
     if(response.status!= 200){
@@ -41,9 +55,32 @@ function FeedbackTagForm({ object, user }) {
     }
     return response.json();
   })
-  .then(json => setUserFeedbackTagsForArticle(json))
+  .then(json => {
+    
+    setUserFeedbackTagsForArticle(json);
+    checkForTagsByUser();
+  })
   .catch(console.log);
+ 
  },[]);
+
+ function checkForTagsByUser(){
+  // console.log("XXXX " + userFeedBackTagsForArticle  + " XXXX");
+
+
+  for(const articlefeedbackTag in userFeedBackTagsForArticle){
+    console.log(articlefeedbackTag);
+    if(articlefeedbackTag.feedbackTag.feedbackTagId ===1){
+      setToggleSound(true);
+      console.log(isToggledSound);
+    }
+  }
+
+
+ }
+
+
+
 
 
 
@@ -69,9 +106,10 @@ function FeedbackTagForm({ object, user }) {
     try {
 
       const response = await fetch("http://localhost:8080/api/article/feedback-tag", init);
-      console.log(response);
+      
       if (response.status === 201 || response.status === 400) {
         // TODO maybe fetch data go back to article fetch and get data...?
+        console.log("added!");
         setErrors([]);
       } else if (response.status === 500) {
         throw new Error(["Duplicate Entries are not allowed"])
@@ -124,25 +162,24 @@ function FeedbackTagForm({ object, user }) {
 
   const onChangeHandler = (event) => {
     event.preventDefault();
+    setFeedbackTagJSON(1);
     const newFeedbackTagJSON = { ...feedbackTagJSON };
-    newFeedbackTagJSON[event.target.name] = event.target.value;
     console(newFeedbackTagJSON);
     setFeedbackTagJSON(newFeedbackTagJSON);
     console.log(feedbackTagJSON);
 
   };
+  
+  
 
-  const [isToggledSound, setToggleSound] = useState(false); // the use state will want to check for the tag already selected instead of defaulting to false
-  const [isToggledFallacious, setToggleFallacious] = useState(false); // the use state will want to check for the tag already selected instead of defaulting to false
-  const [isToggledBiased, setToggleBiased] = useState(false); // the use state will want to check for the tag already selected instead of defaulting to false
+  // console.log(userFeedBackTagsForArticle);
 
   const toggleTrueFalseSound = (event) => {
     event.preventDefault();
-    setToogleSound(!isToggledSound);
-
-    event.preventDefault();
     setFeedbackTagJSON(1);
+
     const newFeedbackTagJSON = { ...feedbackTagJSON };
+    newFeedbackTagJSON.feedbackTagId = "1";
     setFeedbackTagJSON(newFeedbackTagJSON);
     console.log(feedbackTagJSON);
 
@@ -152,14 +189,12 @@ function FeedbackTagForm({ object, user }) {
       tag.feedbackTag = feedbackTagJSON;
   
       addFeedbackTag(tag);
-      setSelected(true);
 
-      //disable the rest of the buttons
-      //set style
+      setFeedbackTagJSON(DEF_FB_TAG);
+
     } else {
       const tagToDelete = userFeedBackTagsForArticle[0];
       deleteTag(tag);
-      setSelected(false);
     }
     
   }
@@ -177,14 +212,33 @@ function FeedbackTagForm({ object, user }) {
   }
 
   return (
-    <>
+    <div className="container alert alert-dark">
+      {/* <div className="row ">
+    
+        <Errors errors={errors} />
+        <form onSubmit={handleSubmit}>
+          <label htmlFor="feedbackTagId"><h3>Feedback</h3></label>
+          <select id="feedbackTagId" name="feedbackTagId"
+            onChange={onChangeHandler} value={feedbackTagId}>
+            <option value="">--Give Feedback--</option>
+            <option value="1">Sound</option>
+            <option value="2">Fallacious</option>
+            <option value="3">Biased</option>
+          </select>
+          <button type="submit">Submit</button>
+        </form>
+
+        <div> */}
+    
     <Errors errors={errors} />
     <div className="d-flex flex-row justify-content-center col-4 alert alert-dark mt-1 mb-3 mx-2">
       <button className="btn btn-success btn-sm" onClick={toggleSound}>Sound </button>
       <button className="btn btn-warning btn-sm mx-2" onClick={toggleFallacious}>Fallacious</button>
       <button className="btn btn-danger btn-sm" onClick={toggleBiased}>Biased</button>
     </div>
-    </>
+  
+    </div>
+
   );
 
 } export default FeedbackTagForm;

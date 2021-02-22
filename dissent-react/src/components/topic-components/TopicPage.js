@@ -2,8 +2,6 @@ import { useState, useEffect } from 'react';
 import { Link, useHistory, useParams } from 'react-router-dom';
 import Errors from '../Errors.js';
 import ArticleCard from '../article-components/ArticleCard.js';
-import AddPost from '../post-components/AddPost.js';
-import PostFeed from '../post-components/PostFeed.js';
 
 function TopicPage ( { user } ) {
   const { topicName } = useParams();
@@ -25,7 +23,7 @@ function TopicPage ( { user } ) {
       }
     };
     getData();
-  }, []);
+  }, [topicName]);
 
   const makeArticle = (article) => {
     return (
