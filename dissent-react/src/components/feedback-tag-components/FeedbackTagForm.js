@@ -152,14 +152,12 @@ function FeedbackTagForm({ object, user }) {
       tag.feedbackTag = feedbackTagJSON;
   
       addFeedbackTag(tag);
-      setSelected(true);
 
       //disable the rest of the buttons
       //set style
     } else {
       const tagToDelete = userFeedBackTagsForArticle[0];
       deleteTag(tag);
-      setSelected(false);
     }
     
   }
