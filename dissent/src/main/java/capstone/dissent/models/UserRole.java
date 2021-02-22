@@ -3,8 +3,8 @@ package capstone.dissent.models;
 public class UserRole {
 
     // properties
-    private int userRoleId;
-    private String name;
+    private String userId;
+    private String roleId;
 
     // constructor(s)
     public UserRole() {

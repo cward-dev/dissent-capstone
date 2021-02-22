@@ -147,7 +147,8 @@ begin
     
     delete from user_role;
     delete from `user`;
-    delete from user_role;
+    delete from `role`;
+    ALTER TABLE `role` AUTO_INCREMENT = 1;
     
     
 # Populate Tables
@@ -319,4 +320,3 @@ delimiter ;
 
 set SQL_SAFE_UPDATES = 0;
 call set_known_good_state;
-set SQL_SAFE_UPDATES = 1;
