@@ -21,6 +21,7 @@ public class JwtRequestFilter extends BasicAuthenticationFilter {
         this.converter = converter;
     }
 
+
     @Override
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
@@ -35,10 +36,12 @@ public class JwtRequestFilter extends BasicAuthenticationFilter {
             if (user == null) {
                 response.setStatus(403); // Forbidden
             } else {
-                // 4. Confirmed. Set auth for this single request.
+
+                // Confirmed. Set auth for this single request.
                 UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
                         user.getUsername(), null, user.getAuthorities());
 
+                // this is the line that actually "logs" the user into the system.
                 SecurityContextHolder.getContext().setAuthentication(token);
             }
         }

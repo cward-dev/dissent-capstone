@@ -3,6 +3,7 @@ package capstone.dissent.security;
 import org.apache.catalina.authenticator.SpnegoAuthenticator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -17,6 +18,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter { // 2
 
+    private final JwtConverter jwtConverter;
+
+    public SecurityConfig(JwtConverter jwtConverter) {
+        this.jwtConverter = jwtConverter;
+    }
+
+
     @Bean
     public PasswordEncoder getEncoder() {
         return new BCryptPasswordEncoder();
@@ -29,9 +37,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter { // 2
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable();
         http.authorizeRequests()
-                .antMatchers("/api/*").permitAll()
                 .antMatchers("/authenticate").permitAll()           // 1. allow everyone
+                .antMatchers(HttpMethod.GET, "/api/article/*").hasAnyRole("USER", "ADMIN")
+                .antMatchers(HttpMethod.GET, "/api/post/*").hasAnyRole("USER", "ADMIN")
+                .antMatchers(HttpMethod.GET, "/api/topic/*").hasAnyRole("USER", "ADMIN")
+                .antMatchers(HttpMethod.GET, "/api/source/*").hasAnyRole("USER", "ADMIN")
+                .antMatchers(HttpMethod.GET, "/api/user/*").hasAnyRole("ADMIN")
                 .and()
+                .addFilter(new JwtRequestFilter(authenticationManager(), jwtConverter))
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     }
