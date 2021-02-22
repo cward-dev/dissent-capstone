@@ -32,7 +32,6 @@ class ArticleServiceTest {
     @MockBean
     SourceRepository sourceRepository;
 
-
     final LocalDateTime DAY1 = LocalDateTime.of(2020,1,1,12,0,0);
     final LocalDateTime DAY2 = LocalDateTime.of(2021,2,17,12,0,0);
     final Source TEST_SOURCE = new Source(
