@@ -1,5 +1,6 @@
 package capstone.dissent.controllers;
 
+import capstone.dissent.domain.UserService;
 import capstone.dissent.security.JwtConverter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

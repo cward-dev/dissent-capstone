@@ -2,27 +2,57 @@ package capstone.dissent.domain;
 
 import capstone.dissent.data.UserRepository;
 import capstone.dissent.models.User;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 @Service
-public class UserService {
+public class UserService implements UserDetailsService {
 
     private final UserRepository repository;
+    private final PasswordEncoder encoder;
 
     Validator validator;
 
-    public UserService(UserRepository repository) {
+    public UserService(UserRepository repository, PasswordEncoder encoder) {
         this.repository = repository;
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
         this.validator = factory.getValidator();
+        this.encoder = encoder;
+
+    }
+
+
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        User user = repository.findByUsername(username);
+
+        if (user == null || !user.isActive()) {
+            throw new UsernameNotFoundException(username + " not found.");
+        }
+
+        List<GrantedAuthority> authorities = user.getRoles().stream()
+                .map(roleName -> new SimpleGrantedAuthority("ROLE_" + roleName))
+                .collect(Collectors.toList());
+
+        return new org.springframework.security.core
+                .userdetails
+                .User(user.getUsername(), user.getPassword(), authorities);
     }
 
     public List<User> findAll() {
@@ -43,15 +73,23 @@ public class UserService {
             return result;
         }
 
+        result = validatePassword(user);
+        if (!result.isSuccess()) {
+            return result;
+        }
+
         if (user.getUserId() != null) {
             result.addMessage("User ID cannot be set for `add` operation", ResultType.INVALID);
             return result;
         }
 
+        user.setPassword(encoder.encode(user.getPassword()));
+
         user = repository.add(user);
         result.setPayload(user);
         return result;
     }
+
 
     public Result<User> edit(User user) {
         Result<User> result = validate(user);
@@ -77,7 +115,6 @@ public class UserService {
 
     private Result<User> validate(User user) {
         Result<User> result = new Result<>();
-
         if (user == null) {
             result.addMessage("User cannot be null", ResultType.INVALID);
             return result;
@@ -100,10 +137,44 @@ public class UserService {
         return result;
     }
 
-    private boolean isDuplicateUsername(List<User> users, User user) {
+    private Result<User> validatePassword(User user) {
+        Result<User> result = new Result();
+        String password = user.getPassword();
 
+        // Regex's to check valid password.
+        String regexDigit = "^(?=.*[0-9])$";
+        String regexLowerCase = "^(?=.*[a-z])(?=.*[A-Z])$";
+        String regexLength = "^(?=\\S+$).{8,20}$";
+        String regexSpecial = "^(?=.*[!@#$%^&+=])$";
+
+        if (password == null) {
+            result.addMessage("Password cannot be empty.", ResultType.INVALID);
+            return result;
+        }
+
+        if (!Pattern.compile(regexDigit).matcher(password).matches()) {
+            result.addMessage("Password must contain a digit 0-9.", ResultType.INVALID);
+        }
+
+        if (!Pattern.compile(regexLowerCase).matcher(password).matches()) {
+            result.addMessage("Password must contain an upper and lowercase letter.", ResultType.INVALID);
+        }
+
+        if (!Pattern.compile(regexLength).matcher(password).matches()) {
+            result.addMessage("Password must be between 8 and 20 characters with no white space.", ResultType.INVALID);
+        }
+
+        if (!Pattern.compile(regexSpecial).matcher(password).matches()) {
+            result.addMessage("Password must contain at least one special character [!@#$%^&-+=()]", ResultType.INVALID);
+        }
+
+        return result;
+    }
+
+    private boolean isDuplicateUsername(List<User> users, User user) {
         return users.stream()
                 .filter(u -> !u.getUserId().equals(user.getUserId())) // removes updating user
                 .anyMatch(u -> u.getUsername().equals(user.getUsername()));
     }
+
 }

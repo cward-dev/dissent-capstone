@@ -28,18 +28,18 @@ public class UserJdbcTemplateRepository implements UserRepository {
 
     // create
     @Override
+    @Transactional
     public User add(User user) {
 
         final String sql = "insert into user " +
-                "(user_id, user_role_id, email, `password`, username, photo_url, country, bio) " +
-                "values (?,?,?,?,?,?,?,?);";
+                "(user_id, email, password_hash, username, photo_url, country, bio) " +
+                "values (?,?,?,?,?,?,?);";
 
         user.setUserId(java.util.UUID.randomUUID().toString());
 
         int rowsAffected = jdbcTemplate.update(connection -> {
             PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             ps.setString(1, user.getUserId());
-            ps.setInt(2, user.getUserRoleId());
             ps.setString(3, user.getEmail());
             ps.setString(4, user.getPassword());
             ps.setString(5, user.getUsername());
@@ -52,6 +52,9 @@ public class UserJdbcTemplateRepository implements UserRepository {
         if (rowsAffected <= 0) {
             return null;
         }
+
+        // updates user_role bridge table
+        updateRoles(user);
 
         return user;
     }
@@ -70,18 +73,31 @@ public class UserJdbcTemplateRepository implements UserRepository {
                 "from `user`" +
                 "where user_id = ?;";
 
-        return jdbcTemplate.query(sql, new UserMapper(), userId).stream()
+        User user = jdbcTemplate.query(sql, new UserMapper(), userId).stream()
                 .findAny().orElse(null);
+
+        if (user != null) {
+            user.setRoles(getRolesByUserId(user.getUserId()));
+        }
+
+        return user;
     }
 
     @Override
+    @Transactional
     public User findByUsername(String username) {
         final String sql = "select * " +
                 "from `user`" +
                 "where username = ?;";
 
-        return jdbcTemplate.query(sql, new UserMapper(), username).stream()
+        User user = jdbcTemplate.query(sql, new UserMapper(), username).stream()
                 .findAny().orElse(null);
+
+        if (user != null) {
+            user.setRoles(getRolesByUserId(user.getUserId()));
+        }
+
+        return user;
     }
 
 
@@ -122,6 +138,31 @@ public class UserJdbcTemplateRepository implements UserRepository {
     @Override
     public HashMap<FeedbackTag, Integer> getTagData(User user) {
         return null;
+    }
+
+    private void updateRoles(User user) {
+
+        // delete all roles, then re-add (scorched-earth method {safe})
+        jdbcTemplate.update("delete from user_role where user_id = ?;");
+
+        if (user.getRoles() == null) return;
+
+        for (String role : user.getRoles()) {
+            String sql = "insert into user_role (user_id, role_id) " +
+                    "select ?, role_id from `role` where `name` = ?;";
+
+            jdbcTemplate.update(sql, user.getUserId(), role);
+        }
+
+    }
+
+    private List<String> getRolesByUserId(String userId) {
+        final String sql = "select r.name "
+                + "from user_role ur "
+                + "inner join role r on ur.role_id = r.role_id "
+                + "where ur.user_id = ?";
+
+        return jdbcTemplate.query(sql, (rs, rowId) -> rs.getString("name"), userId);
     }
 
 }

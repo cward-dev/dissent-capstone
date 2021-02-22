@@ -3,6 +3,8 @@ package capstone.dissent.models;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.ArrayList;
+import java.util.List;
 
 public class User {
 
@@ -10,7 +12,8 @@ public class User {
     private final int MAX_CHARACTERS = 255;
 
     private String userId;
-    private int userRoleId;
+
+    private List<String> roles = new ArrayList<>();
 
     @NotNull(message = "Email cannot be null")
     @Email
@@ -31,16 +34,15 @@ public class User {
     @Size(max = MAX_CHARACTERS, message = "Bio must not exceed ${MAX_CHARACTERS} characters.")
     private String bio;
 
-    // TODO: isActive tag to mirror database.
-
+    private boolean isActive;
 
     // constructor(s)
     public User() {
 
     }
 
-    public User(int userRoleId, String username) {
-        this.userRoleId = userRoleId;
+    public User(List<String> roles, String username) {
+        this.roles = roles;
         this.username = username;
     }
 
@@ -57,12 +59,17 @@ public class User {
         this.userId = userId;
     }
 
-    public int getUserRoleId() {
-        return userRoleId;
+    public List<String> getRoles() {
+        return roles;
     }
 
-    public void setUserRoleId(int userRoleId) {
-        this.userRoleId = userRoleId;
+    public void setRoles(List<String> roles) {
+        this.roles = roles;
+    }
+
+    public boolean hasRole(String role) {
+        if (roles == null) return false;
+        return roles.contains(role);
     }
 
     public String getEmail() {
@@ -111,5 +118,13 @@ public class User {
 
     public void setBio(String bio) {
         this.bio = bio;
+    }
+
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setActive(boolean active) {
+        isActive = active;
     }
 }
