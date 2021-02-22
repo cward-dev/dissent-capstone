@@ -43,9 +43,9 @@ function RawArticleCard ( { article, user, handleSetArticles } ) {
 
     const articleToAdd = {
       "articleId": article.articleId,
-      "title": (article.title && article.title.trim().length > 0 ? article.title : "Unknown"),
-      "description": (article.description && article.description.trim().length > 0 ? article.description : "Unknown"),
-      "author": (article.author && article.author.trim().length > 0 ? article.author : "Unknown"),
+      "title": (article.title && article.title.trim().length > 0 ? (article.title.length > 255 ? article.title.substring(0,255) : article.title) : "Unknown"),
+      "description": (article.description && article.description.trim().length > 0 ? (article.description.length > 255 ? article.description.substring(0,255) : article.description) : "Unknown"),
+      "author": (article.author && article.author.trim().length > 0 ? (article.author.length > 255 ? article.author.substring(0,255) : article.author) : "Unknown"),
       "articleUrl": article.articleUrl,
       "articleImageUrl": article.articleImageUrl ? article.articleImageUrl : placeholderImage,
       "datePublished": article.datePublished,
