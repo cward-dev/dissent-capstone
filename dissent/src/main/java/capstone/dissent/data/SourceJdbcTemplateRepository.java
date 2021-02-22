@@ -55,10 +55,11 @@ public class SourceJdbcTemplateRepository implements SourceRepository {
     }
 
     @Override
-    public Source findBySourceName(String sourceName) {
-        final String sql = "select * from source where UPPER(source_name) = UPPER(?); ";
+    public Source findBySourceNameAndUrl(String sourceName, String websiteUrl) {
+        final String sql = "select * from source where UPPER(source_name) = UPPER(?)" +
+                " and UPPER(website_url) = UPPER(?); ";
 
-        return jdbcTemplate.query(sql, new SourceMapper(), sourceName)
+        return jdbcTemplate.query(sql, new SourceMapper(), sourceName, websiteUrl)
                 .stream().findFirst().orElse(null);
     }
 

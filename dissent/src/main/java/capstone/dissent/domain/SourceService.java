@@ -36,8 +36,8 @@ public class SourceService {
         return repository.findById(sourceId);
     }
 
-    public Source findBySourceName(String sourceName) {
-        return repository.findBySourceName(sourceName);
+    public Source findBySourceNameAndUrl(String sourceName, String websiteUrl) {
+        return repository.findBySourceNameAndUrl(sourceName, websiteUrl);
     }
 
     public Result<Source> add (Source source){

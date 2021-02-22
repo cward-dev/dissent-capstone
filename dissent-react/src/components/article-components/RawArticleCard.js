@@ -71,6 +71,7 @@ function RawArticleCard ( { article, user, handleSetArticles } ) {
 
         if (data.articleId) {
           setAdded(true);
+          setErrors([]);
         } else {
           setErrors(data);
         }
