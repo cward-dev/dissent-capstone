@@ -40,20 +40,24 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter { // 2
                 .antMatchers("/api/user/create-account").permitAll() // allow anyone to create an account.
                 .antMatchers("/authenticate").permitAll()   // allow anyone to attempt authentication
 
-                .antMatchers(HttpMethod.GET,
-                        "/api/article/*",
-                        "/api/post/*",
-                        "/api/topic/*",
-                        "/api/source/*")
-                .hasAnyRole("USER", "ADMIN")
+                // below commented out for development.
 
-                .antMatchers(HttpMethod.POST,
-                        "/api/post",
-                        "/api/post/",
-                        "/api/post/*")
-                .hasAnyRole("USER", "ADMIN")
+//                .antMatchers(HttpMethod.GET,
+//                        "/api/article/*",
+//                        "/api/post/*",
+//                        "/api/topic/*",
+//                        "/api/source/*")
+//                .hasAnyRole("USER", "ADMIN")
+//
+//                .antMatchers(HttpMethod.POST,
+//                        "/api/post",
+//                        "/api/post/",
+//                        "/api/post/*")
+//                .hasAnyRole("USER", "ADMIN")
 
-                .antMatchers("/**").denyAll() // forces explicit security declaration of all http endpoints (no leaks!)
+//                .antMatchers("/**").denyAll() // forces explicit security declaration of all http endpoints (no leaks!)
+
+                .antMatchers("/**").permitAll() // no security for development.
 
                 .and()
                 .addFilter(new JwtRequestFilter(authenticationManager(), jwtConverter))
