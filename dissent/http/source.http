@@ -1,10 +1,14 @@
-@url= http://localhost:8080/api/source/
+@url= http://localhost:8080/api/source
 
 ### return all 
 GET {{url}} HTTP/1.1
 
 ###  should return  200
-GET {{url}}/a HTTP/1.1
+GET {{url}}/d293ae18-63e0-49b7-87fd-9856bcf52884 HTTP/1.1
+
+###
+
+GET {{url}}/name/Space.com HTTP/1.1
 
 ### should not find 404
 GET {{url}}/abc HTTP/1.1

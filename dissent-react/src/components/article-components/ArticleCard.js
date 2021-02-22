@@ -95,7 +95,7 @@ function ArticleCard ( { article, articleOpen, setAddPost, user } ) {
               <FeedbackTagIcon feedbackTagMenuDisplayed={feedbackTags} setFeedbackTagMenuDisplayed={setFeedbackTagMenuDisplayed} object={article} user={user} />
             </div>
             <div className="mr-3">
-              {user.user_role === "admin" ? <>
+              {user.userRole === "admin" ? <>
                     <button onClick={handleDelete} className="btn btn-secondary mr-2 px-2 py-1">Delete</button>
                   </> : null}
               {articleOpen ? <button className="btn btn-secondary px-2 py-1 mr-2" onClick={handleAddPost}>Add Post</button> : <Link className="btn btn-secondary px-2 py-1 mr-2" to={`/article/${articleId}`}>Discussion ({discussionLength})</Link>}

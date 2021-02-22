@@ -35,6 +35,15 @@ public class SourceController {
         return ResponseEntity.ok(source);
     }
 
+    @GetMapping("/name/{sourceName}")
+    public ResponseEntity<Source> findBySourceName(@PathVariable String sourceName){
+        Source source = service.findBySourceName(sourceName);
+        if(source == null){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return ResponseEntity.ok(source);
+    }
+
     @PostMapping
     public ResponseEntity<Object> add(@RequestBody Source source){
         Result<Source> result = service.add(source);
