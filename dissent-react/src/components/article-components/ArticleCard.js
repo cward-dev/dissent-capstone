@@ -92,7 +92,7 @@ function ArticleCard ( { article, articleOpen, setAddPost, user } ) {
           {deleteArticle ? <DeleteArticle article={article} setDeleteArticle={setDeleteArticle} user={user} /> : null}
           <div className="row">  
             <div className="col pl-4">
-              <FeedbackTagIcon feedbackTagMenuDisplayed={feedbackTags} setFeedbackTagMenuDisplayed={setFeedbackTagMenuDisplayed} object={article} user={user} />
+              <FeedbackTagIcon feedbackTagMenuDisplayed={feedbackTagMenuDisplayed} setFeedbackTagMenuDisplayed={setFeedbackTagMenuDisplayed} object={article} user={user} />
             </div>
             <div className="mr-3">
               {user.user_role === "admin" ? <>
