@@ -89,10 +89,10 @@ function Post ( { post, postLevel, user, parentPost } ) {
           {currentOption === 2 ? <DeletePost originalPost={post} articleId={post.articleId} setCurrentOption={setCurrentOption} user={user} /> : null}
           {currentOption === 3 ? <AddReplyPost parentPost={post} articleId={post.articleId} setCurrentOption={setCurrentOption} user={user} /> : null}
           <hr></hr>
-          {postLevel < 3 && !collapsed ? post.childPosts.map(childPost => <div className="collapse.show" id={`${post.postId}-children`}><Post key={childPost.postId} post={childPost} postLevel={postLevel + 1} user={user} /></div>) : null}
+          {postLevel < 3 && !collapsed ? post.childPosts.sort((a, b) => (new Date(a.timestamp) < new Date(b.timestamp)) ? 1 : -1).map(childPost => <div className="collapse.show" id={`${post.postId}-children`}><Post key={childPost.postId} post={childPost} postLevel={postLevel + 1} user={user} /></div>) : null}
         </div>
       </div>
-        {postLevel >= 3 && !collapsed ? post.childPosts.map(childPost => <div className="collapse.show" id={`${post.postId}-children`}><Post key={childPost.postId} post={childPost} postLevel={postLevel + 1} user={user} parentPost={post} /></div>) : null}
+        {postLevel >= 3 && !collapsed ? post.childPosts.sort((a, b) => (new Date(a.timestamp) < new Date(b.timestamp)) ? 1 : -1).map(childPost => <div className="collapse.show" id={`${post.postId}-children`}><Post key={childPost.postId} post={childPost} postLevel={postLevel + 1} user={user} parentPost={post} /></div>) : null}
     </div>
   );
 }

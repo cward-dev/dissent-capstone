@@ -184,3 +184,5 @@ insert into article_feedback_tag
 	(article_id, user_id, feedback_tag_id)
 values
 	('c32bec11-b9a0-434b-bda7-08b9cf2007e2', 'dffec086-b1e9-455a-aab4-ff6c6611fef0', 1); # Sound
+
+select * from `source`;

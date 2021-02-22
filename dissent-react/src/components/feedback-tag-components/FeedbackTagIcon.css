@@ -1,3 +1,7 @@
-.feedbackTagIcon {
+.feedbackTagIconArticle {
   width: 65px;
+}
+
+.feedbackTagIconPost {
+  width: 50px;
 }

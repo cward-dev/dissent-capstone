@@ -16,7 +16,7 @@ function FeedbackTagIcon( { feedbackTagMenuDisplayed, setFeedbackTagMenuDisplaye
  
   return(
     <div>
-        <div className="container feedbackTagIcon">
+        <div className={`container ${object.postId ? "feedbackTagIconPost" : "feedbackTagIconArticle" }`}>
           {object.feedbackTags && object.feedbackTags.length > 0 ? 
           <PieChart
             onClick={handleClick}
