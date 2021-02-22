@@ -19,9 +19,14 @@ public class ArticleFeedbackTagController {
         this.service = service;
     }
 
-    @GetMapping("/{articleId}/{userId}")
-    public List<ArticleFeedbackTag> add(@PathVariable String articleId, @PathVariable String userId) {
-        return service.findUserFeedbackForArticle(articleId, userId);
+    @GetMapping("/{articleId}/{userId}/{feedbackTagId}")
+    public ResponseEntity<ArticleFeedbackTag> findByKey(@PathVariable String articleId, @PathVariable String userId, @PathVariable int feedbackTagId) {
+        ArticleFeedbackTag articleFeedbackTag = service.findArticleFeedbackTagByKey(articleId, userId, feedbackTagId);
+        if (articleFeedbackTag == null) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+
+        return ResponseEntity.ok(articleFeedbackTag);
     }
 
     @PostMapping

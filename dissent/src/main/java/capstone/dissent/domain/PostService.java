@@ -51,8 +51,8 @@ public class PostService {
         return postRepository.findById(postId);
     }
 
-    public List<PostFeedbackTag> findUserFeedbackForPost(String postId, String userId) {
-        return postFeedbackTagRepository.findUserFeedbackForPost(postId, userId);
+    public PostFeedbackTag findByKey(String postId, String userId, int feedbackTagId) {
+        return postFeedbackTagRepository.findByKey(postId, userId, feedbackTagId);
     }
 
     public Result<Post> add(Post post) {

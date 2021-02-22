@@ -21,7 +21,8 @@ public class FeedbackTagController {
 
     @GetMapping
     public List<FeedbackTag> findAll() {
-        return service.findAll();
+        List<FeedbackTag> result = service.findAll();
+        return result;
     }
 
     @GetMapping("/inactive")
