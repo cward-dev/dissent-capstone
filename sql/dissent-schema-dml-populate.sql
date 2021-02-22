@@ -1,18 +1,16 @@
 USE dissent;
 
-insert into user_role 
+insert into `role` 
 	(`name`) 
 values
 	('ADMIN'),
-	('USER'),
-	('GUEST');
+	('USER');
 
 insert into `user`
-	(user_id, user_role_id, email, `password`, username, photo_url, country, bio) 
+	(user_id, email, password_hash, username, photo_url, country, bio) 
 values
 	(
 		'dffec086-b1e9-455a-aab4-ff6c6611fef0', 
-		1,
         'admin@dissent.com',
         'd1ssent',
 		'dissenter101', 
@@ -22,7 +20,6 @@ values
 	),
 	(
 		'fhsajk21-czxm-fsa7-zzlq-sa8cxzkj11s9', 
-		2,
         'dissenter102@gmail.com',
         'goodpassword',
 		'dissenter102',
@@ -32,7 +29,6 @@ values
 	),
 	(
 		'11786jks-sjal-s7a9-msdh-sd2isdksaoia', 
-		2, 
 		'dissenter103@gmail.com',
         'goodpassword',
         'dissenter103',
@@ -41,6 +37,14 @@ values
 		'What is a dissenter?'
 	);
 	
+	insert into user_role 
+	(user_id, role_id) 
+values
+	('dffec086-b1e9-455a-aab4-ff6c6611fef0', 1),
+	('dffec086-b1e9-455a-aab4-ff6c6611fef0', 2),
+    ('fhsajk21-czxm-fsa7-zzlq-sa8cxzkj11s9', 1),
+    ('11786jks-sjal-s7a9-msdh-sd2isdksaoia', 1);
+    
 insert into topic 
 	(topic_id, topic_name, is_active) 
 values

@@ -3,23 +3,30 @@ CREATE DATABASE dissent_test;
 USE dissent_test;
 
 # USER MANAGEMENT TABLES
-CREATE TABLE user_role (
-    user_role_id INT PRIMARY KEY AUTO_INCREMENT,
-    `name` VARCHAR(255) NOT NULL
+CREATE TABLE `role` (
+    role_id INT PRIMARY KEY AUTO_INCREMENT,
+    `name` VARCHAR(255) NOT NULL UNIQUE
 );
 
 CREATE TABLE `user` (
     user_id VARCHAR(255) PRIMARY KEY,
-    user_role_id INT NOT NULL,
     email VARCHAR(255) NOT NULL,
-    `password` VARCHAR(255) NOT NULL,
+    password_hash VARCHAR(2048) NOT NULL,
     username VARCHAR(255) NOT NULL,
     photo_url VARCHAR(255),
     country VARCHAR(255),
     bio VARCHAR(255),
-    is_active BOOL NOT NULL DEFAULT TRUE,
-    CONSTRAINT fk_user_user_role_id FOREIGN KEY (user_role_id)
-        REFERENCES user_role (user_role_id)
+    is_active BOOL NOT NULL DEFAULT TRUE
+);
+
+CREATE TABLE user_role (
+    user_id VARCHAR(255) NOT NULL,
+    role_id INT NOT NULL,
+    CONSTRAINT pk_user_role PRIMARY KEY (user_id , role_id),
+    CONSTRAINT fk_user_role_user_id FOREIGN KEY (user_id)
+        REFERENCES `user` (user_id),
+    CONSTRAINT fk_user_role_role_id FOREIGN KEY (role_id)
+        REFERENCES `role` (role_id)
 );
 
 # ARTICLE TABLES
@@ -138,24 +145,23 @@ begin
     delete from topic;
     ALTER TABLE topic AUTO_INCREMENT = 1;
     
+    delete from user_role;
     delete from `user`;
     delete from user_role;
-    ALTER TABLE user_role AUTO_INCREMENT = 1;
+    
     
 # Populate Tables
-    insert into user_role 
+    insert into `role` 
 		(`name`) 
 	values
 		('ADMIN'),
-        ('USER'),
-        ('GUEST');
+        ('USER');
     
     insert into `user`
-		(user_id, user_role_id, username, email, `password`, photo_url, country, bio) 
+		(user_id, username, email, password_hash, photo_url, country, bio) 
 	values
         (
 			'dffec086-b1e9-455a-aab4-ff6c6611fef0', 
-			2, 
             'dissenter101', 
             'milan@stoj.com', 
 			'testPass', 
@@ -163,6 +169,12 @@ begin
             'United States', 
             'The truth is out there.'
 		);
+        
+	insert into user_role 
+		(user_id, role_id) 
+	values
+		('dffec086-b1e9-455a-aab4-ff6c6611fef0', 1),
+        ('dffec086-b1e9-455a-aab4-ff6c6611fef0', 2);
         
 	insert into topic 
 		(topic_id, topic_name, is_active) 

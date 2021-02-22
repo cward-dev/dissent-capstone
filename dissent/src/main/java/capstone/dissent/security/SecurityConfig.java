@@ -37,25 +37,30 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter { // 2
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable();
         http.authorizeRequests()
-                .antMatchers("/authenticate").permitAll()           // 1. allow everyone
-                .antMatchers(HttpMethod.GET, "/api/article/*").hasAnyRole("USER", "ADMIN")
-                .antMatchers(HttpMethod.GET, "/api/post/*").hasAnyRole("USER", "ADMIN")
-                .antMatchers(HttpMethod.GET, "/api/topic/*").hasAnyRole("USER", "ADMIN")
-                .antMatchers(HttpMethod.GET, "/api/source/*").hasAnyRole("USER", "ADMIN")
-                .antMatchers(HttpMethod.GET, "/api/user/*").hasAnyRole("ADMIN")
+                .antMatchers("/authenticate").permitAll()   // allow anyone to attempt authentication
+
+                .antMatchers(HttpMethod.GET,
+                        "/api/article/*",
+                        "/api/post/*",
+                        "/api/topic/*",
+                        "/api/source/*")
+                .hasAnyRole("USER", "ADMIN")
+
+                .antMatchers("/**").denyAll() // forces explicit security declaration of all http endpoints (no leaks!)
+
                 .and()
                 .addFilter(new JwtRequestFilter(authenticationManager(), jwtConverter))
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     }
 
-    @Override //overridden to ensure availability through dependency injection.
+    @Override //overridden to ensure availability through dependency injection
     @Bean
     protected AuthenticationManager authenticationManager() throws Exception {
         return super.authenticationManager();
     }
 
-    // temporary authentication with in-memory users. (not from User database)
+    // temporary authentication with in-memory users (not from User database)
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         var userBuilder = User.withUsername("user")
