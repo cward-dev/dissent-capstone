@@ -55,6 +55,14 @@ public class SourceJdbcTemplateRepository implements SourceRepository {
     }
 
     @Override
+    public Source findBySourceName(String sourceName) {
+        final String sql = "select * from source where UPPER(source_name) = UPPER(?); ";
+
+        return jdbcTemplate.query(sql, new SourceMapper(), sourceName)
+                .stream().findFirst().orElse(null);
+    }
+
+    @Override
     public boolean edit(Source source) {
         final String sql = "update source set "
                             + "source_name = ?, "
