@@ -131,19 +131,21 @@ function FeedbackTagForm({ object, user }) {
     console.log(feedbackTagJSON);
 
   };
-
-
-
-  const [hasSelected, setSelected] = useState(false);
-  const [isToggledSound, setToogleSound] = useState(false);
-  const [isToggledFallacious, setToogleFallacious] = useState(false);
-  const [isToggledBiased, setToogleBiased] = useState(false);
+  
+  const [isToggledSound, setToggleSound] = useState(false); // the use state will want to check for the tag already selected instead of defaulting to false
+  const [isToggledFallacious, setToggleFallacious] = useState(false); // the use state will want to check for the tag already selected instead of defaulting to false
+  const [isToggledBiased, setToggleBiased] = useState(false); // the use state will want to check for the tag already selected instead of defaulting to false
 
   console.log(userFeedBackTagsForArticle);
 
   const toggleTrueFalseSound = (event) => {
     event.preventDefault();
-    setToogleSound(!isToggledSound);
+
+    setToggleSound(!isToggledSound);
+
+    event.preventDefault();
+    setFeedbackTagJSON(1);
+
     const newFeedbackTagJSON = { ...feedbackTagJSON };
     newFeedbackTagJSON.feedbackTagId = "1";
     setFeedbackTagJSON(newFeedbackTagJSON);
@@ -155,23 +157,31 @@ function FeedbackTagForm({ object, user }) {
       tag.feedbackTag = feedbackTagJSON;
   
       addFeedbackTag(tag);
+
       setSelected(true);
       setFeedbackTagJSON(DEF_FB_TAG);
+
     } else {
       const tagToDelete = userFeedBackTagsForArticle[0];
       deleteTag(tag);
-      setSelected(false);
     }
     
   }
 
+  const toggleSound = () => {
+    setToggleSound(!isToggledSound);
+  }
 
-  const toggleTrueFalseFallacious = () => setToogleFallacious(!isToggledFallacious);
-  const toggleTrueFalseBiased = () => setToogleBiased(!isToggledBiased);
+  const toggleFallacious = () => {
+    setToggleFallacious(!isToggledFallacious);
+  }
 
-
+  const toggleBiased = () => {
+    setToggleBiased(!isToggledBiased);
+  }
 
   return (
+
     <div className="container alert alert-dark">
       {/* <div className="row ">
     
@@ -191,14 +201,17 @@ function FeedbackTagForm({ object, user }) {
         <div> */}
 
 
-          {/* THESE NEED CONDITONAL formatting */}
-        <div onChange={onChangeHandler}>
-        <button onClick={toggleTrueFalseSound} >Sound </button>
-        <button onClick={toggleTrueFalseFallacious}>Fallacious</button>
-        <button onClick={toggleTrueFalseBiased} >Biased</button>
-        </div>
+  
+
+    <>
+    <Errors errors={errors} />
+    <div className="d-flex flex-row justify-content-center col-4 alert alert-dark mt-1 mb-3 mx-2">
+      <button className="btn btn-success btn-sm" onClick={toggleSound}>Sound </button>
+      <button className="btn btn-warning btn-sm mx-2" onClick={toggleFallacious}>Fallacious</button>
+      <button className="btn btn-danger btn-sm" onClick={toggleBiased}>Biased</button>
 
     </div>
+    </>
   );
 
 } export default FeedbackTagForm;

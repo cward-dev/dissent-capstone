@@ -90,9 +90,10 @@ function ArticleCard ( { article, articleOpen, setAddPost, user } ) {
         </div>
         <div className="card-footer w-100 text-muted px-1">
           {deleteArticle ? <DeleteArticle article={article} setDeleteArticle={setDeleteArticle} user={user} /> : null}
+          {feedbackTagMenuDisplayed ? <FeedbackTagForm object={article} user={user} /> : null}
           <div className="d-flex flex-row">
             <div className="align-self-start">
-              <FeedbackTagIcon feedbackTagMenuDisplayed={feedbackTags} setFeedbackTagMenuDisplayed={setFeedbackTagMenuDisplayed} object={article} user={user} />
+              <FeedbackTagIcon feedbackTagMenuDisplayed={feedbackTagMenuDisplayed} setFeedbackTagMenuDisplayed={setFeedbackTagMenuDisplayed} object={article} user={user} />
             </div>
             <div className="col text-right">
               {user.userRole === "admin" ? <>
@@ -103,7 +104,6 @@ function ArticleCard ( { article, articleOpen, setAddPost, user } ) {
           </div>
         </div>
       </div>
-      {feedbackTagMenuDisplayed ? <FeedbackTagForm object={article} user={user} /> : null}
     </>
   );
 }
