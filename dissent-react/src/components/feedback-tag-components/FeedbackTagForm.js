@@ -25,7 +25,7 @@ function FeedbackTagForm({ object, user }) {
   const [tag, setTag] = useState(DEFAULT_TAG);
   const [errors, setErrors] = useState([]);
   const [feedbackTagJSON, setFeedbackTagJSON] = useState(DEF_FB_TAG);
-  const { feedbackTagId, name } = feedbackTagJSON;
+  const {feedbackTagId} = feedbackTagJSON;
 
   const [userFeedBackTagsForArticle, setUserFeedbackTagsForArticle] = useState([]);
 
@@ -124,8 +124,8 @@ function FeedbackTagForm({ object, user }) {
 
   const onChangeHandler = (event) => {
     event.preventDefault();
+    setFeedbackTagJSON(1);
     const newFeedbackTagJSON = { ...feedbackTagJSON };
-    newFeedbackTagJSON[event.target.name] = event.target.value;
     console(newFeedbackTagJSON);
     setFeedbackTagJSON(newFeedbackTagJSON);
     console.log(feedbackTagJSON);
@@ -139,13 +139,13 @@ function FeedbackTagForm({ object, user }) {
   const [isToggledFallacious, setToogleFallacious] = useState(false);
   const [isToggledBiased, setToogleBiased] = useState(false);
 
+  console.log(userFeedBackTagsForArticle);
+
   const toggleTrueFalseSound = (event) => {
     event.preventDefault();
     setToogleSound(!isToggledSound);
-
-    event.preventDefault();
-    setFeedbackTagJSON(1);
     const newFeedbackTagJSON = { ...feedbackTagJSON };
+    newFeedbackTagJSON.feedbackTagId = "1";
     setFeedbackTagJSON(newFeedbackTagJSON);
     console.log(feedbackTagJSON);
 
@@ -156,9 +156,6 @@ function FeedbackTagForm({ object, user }) {
   
       addFeedbackTag(tag);
       setSelected(true);
-
-      //disable the rest of the buttons
-      //set style
     } else {
       const tagToDelete = userFeedBackTagsForArticle[0];
       deleteTag(tag);
@@ -192,11 +189,12 @@ function FeedbackTagForm({ object, user }) {
 
         <div> */}
 
-        <div onChange={onChangeHandler}>
-        <button onClick={toggleTrueFalseSound}>Sound </button>
-        <button onClick={toggleTrueFalseFallacious}>Fallacious</button>
-        <button onClick={toggleTrueFalseBiased}>Biased</button>
 
+          {/* THESE NEED CONDITONAL formatting */}
+        <div onChange={onChangeHandler}>
+        <button onClick={toggleTrueFalseSound} >Sound </button>
+        <button onClick={toggleTrueFalseFallacious}>Fallacious</button>
+        <button onClick={toggleTrueFalseBiased} >Biased</button>
         </div>
 
     </div>
