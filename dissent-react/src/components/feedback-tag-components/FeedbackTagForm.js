@@ -131,13 +131,10 @@ function FeedbackTagForm({ object, user }) {
     console.log(feedbackTagJSON);
 
   };
-
-
-
-  const [hasSelected, setSelected] = useState(false);
-  const [isToggledSound, setToggleSound] = useState(false);
-  const [isToggledFallacious, setToggleFallacious] = useState(false);
-  const [isToggledBiased, setToggleBiased] = useState(false);
+  
+  const [isToggledSound, setToggleSound] = useState(false); // the use state will want to check for the tag already selected instead of defaulting to false
+  const [isToggledFallacious, setToggleFallacious] = useState(false); // the use state will want to check for the tag already selected instead of defaulting to false
+  const [isToggledBiased, setToggleBiased] = useState(false); // the use state will want to check for the tag already selected instead of defaulting to false
 
   const toggleTrueFalseSound = (event) => {
     event.preventDefault();
@@ -180,31 +177,14 @@ function FeedbackTagForm({ object, user }) {
   }
 
   return (
-    <div className="container alert alert-dark">
-      {/* <div className="row ">
-    
-        <Errors errors={errors} />
-        <form onSubmit={handleSubmit}>
-          <label htmlFor="feedbackTagId"><h3>Feedback</h3></label>
-          <select id="feedbackTagId" name="feedbackTagId"
-            onChange={onChangeHandler} value={feedbackTagId}>
-            <option value="">--Give Feedback--</option>
-            <option value="1">Sound</option>
-            <option value="2">Fallacious</option>
-            <option value="3">Biased</option>
-          </select>
-          <button type="submit">Submit</button>
-        </form>
-
-        <div> */}
-
-    <div onChange={onChangeHandler}>
-      <button onClick={toggleSound}>Sound </button>
-      <button onClick={toggleFallacious}>Fallacious</button>
-      <button onClick={toggleBiased}>Biased</button>
+    <>
+    <Errors errors={errors} />
+    <div className="d-flex flex-row justify-content-center col-4 alert alert-dark mt-1 mb-3 mx-2">
+      <button className="btn btn-success btn-sm" onClick={toggleSound}>Sound </button>
+      <button className="btn btn-warning btn-sm mx-2" onClick={toggleFallacious}>Fallacious</button>
+      <button className="btn btn-danger btn-sm" onClick={toggleBiased}>Biased</button>
     </div>
-
-    </div>
+    </>
   );
 
 } export default FeedbackTagForm;
