@@ -57,8 +57,8 @@ public class ArticleService {
         return articleRepository.findByPostedDateRange(d1, d2);
     }
 
-    public List<ArticleFeedbackTag> findUserFeedbackForArticle(String articleId, String userId) {
-        return articleFeedbackTagRepository.findUserFeedbackForArticle(articleId, userId);
+    public ArticleFeedbackTag findArticleFeedbackTagByKey(String articleId, String userId, int feedbackTagId) {
+        return articleFeedbackTagRepository.findByKey(articleId, userId, feedbackTagId);
     }
 
     public Result<Article> add(Article article) {

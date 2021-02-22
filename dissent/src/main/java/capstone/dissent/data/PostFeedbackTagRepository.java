@@ -8,7 +8,7 @@ public interface PostFeedbackTagRepository {
 
     List<PostFeedbackTag> findByPostId(String postId);
 
-    List<PostFeedbackTag> findUserFeedbackForPost(String postId, String userId);
+    PostFeedbackTag findByKey(String postId, String userId, int feedbackTagId);
 
     boolean add(PostFeedbackTag postFeedbackTag);
 

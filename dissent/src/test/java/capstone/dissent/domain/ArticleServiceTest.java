@@ -1,6 +1,7 @@
 package capstone.dissent.domain;
 
 import capstone.dissent.data.ArticleRepository;
+import capstone.dissent.data.SourceRepository;
 import capstone.dissent.models.Article;
 import capstone.dissent.models.Source;
 import org.apache.tomcat.jni.Local;
@@ -22,13 +23,23 @@ class ArticleServiceTest {
     @Autowired
     ArticleService service;
 
+    @Autowired
+    SourceService sourceService;
+
     @MockBean
     ArticleRepository repository;
+
+    @MockBean
+    SourceRepository sourceRepository;
 
 
     final LocalDateTime DAY1 = LocalDateTime.of(2020,1,1,12,0,0);
     final LocalDateTime DAY2 = LocalDateTime.of(2021,2,17,12,0,0);
-    final Source TEST_SOURCE = new Source("test-source");
+    final Source TEST_SOURCE = new Source(
+            "fsdafas8-fsad-fsd8-fsda-413h1hj1a90s",
+            "CNN",
+            "https://www.cnn.com/",
+            "Cable News Network is a multinational news-based pay television channel headquartered in Atlanta.");
 
     @Test
     void shouldFindAll() {
@@ -99,8 +110,8 @@ class ArticleServiceTest {
         List<Article>articlesByDate = service.findByPostedDateRange(DAY3,DAY4);
 
         assertEquals(articles,articlesByDate);
-
     }
+
     @Test
     void shouldNotFindByPostedDateRange() {
       List<Article> articles = service.findByPostedDateRange(DAY1,DAY2);
@@ -114,6 +125,7 @@ class ArticleServiceTest {
         articleOut.setArticleId("test-id");
 
         when(repository.addArticle(articleIn)).thenReturn(articleOut);
+        when(sourceRepository.findBySourceNameAndUrl("CNN", "https://www.cnn.com/")).thenReturn(TEST_SOURCE);
         Result<Article> result = service.add(articleIn);
 
         assertTrue(result.isSuccess());
@@ -147,7 +159,8 @@ class ArticleServiceTest {
         Article article = makeArticle();
         List<Article> articles = List.of(article);
 
-        when(service.findAll()).thenReturn(articles);
+        when(repository.findAllArticles()).thenReturn(articles);
+        when(sourceRepository.findBySourceNameAndUrl("CNN", "https://www.cnn.com/")).thenReturn(TEST_SOURCE);
 
         Result<Article> result = service.add(makeArticle());
 

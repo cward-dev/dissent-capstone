@@ -34,7 +34,7 @@ public class ArticleFeedbackTagJdbcTemplateRepository implements ArticleFeedback
     }
 
     @Override
-    public List<ArticleFeedbackTag> findUserFeedbackForArticle(String articleId, String userId) {
+    public ArticleFeedbackTag findByKey(String articleId, String userId, int feedbackTagId) {
         final String sql = "select "
                 + "aft.article_id as article_id, "
                 + "aft.user_id as user_id, "
@@ -44,10 +44,10 @@ public class ArticleFeedbackTagJdbcTemplateRepository implements ArticleFeedback
                 + "ft.is_active as is_active "
                 + "from article_feedback_tag aft "
                 + "inner join feedback_tag ft on aft.feedback_tag_id = ft.feedback_tag_id "
-                + "where aft.article_id = ? and aft.user_id = ?;";
+                + "where aft.article_id = ? and aft.user_id = ? and aft.feedback_tag_id = ?;";
 
         return jdbcTemplate.query(
-                sql, new ArticleFeedbackTagMapper(), articleId, userId);
+                sql, new ArticleFeedbackTagMapper(), articleId, userId, feedbackTagId).stream().findAny().orElse(null);
     }
 
     @Override

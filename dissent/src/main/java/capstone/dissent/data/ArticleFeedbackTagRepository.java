@@ -9,7 +9,7 @@ public interface ArticleFeedbackTagRepository {
 
     List<ArticleFeedbackTag> findByArticleId(String articleId);
 
-    List<ArticleFeedbackTag> findUserFeedbackForArticle(String articleId, String userId);
+    ArticleFeedbackTag findByKey(String articleId, String userId, int feedbackTagId);
 
     boolean add(ArticleFeedbackTag articleFeedbackTag);
 
