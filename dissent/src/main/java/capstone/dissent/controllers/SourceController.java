@@ -35,9 +35,9 @@ public class SourceController {
         return ResponseEntity.ok(source);
     }
 
-    @GetMapping("/name/{sourceName}")
-    public ResponseEntity<Source> findBySourceName(@PathVariable String sourceName){
-        Source source = service.findBySourceName(sourceName);
+    @GetMapping("/name/{sourceName}/{sourceUrl}")
+    public ResponseEntity<Source> findBySourceName(@PathVariable String sourceName, @PathVariable String sourceUrl){
+        Source source = service.findBySourceNameAndUrl(sourceName, sourceUrl);
         if(source == null){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }

@@ -14,7 +14,7 @@ public interface SourceRepository {
 
     Source findById(String sourceId);
 
-    Source findBySourceName(String sourceName);
+    Source findBySourceNameAndUrl(String sourceName, String sourceUrl);
 
     // update
     boolean edit(Source source);
