@@ -158,7 +158,6 @@ function FeedbackTagForm({ object, user }) {
   
       addFeedbackTag(tag);
 
-      setSelected(true);
       setFeedbackTagJSON(DEF_FB_TAG);
 
     } else {
@@ -181,7 +180,6 @@ function FeedbackTagForm({ object, user }) {
   }
 
   return (
-
     <div className="container alert alert-dark">
       {/* <div className="row ">
     
@@ -200,18 +198,13 @@ function FeedbackTagForm({ object, user }) {
 
         <div> */}
 
-
-  
-
-    <>
-    <Errors errors={errors} />
-    <div className="d-flex flex-row justify-content-start alert alert-dark mt-1 mb-3 mx-2">
-      <button className="btn btn-success btn-sm" onClick={toggleSound}>Sound </button>
-      <button className="btn btn-warning btn-sm mx-2" onClick={toggleFallacious}>Fallacious</button>
-      <button className="btn btn-danger btn-sm" onClick={toggleBiased}>Biased</button>
-
+      <Errors errors={errors} />
+      <div className="d-flex flex-row justify-content-start alert alert-dark mt-1 mb-3 mx-2">
+        <button className="btn btn-success btn-sm" onClick={toggleSound}>Sound </button>
+        <button className="btn btn-warning btn-sm mx-2" onClick={toggleFallacious}>Fallacious</button>
+        <button className="btn btn-danger btn-sm" onClick={toggleBiased}>Biased</button>
+      </div>
     </div>
-    </>
   );
 
 } export default FeedbackTagForm;
