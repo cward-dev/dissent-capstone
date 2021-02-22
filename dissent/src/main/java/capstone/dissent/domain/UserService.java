@@ -148,7 +148,7 @@ public class UserService implements UserDetailsService {
 
         // Regex's to check valid password.
         String regexDigit = ".*\\d.*";
-        String regexLowerCase = ".*[a-zA-Z]";
+        String regexLowerCase = ".*[a-zA-Z].*";
         String regexLength = "(?=\\S+$).{8,20}";
         String regexSpecial = "[a-zA-Z0-9]*";
 

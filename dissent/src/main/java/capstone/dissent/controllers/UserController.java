@@ -47,7 +47,7 @@ public class UserController {
         return ResponseEntity.ok(user);
     }
 
-    @PostMapping("/create_account")
+    @PostMapping("/create-account")
     public ResponseEntity<?> add(@RequestBody User user) {
 
         user.getRoles().add("USER");
