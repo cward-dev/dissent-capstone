@@ -36,6 +36,10 @@ public class SourceService {
         return repository.findById(sourceId);
     }
 
+    public Source findBySourceNameAndUrl(String sourceName, String websiteUrl) {
+        return repository.findBySourceNameAndUrl(sourceName, websiteUrl);
+    }
+
     public Result<Source> add (Source source){
         Result<Source> result = validate(source);
         if(!result.isSuccess()){

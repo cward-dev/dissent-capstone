@@ -8,6 +8,7 @@ import capstone.dissent.models.Article;
 
 import capstone.dissent.models.ArticleTopic;
 import capstone.dissent.models.ArticleFeedbackTag;
+import capstone.dissent.models.Source;
 import org.springframework.stereotype.Service;
 
 import javax.validation.ConstraintViolation;
@@ -25,13 +26,16 @@ public class ArticleService {
     private final ArticleRepository articleRepository;
     private final ArticleTopicRepository articleTopicRepository;
     private final ArticleFeedbackTagRepository articleFeedbackTagRepository;
+    private final SourceService sourceService;
 
     Validator validator;
 
-    public ArticleService(ArticleRepository articleRepository, ArticleTopicRepository articleTopicRepository, ArticleFeedbackTagRepository articleFeedbackTagRepository) {
+    public ArticleService(ArticleRepository articleRepository, ArticleTopicRepository articleTopicRepository,
+                          ArticleFeedbackTagRepository articleFeedbackTagRepository, SourceService sourceService) {
         this.articleTopicRepository = articleTopicRepository;
         this.articleRepository = articleRepository;
         this.articleFeedbackTagRepository = articleFeedbackTagRepository;
+        this.sourceService = sourceService;
 
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
         this.validator = factory.getValidator();
@@ -59,6 +63,7 @@ public class ArticleService {
 
     public Result<Article> add(Article article) {
         Result<Article> result = validate(article);
+
         if(!result.isSuccess()){
             return result;
         }
@@ -67,6 +72,13 @@ public class ArticleService {
             result.addMessage("Id cannot be set for `add` operation", ResultType.INVALID);
             return result;
         }
+
+        Result<Source> sourceResult = addSource(article);
+        if(!sourceResult.isSuccess()){
+            result.addMessage("Unable to attach source to article.", ResultType.INVALID);
+            return result;
+        }
+        article.setSource(sourceResult.getPayload());
 
         result = checkForDuplicates(article);
         if(!result.isSuccess()){
@@ -206,6 +218,18 @@ public class ArticleService {
         }
 
         return result;
+    }
+
+    private Result<Source> addSource(Article article) {
+        Result<Source> result = new Result<>();
+
+        result.setPayload(sourceService.findBySourceNameAndUrl(
+                article.getSource().getSourceName(), article.getSource().getWebsiteUrl()));
+        if (result.getPayload() != null) {
+            return result;
+        }
+
+        return sourceService.add(article.getSource());
     }
 
 

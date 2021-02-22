@@ -90,20 +90,20 @@ function ArticleCard ( { article, articleOpen, setAddPost, user } ) {
         </div>
         <div className="card-footer w-100 text-muted px-1">
           {deleteArticle ? <DeleteArticle article={article} setDeleteArticle={setDeleteArticle} user={user} /> : null}
-          <div className="row">  
-            <div className="col pl-4">
+          {feedbackTagMenuDisplayed ? <FeedbackTagForm object={article} user={user} /> : null}
+          <div className="d-flex flex-row">
+            <div className="align-self-start">
               <FeedbackTagIcon feedbackTagMenuDisplayed={feedbackTagMenuDisplayed} setFeedbackTagMenuDisplayed={setFeedbackTagMenuDisplayed} object={article} user={user} />
             </div>
-            <div className="mr-3">
-              {user.user_role === "admin" ? <>
+            <div className="col text-right">
+              {user.userRole === "admin" ? <>
                     <button onClick={handleDelete} className="btn btn-secondary mr-2 px-2 py-1">Delete</button>
                   </> : null}
-              {articleOpen ? <button className="btn btn-secondary px-2 py-1 mr-2" onClick={handleAddPost}>Add Post</button> : <Link className="btn btn-secondary px-2 py-1 mr-2" to={`/article/${articleId}`}>Discussion ({discussionLength})</Link>}
+              {articleOpen ? <button className="btn btn-secondary px-2 py-1" onClick={handleAddPost}>Add Post</button> : <Link className="btn btn-secondary px-2 py-1" to={`/article/${articleId}`}>Discussion ({discussionLength})</Link>}
             </div>
           </div>
         </div>
       </div>
-      {feedbackTagMenuDisplayed ? <FeedbackTagForm object={article} user={user} /> : null}
     </>
   );
 }

@@ -16,18 +16,31 @@ function FeedbackTagIcon( { feedbackTagMenuDisplayed, setFeedbackTagMenuDisplaye
  
   return(
     <div>
-      <button onClick={handleClick} className="btn btn-link btn-small">
-        <div className="container feedbackTagIcon">
+        <div className={`container ${object.postId ? "feedbackTagIconPost" : "feedbackTagIconArticle" }`}>
+          {object.feedbackTags && object.feedbackTags.length > 0 ? 
           <PieChart
-            center={[1, 1]}
+            onClick={handleClick}
+            center={[50, 50]}
             animate
             animationDuration={500}
             data={object.feedbackTags}
-            radius={1}
-            viewBoxSize={[2, 2]}
-          />
+            radius={50}
+            viewBoxSize={[100, 100]}
+          /> : 
+          <PieChart
+            onClick={handleClick}
+            center={[50, 50]}
+            animate
+            animationDuration={500}
+            data={[{
+              "title": "empty",
+              "value": 1,
+              "color": "#000000"
+            }]}
+            radius={50}
+            viewBoxSize={[100, 100]}
+          />}
         </div>
-        </button>
     </div>
   );
 

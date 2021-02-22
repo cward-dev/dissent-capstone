@@ -1,4 +1,7 @@
-.feedbackTagIcon {
-  max-width: 500px;
-  max-height: 500px;
+.feedbackTagIconArticle {
+  width: 65px;
+}
+
+.feedbackTagIconPost {
+  width: 50px;
 }

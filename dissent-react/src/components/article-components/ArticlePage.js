@@ -10,8 +10,8 @@ const PLACEHOLDER_ARTICLE = {
   "description": "Description",
   "sourceId": "sourceid",
   "author": "Author",
-  "articleUrl": "http://www.google.com",
-  "articleImageUrl": "http://www.google.com",
+  "articleUrl": "https://www.google.com",
+  "articleImageUrl": "https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png",
   "datePublished": "2021-2-10",
   "datePosted": "2021-2-10",
   "source": {

@@ -5,7 +5,7 @@ GET {{url}} HTTP/1.1
 
 
 ### should return article
-GET {{url}}/b HTTP/1.1
+GET {{url}}/s7d98a02-sm21-s82k-dm2k-dn2ja82ks0sj HTTP/1.1
 
 ### should not return article 404
 GET {{url}}/zzz HTTP/1.1

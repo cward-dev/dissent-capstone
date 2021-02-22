@@ -16,7 +16,7 @@ function DeletePost ( { originalPost, articleId, setCurrentOption, user } ) {
 
       if (response.status === 204) {
 
-        // kinda hokey
+        // TODO kinda hokey
         history.push(`/`);
         history.push(`/article/${articleId}`);
         handleCancel();

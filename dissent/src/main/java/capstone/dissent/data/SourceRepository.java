@@ -11,7 +11,10 @@ public interface SourceRepository {
 
     // read
     List<Source> findAll();
+
     Source findById(String sourceId);
+
+    Source findBySourceNameAndUrl(String sourceName, String sourceUrl);
 
     // update
     boolean edit(Source source);
