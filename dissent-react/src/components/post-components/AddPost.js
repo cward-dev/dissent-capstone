@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import Errors from '../Errors.js';
 
-function AddPost ( { articleId, setAddPost, user } ) {
+function AddPost ( { articleId, setAddPost, user, handlePostAdded } ) {
 
   const [post, setPost] = useState( {
     "parentPostId": null,
@@ -41,9 +41,7 @@ function AddPost ( { articleId, setAddPost, user } ) {
         const data = await response.json();
 
         if (data.postId) {
-          // TODO kinda hokey
-          history.push(`/`);
-          history.push(`/article/${articleId}`);
+          handlePostAdded();
           handleCancel();
         } else {
           setErrors(data);

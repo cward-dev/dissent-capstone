@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import Errors from '../Errors.js';
 
-function EditPost ( { originalPost, articleId, setCurrentOption, user } ) {
+function EditPost ( { originalPost, articleId, setCurrentOption, user, handlePostAdded } ) {
 
   const [post, setPost] = useState(originalPost);
 
@@ -32,10 +32,7 @@ function EditPost ( { originalPost, articleId, setCurrentOption, user } ) {
       const response = await fetch(`http://localhost:8080/api/post/${originalPost.postId}`, init);
 
       if (response.status === 204) {
-
-        // TODO kinda hokey
-        history.push(`/`);
-        history.push(`/article/${articleId}`);
+        handlePostAdded();
         handleCancel();
       } else if (response.status === 400) {
         const data = await response.json();

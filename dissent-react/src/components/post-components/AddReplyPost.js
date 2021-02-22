@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import Errors from '../Errors.js';
 
-function AddReplyPost ( { parentPost, articleId, setCurrentOption, user } ) {
+function AddReplyPost ( { parentPost, articleId, setCurrentOption, user, handlePostAdded } ) {
 
   const [post, setPost] = useState( {
     "parentPostId": parentPost.postId,
@@ -42,9 +42,7 @@ function AddReplyPost ( { parentPost, articleId, setCurrentOption, user } ) {
         const data = await response.json();
 
         if (data.postId) {
-          // TODO kinda hokey
-          history.push(`/`);
-          history.push(`/article/${articleId}`);
+          handlePostAdded();
           handleCancel();
         } else {
           setErrors(data);
