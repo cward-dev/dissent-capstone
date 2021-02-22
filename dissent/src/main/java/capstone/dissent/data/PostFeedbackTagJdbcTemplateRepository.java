@@ -36,7 +36,7 @@ public class PostFeedbackTagJdbcTemplateRepository implements PostFeedbackTagRep
     }
 
     @Override
-    public List<PostFeedbackTag> findUserFeedbackForPost(String postId, String userId) {
+    public PostFeedbackTag findByKey(String postId, String userId, int feedbackTagId) {
         final String sql = "select "
                 + "pft.post_id as post_id, "
                 + "pft.user_id as user_id, "
@@ -46,10 +46,10 @@ public class PostFeedbackTagJdbcTemplateRepository implements PostFeedbackTagRep
                 + "ft.is_active as is_active "
                 + "from post_feedback_tag pft "
                 + "inner join feedback_tag ft on pft.feedback_tag_id = ft.feedback_tag_id "
-                + "where pft.post_id = ? and pft.user_id = ?;";
+                + "where pft.post_id = ? and pft.user_id = ? and pft.feedback_tag_id = ?;";
 
         return jdbcTemplate.query(
-                sql, new PostFeedbackTagMapper(), postId, userId);
+                sql, new PostFeedbackTagMapper(), postId, userId, feedbackTagId).stream().findAny().orElse(null);
     }
 
     @Override

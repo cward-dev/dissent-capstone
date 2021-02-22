@@ -3,12 +3,15 @@ import { Link } from 'react-router-dom';
 import FeedbackTagIcon from '../feedback-tag-components/FeedbackTagIcon';
 import FeedbackTagForm from '../feedback-tag-components/FeedbackTagForm';
 import DeleteArticle from './DeleteArticle';
+import Errors from '../Errors.js';
 import './ArticleCard.css';
 
 function ArticleCard ( { article, articleOpen, setAddPost, user } ) {
 
   const [feedbackTagMenuDisplayed, setFeedbackTagMenuDisplayed] = useState(false);
+  const [feedbackUpdate, setFeedbackUpdate] = useState([]);
   const [deleteArticle, setDeleteArticle] = useState(false);
+  const [errors, setErrors] = useState([]);
 
   const { articleId, title, description, author, articleUrl, articleImageUrl, datePublished, datePosted, source, topics, posts, feedbackTags } = article;
 
@@ -68,8 +71,17 @@ function ArticleCard ( { article, articleOpen, setAddPost, user } ) {
     setDeleteArticle(true);
   }
 
+  const handleTagClick = () => {
+    if (feedbackUpdate) {
+      setFeedbackUpdate(false);
+    } else {
+      setFeedbackUpdate(true);
+    }
+  }
+
   return (
     <>
+      <Errors errors={errors} />
       <div className="article-card card flex-row flex-wrap text-white bg-dark mb-4">
         <div className="border-0">
           <a href={articleUrl}><img src={articleImageUrl} className="card-img-top" /></a>
@@ -93,7 +105,7 @@ function ArticleCard ( { article, articleOpen, setAddPost, user } ) {
           {feedbackTagMenuDisplayed ? <FeedbackTagForm object={article} user={user} /> : null}
           <div className="d-flex flex-row">
             <div className="align-self-start">
-              <FeedbackTagIcon feedbackTagMenuDisplayed={feedbackTagMenuDisplayed} setFeedbackTagMenuDisplayed={setFeedbackTagMenuDisplayed} object={article} user={user} />
+              <FeedbackTagIcon feedbackTagMenuDisplayed={feedbackTagMenuDisplayed} setFeedbackTagMenuDisplayed={setFeedbackTagMenuDisplayed} setErrors={setErrors} object={article} user={user} />
             </div>
             <div className="col text-right">
               {user.userRole === "admin" ? <>

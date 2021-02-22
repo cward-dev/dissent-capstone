@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = {"http://localhost:3030"})
+@CrossOrigin(origins = {"http://localhost:3000"})
 @RequestMapping("/api/feedback-tag")
 public class FeedbackTagController {
 
@@ -22,7 +22,8 @@ public class FeedbackTagController {
 
     @GetMapping
     public List<FeedbackTag> findAll() {
-        return service.findAll();
+        List<FeedbackTag> result = service.findAll();
+        return result;
     }
 
     @GetMapping("/inactive")

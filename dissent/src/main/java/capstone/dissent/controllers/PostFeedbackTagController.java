@@ -21,9 +21,14 @@ public class PostFeedbackTagController {
         this.service = service;
     }
 
-    @GetMapping("/{postId}/{userId}")
-    public List<PostFeedbackTag> add(@PathVariable String postId, @PathVariable String userId) {
-        return service.findUserFeedbackForPost(postId, userId);
+    @GetMapping("/{postId}/{userId}/{feedbackTagId}")
+    public ResponseEntity<PostFeedbackTag> findByKey(@PathVariable String postId, @PathVariable String userId, @PathVariable int feedbackTagId) {
+        PostFeedbackTag postFeedbackTag = service.findByKey(postId, userId, feedbackTagId);
+        if (postFeedbackTag == null) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+
+        return ResponseEntity.ok(postFeedbackTag);
     }
 
     @PostMapping
