@@ -135,13 +135,13 @@ function FeedbackTagForm({ object, user }) {
 
 
   const [hasSelected, setSelected] = useState(false);
-  const [isToggledSound, setToogleSound] = useState(false);
-  const [isToggledFallacious, setToogleFallacious] = useState(false);
-  const [isToggledBiased, setToogleBiased] = useState(false);
+  const [isToggledSound, setToggleSound] = useState(false);
+  const [isToggledFallacious, setToggleFallacious] = useState(false);
+  const [isToggledBiased, setToggleBiased] = useState(false);
 
   const toggleTrueFalseSound = (event) => {
     event.preventDefault();
-    setToogleSound(!isToggledSound);
+    setToggleSound(!isToggledSound);
 
     event.preventDefault();
     setFeedbackTagJSON(1);
@@ -167,11 +167,17 @@ function FeedbackTagForm({ object, user }) {
     
   }
 
+  const toggleSound = () => {
+    setToggleSound(!isToggledSound);
+  }
 
-  const toggleTrueFalseFallacious = () => setToogleFallacious(!isToggledFallacious);
-  const toggleTrueFalseBiased = () => setToogleBiased(!isToggledBiased);
+  const toggleFallacious = () => {
+    setToggleFallacious(!isToggledFallacious);
+  }
 
-
+  const toggleBiased = () => {
+    setToggleBiased(!isToggledBiased);
+  }
 
   return (
     <div className="container alert alert-dark">
@@ -192,12 +198,11 @@ function FeedbackTagForm({ object, user }) {
 
         <div> */}
 
-        <div onChange={onChangeHandler}>
-        <button onClick={toggleTrueFalseSound}>Sound </button>
-        <button onClick={toggleTrueFalseFallacious}>Fallacious</button>
-        <button onClick={toggleTrueFalseBiased}>Biased</button>
-
-        </div>
+    <div onChange={onChangeHandler}>
+      <button onClick={toggleSound}>Sound </button>
+      <button onClick={toggleFallacious}>Fallacious</button>
+      <button onClick={toggleBiased}>Biased</button>
+    </div>
 
     </div>
   );
