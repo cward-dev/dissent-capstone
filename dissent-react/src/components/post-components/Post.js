@@ -6,11 +6,11 @@ import EditPost from "./EditPost.js";
 import DeletePost from "./DeletePost.js";
 import "./Post.css";
 
-function Post ( { post, postLevel, user, parentPost } ) {
+function Post ( { post, postLevel, user, parentPost, startsCollapsed, handlePostAdded } ) {
 
   const [feedbackTagMenuDisplayed, setFeedbackTagMenuDisplayed] = useState(false);
   const [currentOption, setCurrentOption] = useState(0);
-  const [collapsed, setCollapsed] = useState(false);
+  const [collapsed, setCollapsed] = useState(startsCollapsed);
 
   const getTimePassed = (date) => {
     const timestampDate = new Date(date);
@@ -83,16 +83,18 @@ function Post ( { post, postLevel, user, parentPost } ) {
               <button onClick={handleEditPost} className="btn btn-link btn-sm mr-2 p-0">Edit</button>
               <button onClick={handleDeletePost} className="btn btn-link btn-sm mr-2 p-0">Delete</button>
             </> : null}
-            <button onClick={handleCollapse} className="btn btn-link btn-sm p-0">Collapse</button>
+            <button onClick={handleCollapse} className="btn btn-link btn-sm p-0">{collapsed ? "Expand" : "Collapse"}</button>
           </div>
-          {currentOption === 1 ? <EditPost originalPost={post} articleId={post.articleId} setCurrentOption={setCurrentOption} user={user} /> : null}
-          {currentOption === 2 ? <DeletePost originalPost={post} articleId={post.articleId} setCurrentOption={setCurrentOption} user={user} /> : null}
-          {currentOption === 3 ? <AddReplyPost parentPost={post} articleId={post.articleId} setCurrentOption={setCurrentOption} user={user} /> : null}
+          {currentOption === 1 ? <EditPost originalPost={post} articleId={post.articleId} setCurrentOption={setCurrentOption} user={user} handlePostAdded={handlePostAdded} /> : null}
+          {currentOption === 2 ? <DeletePost originalPost={post} articleId={post.articleId} setCurrentOption={setCurrentOption} user={user} handlePostAdded={handlePostAdded} /> : null}
+          {currentOption === 3 ? <AddReplyPost parentPost={post} articleId={post.articleId} setCurrentOption={setCurrentOption} user={user} handlePostAdded={handlePostAdded} /> : null}
           <hr></hr>
-          {postLevel < 3 && !collapsed ? post.childPosts.sort((a, b) => (new Date(a.timestamp) < new Date(b.timestamp)) ? 1 : -1).map(childPost => <div className="collapse.show" id={`${post.postId}-children`}><Post key={childPost.postId} post={childPost} postLevel={postLevel + 1} user={user} /></div>) : null}
+          {postLevel < 3 && !collapsed ? post.childPosts.sort((a, b) => (new Date(a.timestamp) < new Date(b.timestamp)) ? 1 : -1).map(
+            childPost => <Post key={childPost.postId} post={childPost} postLevel={postLevel + 1} user={user} startsCollapsed={postLevel === 2 ? true : false} handlePostAdded={handlePostAdded} />) : null}
         </div>
       </div>
-        {postLevel >= 3 && !collapsed ? post.childPosts.sort((a, b) => (new Date(a.timestamp) < new Date(b.timestamp)) ? 1 : -1).map(childPost => <div className="collapse.show" id={`${post.postId}-children`}><Post key={childPost.postId} post={childPost} postLevel={postLevel + 1} user={user} parentPost={post} /></div>) : null}
+        {postLevel >= 3 && !collapsed ? post.childPosts.sort((a, b) => (new Date(a.timestamp) < new Date(b.timestamp)) ? 1 : -1).map(
+          childPost => <Post key={childPost.postId} post={childPost} postLevel={postLevel + 1} user={user} parentPost={post} startsCollapsed={true} handlePostAdded={handlePostAdded} />) : null}
     </div>
   );
 }
