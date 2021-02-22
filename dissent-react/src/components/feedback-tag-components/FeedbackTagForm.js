@@ -21,13 +21,29 @@ const DEF_FB_TAG = {
 }
 
 function FeedbackTagForm({ object, user }) {
-  const [hasSelected, setSelected] = useState(false);
+  
   const [tag, setTag] = useState(DEFAULT_TAG);
   const [errors, setErrors] = useState([]);
   const [feedbackTagJSON, setFeedbackTagJSON] = useState(DEF_FB_TAG);
   const { feedbackTagId, name } = feedbackTagJSON;
 
+  const [userFeedBackTagsForArticle, setUserFeedbackTagsForArticle] = useState([]);
 
+
+ // grabs all user feedback for article
+ 
+ useEffect(()=> {
+
+  fetch(`http://localhost:8080/api/article/feedback-tag/${object.articleId}/${user.userId}`)
+  .then (response => {
+    if(response.status!= 200){
+      return Promise.reject("feedbacktag fetch failed");
+    }
+    return response.json();
+  })
+  .then(json => setUserFeedbackTagsForArticle(json))
+  .catch(console.log);
+ },[]);
 
 
 
@@ -92,32 +108,65 @@ function FeedbackTagForm({ object, user }) {
       .catch(error => console.log(error));
   }
 
+
+
+
   const handleSubmit = (event) => {
     event.preventDefault();
     tag.articleId = object.articleId;
     tag.userId = user.userId;
     tag.feedbackTag = feedbackTagJSON;
-    if (!hasSelected) {
+  
       addFeedbackTag(tag);
-    } else {
-
-    }
+    
     console.log(tag);
   };
 
   const onChangeHandler = (event) => {
-    // event.preventDefault();
+    event.preventDefault();
     const newFeedbackTagJSON = { ...feedbackTagJSON };
-    // newFeedbackTagJSON[event.target.name] = event.target.value;
+    newFeedbackTagJSON[event.target.name] = event.target.value;
+    console(newFeedbackTagJSON);
     setFeedbackTagJSON(newFeedbackTagJSON);
     console.log(feedbackTagJSON);
 
   };
 
+
+
+  const [hasSelected, setSelected] = useState(false);
   const [isToggledSound, setToogleSound] = useState(false);
   const [isToggledFallacious, setToogleFallacious] = useState(false);
   const [isToggledBiased, setToogleBiased] = useState(false);
-  const toggleTrueFalseSound = () => setToogleSound(!isToggledSound);
+
+  const toggleTrueFalseSound = (event) => {
+    event.preventDefault();
+    setToogleSound(!isToggledSound);
+
+    event.preventDefault();
+    setFeedbackTagJSON(1);
+    const newFeedbackTagJSON = { ...feedbackTagJSON };
+    setFeedbackTagJSON(newFeedbackTagJSON);
+    console.log(feedbackTagJSON);
+
+    if(userFeedBackTagsForArticle === null){
+      tag.articleId = object.articleId;
+      tag.userId = user.userId;
+      tag.feedbackTag = feedbackTagJSON;
+  
+      addFeedbackTag(tag);
+      setSelected(true);
+
+      //disable the rest of the buttons
+      //set style
+    } else {
+      const tagToDelete = userFeedBackTagsForArticle[0];
+      deleteTag(tag);
+      setSelected(false);
+    }
+  }
+
+
   const toggleTrueFalseFallacious = () => setToogleFallacious(!isToggledFallacious);
   const toggleTrueFalseBiased = () => setToogleBiased(!isToggledBiased);
 
@@ -125,7 +174,9 @@ function FeedbackTagForm({ object, user }) {
 
   return (
     <div className="container alert alert-dark">
-      <div className="row ">
+
+      {/* <div className="row ">
+    
         <Errors errors={errors} />
         <form onSubmit={handleSubmit}>
           <label htmlFor="feedbackTagId"><h3>Feedback</h3></label>
@@ -138,6 +189,7 @@ function FeedbackTagForm({ object, user }) {
           </select>
           <button type="submit">Submit</button>
         </form>
+
         <div>
           <button onClick={toggleTrueFalseSound}>Sound </button>
           <button onClick={toggleTrueFalseFallacious}>Fallacious</button>
@@ -156,8 +208,9 @@ function FeedbackTagForm({ object, user }) {
               <button type="submit">Submit</button>
             </form>
           </div>
+
         </div>
-      </div>
+
     </div>
   );
 
