@@ -20,7 +20,6 @@ function NewsAPIFeed ( { articles, user, setArticles } ) {
 
   const handleSetArticles = (article) => {
     const newArticles = articles.filter(a => a.articleName != article.articleName);
-    setArticles(newArticles);
   };
 
   let nextKey = 0;

@@ -9,6 +9,7 @@ import placeholderImage from '../images/D-logo.png';
 
 function RawArticleCard ( { article, user, handleSetArticles } ) {
 
+  const [added, setAdded] = useState(false);
   const [errors, setErrors] = useState([]);
 
   const { articleId, title, description, author, articleUrl, articleImageUrl, datePublished, datePosted, source, topics, posts, feedbackTags } = article;
@@ -38,14 +39,28 @@ function RawArticleCard ( { article, user, handleSetArticles } ) {
   
   const timePassed = getTimePassed(datePublished);
 
-  const handleAdd = async () => {
+  const handleAddClick = async () => {
+
+    const articleToAdd = {
+      "articleId": article.articleId,
+      "title": (article.title && article.title.trim().length > 0 ? article.title : "Unknown"),
+      "description": (article.description && article.description.trim().length > 0 ? article.description : "Unknown"),
+      "author": (article.author && article.author.trim().length > 0 ? article.author : "Unknown"),
+      "articleUrl": article.articleUrl,
+      "articleImageUrl": article.articleImageUrl ? article.articleImageUrl : placeholderImage,
+      "datePublished": article.datePublished,
+      "datePosted": article.datePosted,
+      "source": article.source,
+      "active": true,
+    };
+
     const init = {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         "Accept": "application/json"
       },
-      body: JSON.stringify(article)
+      body: JSON.stringify(articleToAdd)
     };
 
     try {
@@ -55,7 +70,7 @@ function RawArticleCard ( { article, user, handleSetArticles } ) {
         const data = await response.json();
 
         if (data.articleId) {
-          // TODO kinda hokey
+          setAdded(true);
         } else {
           setErrors(data);
         }
@@ -65,11 +80,6 @@ function RawArticleCard ( { article, user, handleSetArticles } ) {
     } catch (error) {
       setErrors(["Something unexpected went wrong, sorry!"]);
     }
-  }
-
-  const handleAddClick = () => {
-    handleAdd();
-    handleSetArticles(article);
   }
 
   return (
@@ -96,7 +106,7 @@ function RawArticleCard ( { article, user, handleSetArticles } ) {
           <div className="d-flex flex-row justify-content-end">
             <Errors errors={errors} />
             {user.userRole === "admin" ? <>
-                  <button onClick={handleAddClick} className="btn btn-secondary mr-2 px-2 py-1">Add Article</button>
+                  {added ? <button className="btn btn-success mr-2 px-2 py-1">Article Added</button> : <button onClick={handleAddClick} className="btn btn-secondary mr-2 px-2 py-1">Add Article</button>}
                 </> : null}
           </div>
         </div>
