@@ -131,14 +131,14 @@ function FeedbackTagForm({ object, user }) {
     console.log(feedbackTagJSON);
 
   };
-
+  
   const [isToggledSound, setToggleSound] = useState(false); // the use state will want to check for the tag already selected instead of defaulting to false
   const [isToggledFallacious, setToggleFallacious] = useState(false); // the use state will want to check for the tag already selected instead of defaulting to false
   const [isToggledBiased, setToggleBiased] = useState(false); // the use state will want to check for the tag already selected instead of defaulting to false
 
   const toggleTrueFalseSound = (event) => {
     event.preventDefault();
-    setToogleSound(!isToggledSound);
+    setToggleSound(!isToggledSound);
 
     event.preventDefault();
     setFeedbackTagJSON(1);
