@@ -42,7 +42,7 @@ function AddReplyPost ( { parentPost, articleId, setCurrentOption, user } ) {
         const data = await response.json();
 
         if (data.postId) {
-          // kinda hokey
+          // TODO kinda hokey
           history.push(`/`);
           history.push(`/article/${articleId}`);
           handleCancel();

@@ -55,7 +55,7 @@ function FeedbackTagForm({ object, user }) {
       const response = await fetch("http://localhost:8080/api/article/feedback-tag", init);
       console.log(response);
       if (response.status === 201 || response.status === 400) {
-        // maybe fetch data go back to article fetch and get data...?
+        // TODO maybe fetch data go back to article fetch and get data...?
         setErrors([]);
       } else if (response.status === 500) {
         throw new Error(["Duplicate Entries are not allowed"])

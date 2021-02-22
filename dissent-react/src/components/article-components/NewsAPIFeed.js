@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
-import ArticleCard from './ArticleCard.js';
+import RawArticleCard from './RawArticleCard.js';
 import './ArticleFeed.css';
 
-function NewsAPIFeed ( { articles, user } ) {
+function NewsAPIFeed ( { articles, user, setArticles } ) {
 
   
   // useEffect(() => {
@@ -18,10 +18,20 @@ function NewsAPIFeed ( { articles, user } ) {
   //   getData();
   // }, []);
 
-  const makeArticle = (article) => {
+  const handleSetArticles = (article) => {
+    const newArticles = articles.filter(a => a.articleName != article.articleName);
+    setArticles(newArticles);
+  };
 
+  let nextKey = 0;
+  const generateNextKey = () => {
+    nextKey++;
+    return nextKey;
+  };
+
+  const makeArticle = (article) => {
     return (
-      <ArticleCard article={article} user={user} />
+      <RawArticleCard key={generateNextKey()} article={article} handleSetArticles={handleSetArticles} user={user} />
     );
   };
 

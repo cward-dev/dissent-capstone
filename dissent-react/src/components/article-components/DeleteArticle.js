@@ -16,7 +16,7 @@ function DeleteArticle ( { article, setDeleteArticle, user } ) {
 
       if (response.status === 204) {
 
-        // kinda hokey
+        // TODO kinda hokey
         history.push(`./`);
         handleCancel();
       } else if (response.status === 404) {
