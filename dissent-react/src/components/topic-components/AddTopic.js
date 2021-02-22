@@ -18,7 +18,7 @@ function AddTopic ( { setAdminBarSelection, user } ) {
     setTopic(updatedTopic);
   };
 
-  const handleAddSubmit = async (event) => {
+  const handleAddSubmit = async (event) => { // TODO WHY AREN'T COMPONENTS UPDATING WITH ROUTE?
     event.preventDefault();
 
     const init = {
@@ -37,7 +37,7 @@ function AddTopic ( { setAdminBarSelection, user } ) {
         const data = await response.json();
 
         if (data.topicId) {
-          // kinda hokey
+          // TODO kinda hokey
           history.push(`/`);
           history.push(`/t/${topic.topicName}`);
           handleCancel();
