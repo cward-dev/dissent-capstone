@@ -156,6 +156,7 @@ function FeedbackTagForm({ object, user }) {
   
       addFeedbackTag(tag);
       setSelected(true);
+      setFeedbackTagJSON(DEF_FB_TAG);
     } else {
       const tagToDelete = userFeedBackTagsForArticle[0];
       deleteTag(tag);
