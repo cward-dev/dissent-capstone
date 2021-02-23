@@ -1,6 +1,7 @@
 package capstone.dissent.models;
 
 import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.ArrayList;
@@ -15,14 +16,14 @@ public class User {
 
     private List<String> roles = new ArrayList<>();
 
-    @NotNull(message = "Email cannot be null")
+    @NotBlank(message = "Email cannot be null")
     @Email
     private String email;
 
-    @NotNull(message = "Password cannot be null")
+    @NotBlank(message = "Password cannot be null")
     private String password;
 
-    @NotNull(message = "Username cannot be null")
+    @NotBlank(message = "Username cannot be null")
     @Size(max = MAX_CHARACTERS, message = "Username must not exceed ${MAX_CHARACTERS} characters.")
     private String username;
 
@@ -39,6 +40,14 @@ public class User {
     // constructor(s)
     public User() {
 
+    }
+
+    public User(String userId, List<String> roles, String email, String password, String username) {
+        this.userId = userId;
+        this.roles = roles;
+        this.email = email;
+        this.password = password;
+        this.username = username;
     }
 
     public User(List<String> roles, String username) {

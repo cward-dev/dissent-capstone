@@ -102,10 +102,6 @@ public class UserService implements UserDetailsService {
             return result;
         }
 
-        if (user.getUserId() == null || user.getUserId().isBlank()) {
-            result.addMessage("User ID must be set for `edit` operation", ResultType.INVALID);
-            return result;
-        }
 
         if (!repository.edit(user)) {
             result.addMessage(String.format("User ID: %s, not found", user.getUserId()), ResultType.NOT_FOUND);
@@ -152,10 +148,6 @@ public class UserService implements UserDetailsService {
         String regexLength = "(?=\\S+$).{8,20}";
         String regexSpecial = "[a-zA-Z0-9]*";
 
-        if (password == null) {
-            result.addMessage("Password cannot be empty.", ResultType.INVALID);
-            return result;
-        }
 
         if (!password.matches(regexDigit)) {
             result.addMessage("Password must contain a digit 0-9.", ResultType.INVALID);

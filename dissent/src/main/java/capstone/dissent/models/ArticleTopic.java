@@ -1,8 +1,13 @@
 package capstone.dissent.models;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+
 public class ArticleTopic {
 
+    @NotBlank(message = "article Id cannot be blank")
     private String articleId;
+    @Min(value = 1, message = "topic Id must be greater than 1")
     private int topicId;
 
     private Topic topic;
