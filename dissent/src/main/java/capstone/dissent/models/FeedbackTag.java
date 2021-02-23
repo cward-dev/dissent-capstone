@@ -11,7 +11,6 @@ public class FeedbackTag {
     @NotBlank(message = "Feedback Tag name cannot be blank")
     @Size(max = MAX_CHARACTERS, message = "Feedback Tag name must be between 1 and 255 characters")
     String name;
-    @NotBlank(message = "Feedback Tag color hex cannot be blank")
     @Size(min = 7, max=7, message = "Feedback Tag color hex must be 7 characters")
     String colorHex;
 

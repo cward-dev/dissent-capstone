@@ -92,7 +92,8 @@ function PostFeedbackTagButton ( { feedbackTag, object, user, setErrors, handleB
   }
 
   return (
-    <button className="badge mr-1" onClick={handleButtonClick} style={{
+    <button className="btn btn-sm" onClick={handleButtonClick} style={{
+      fontWeight: "bold",
       color: "white",
       textShadow: "0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black",
       backgroundColor: `${tagToggled ? feedbackTag.colorHex : "#000000" }`

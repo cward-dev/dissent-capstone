@@ -43,7 +43,7 @@ function AddFeedbackTag ( { user } ) {
           handleCancel();
           setErrors([]);
         } else {
-          setErrors([data]);
+          setErrors(data);
         }
       } else {
         throw new Error(["Something unexpected went wrong, sorry!"]);
