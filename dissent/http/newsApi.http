@@ -1,3 +1,1 @@
-@url = http://newsapi.org/v2/top-headlines?country=us&category=business&apiKey=46f374bc4801471fa5acc0956d739b7c
-
-GET {{url}} HTTP/1.1
+GET http://newsapi.org/v2/top-headlines?country=us&apiKey=46f374bc4801471fa5acc0956d739b7c HTTP/1.1

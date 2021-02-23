@@ -5,42 +5,10 @@ import Errors from '../Errors.js';
 function AddArticlesPage( { user } ) {
   const [articles, setArticles] = useState([]);
   const [errors, setErrors] = useState([]);
-  
-  // const addSource = (article) => { // does this still run as async since it's called in fetchArticles?
-
-  //   const source = {
-  //     "sourceName": article.source.name,
-  //     "websiteUrl": `${article.url.split('/')[0]}//${article.url.split('/')[2]}/`,
-  //     "description": `${article.source.name} has not been given a description.`
-  //   };
-
-  //   const init = {
-  //     method: "POST",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //       "Accept": "application/json"
-  //     },
-  //     body: JSON.stringify(source)
-  //   };
-
-  //   try {
-  //     const response = fetch("http://localhost:8080/api/source", init);
-
-  //     if (response.status === 201 || response.status === 400) {
-  //       const data = response.json();
-  //       const newSource = data;
-  //       let newSources = [...sources, newSource];
-  //       setSources(newSources);
-  //     } else {
-  //       throw new Error(["Something unexpected went wrong, sorry!"]);
-  //     }
-  //   } catch (error) {
-  //     setErrors(["Something unexpected went wrong, sorry!"]);
-  //   }
-  // }
 
   const fetchArticles = async () => {
     let rawArticles;
+
     try {
       const response = await fetch("http://newsapi.org/v2/top-headlines?country=us&apiKey=46f374bc4801471fa5acc0956d739b7c");
       const data = await response.json();
