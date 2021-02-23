@@ -92,8 +92,7 @@ function ArticleFeedbackTagButton ( { feedbackTag, object, user, setErrors, hand
   }
 
   return (
-    <button className="btn btn-link btn-sm mr-2" onClick={handleButtonClick} style={{
-      fontWeight: "bold",
+    <button className="badge mr-1" onClick={handleButtonClick} style={{
       color: "white",
       textShadow: "0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black",
       backgroundColor: `${tagToggled ? feedbackTag.colorHex : "#000000" }`
