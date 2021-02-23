@@ -30,8 +30,11 @@ const DEFAULT_USER = {
 
 function App() {
   const [topicsUpdated, setTopicsUpdated] = useState(false);
-  const [user, setUser] = useState();
 
+  // can useState(DEFAULT_USER) for development purposes. Or login with U: "admin" P: "admin"
+  const [user, setUser] = useState(); 
+
+  // stores token in browser cache so user does not get logged out on refresh.
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
