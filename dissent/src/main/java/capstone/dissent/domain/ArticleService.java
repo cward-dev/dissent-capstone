@@ -128,18 +128,25 @@ public class ArticleService {
     }
 
 
-    public Result<Void> addTopic(ArticleTopic articleTopic){
+    public Result<Void> addArticleTopic(ArticleTopic articleTopic){
         Result<Void> result = validateArticleTopic(articleTopic);
         if(!result.isSuccess()){
             return result;
         }
         if(!articleTopicRepository.add(articleTopic)){
-            result.addMessage("topic not found!", ResultType.INVALID);
+            result.addMessage("Article topic not found", ResultType.NOT_FOUND);
         }
         return result;
     }
 
-    // Get Tag Data can be called from the object...
+    public Result<Void> deleteArticleTopicByKey(String articleId, int topicId){
+        Result<Void> result = new Result<>();
+        if (!articleTopicRepository.deleteByKey(articleId, topicId)) {
+            return result;
+        }
+        result.addMessage("Article topic not found", ResultType.NOT_FOUND);
+        return result;
+    }
 
     public Result<Void> addFeedbackTag(ArticleFeedbackTag articleFeedbackTag) {
         Result<Void> result = validate(articleFeedbackTag);

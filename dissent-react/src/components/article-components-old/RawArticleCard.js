@@ -4,9 +4,8 @@ import Errors from '../Errors';
 import './RawArticleCard.css';
 import placeholderImage from '../images/D-logo.png';
 
-function RawArticleCard ( { rawArticle, user, handleSetArticles } ) {
+function RawArticleCard ( { article, user, handleSetArticles } ) {
 
-  const [article, setArticle] = useState(rawArticle);
   const [added, setAdded] = useState(false);
   const [errors, setErrors] = useState([]);
 

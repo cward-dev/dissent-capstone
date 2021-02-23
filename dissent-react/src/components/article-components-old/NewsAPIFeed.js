@@ -30,7 +30,7 @@ function NewsAPIFeed ( { articles, user, setArticles } ) {
 
   const makeArticle = (article) => {
     return (
-      <RawArticleCard key={generateNextKey()} rawArticle={article} handleSetArticles={handleSetArticles} user={user} />
+      <RawArticleCard key={generateNextKey()} article={article} handleSetArticles={handleSetArticles} user={user} />
     );
   };
 

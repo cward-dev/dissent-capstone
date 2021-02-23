@@ -40,7 +40,7 @@ function FeedbackTagForm({ object, user, handleTagClick }) {
   return (
     <> 
       <Errors errors={errors} />
-      <div className="d-flex flex-row justify-content-start alert alert-dark mt-1 mb-3 mx-2 pl-4">
+      <div>
         {feedbackTags.map(feedbackTag => makeFeedbackTag(feedbackTag))}
       </div>
     </>

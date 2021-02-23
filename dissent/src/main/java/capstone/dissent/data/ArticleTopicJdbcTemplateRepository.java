@@ -24,15 +24,12 @@ public class ArticleTopicJdbcTemplateRepository implements ArticleTopicRepositor
                 articleTopic.getArticleId()) >0;
     }
 
-
-
     @Override
     public boolean deleteByKey(String articleId, int topicId){
 
         final String sql = "delete from article_topic "
                     + "where article_id = ? and topic_id = ?;";
         return jdbcTemplate.update(sql,articleId,topicId)>0;
-
     }
 
 

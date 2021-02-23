@@ -4,23 +4,26 @@ import Article from '../../article-components/ArticleCard';
 import FeedbackTagForm from '../FeedbackTagForm';
 import '../FeedbackTagIcon.css';
  
-function ArticleFeedbackTagIcon( { feedbackTagMenuDisplayed, setFeedbackTagMenuDisplayed, feedbackUpdate, setErrors, article, user } ) {
+function ArticleFeedbackTagIcon( { setErrors, article, user } ) {
 
   const [feedbackTags, setFeedbackTags] = useState([]);
+  const [feedbackTagMenuDisplayed, setFeedbackTagMenuDisplayed] = useState(false);
+  const [feedbackUpdate, setFeedbackUpdate] = useState(false);
+
+  const getData = async () => {
+    try {
+      const response = await fetch(`http://localhost:8080/api/article/feedback-tag/article/${article.articleId}`);
+      const data = await response.json();
+      setFeedbackTags(data);
+    } catch (error) {
+      console.log(error);
+      setErrors(["Something went wrong with our database, sorry!"]);
+    }
+  };
 
   useEffect(() => {
-    const getData = async () => {
-      try {
-        const response = await fetch(`http://localhost:8080/api/article/feedback-tag/article/${article.articleId}`);
-        const data = await response.json();
-        setFeedbackTags(data);
-      } catch (error) {
-        console.log(error);
-        // setErrors(["Something went wrong with our database, sorry!"]);
-      }
-    };
     getData();
-  }, [feedbackUpdate]);
+  }, [feedbackTags, feedbackUpdate]);
 
   let handleClick = () => {
     if (feedbackTagMenuDisplayed) {
@@ -31,11 +34,12 @@ function ArticleFeedbackTagIcon( { feedbackTagMenuDisplayed, setFeedbackTagMenuD
   }
 
   const handleTagClick = () => {
-    setFeedbackTagMenuDisplayed(true);
+    getData();
+    setFeedbackTagMenuDisplayed(false);
   }
  
   return(
-    <div className="d-flex flex-row">
+    <div className="d-flex flex-row align-items-center">
       <div>
         <div className={`container feedbackTagIconArticle`}>
           {feedbackTags && feedbackTags.length > 0 ? 

@@ -33,7 +33,7 @@ public class PostJdbcTemplateRepository implements PostRepository {
         if (result.size() > 0) {
             for(Post post : result) {
                 addFeedbackTags(post);
-                post.setChildPostCount(postChildCounter(post, 0));
+                postChildCounter(post);
             }
         }
 
@@ -53,7 +53,7 @@ public class PostJdbcTemplateRepository implements PostRepository {
         if (result.size() > 0) {
             for(Post post : result) {
                 addFeedbackTags(post);
-                post.setChildPostCount(postChildCounter(post, 0));
+                postChildCounter(post);
             }
         }
 
@@ -73,7 +73,7 @@ public class PostJdbcTemplateRepository implements PostRepository {
         if (result.size() > 0) {
             for(Post post : result) {
                 addFeedbackTags(post);
-                post.setChildPostCount(postChildCounter(post, 0));
+                postChildCounter(post);
             }
         }
 
@@ -93,7 +93,7 @@ public class PostJdbcTemplateRepository implements PostRepository {
         if (result.size() > 0) {
             for(Post post : result) {
                 addFeedbackTags(post);
-                post.setChildPostCount(postChildCounter(post, 0));
+                postChildCounter(post);
             }
         }
 
@@ -113,7 +113,7 @@ public class PostJdbcTemplateRepository implements PostRepository {
 
         if (result != null) {
             addFeedbackTags(result);
-            result.setChildPostCount(postChildCounter(result, 0));
+            postChildCounter(result);
         }
 
         return result;
@@ -206,15 +206,21 @@ public class PostJdbcTemplateRepository implements PostRepository {
         post.setFeedbackTags(list);
     }
 
-    private int postChildCounter(Post post, int counter) {
-        counter++;
+    private int postChildCounter(Post post) {
+        int counter = 0;
+        int newCounter;
+
         for (Post p : post.getChildPosts()) {
             if (p.isActive()) {
                 counter++;
-                counter = postChildCounter(p, counter);
+                if (p.getChildPosts().size() > 0) {
+                    newCounter = postChildCounter(p);
+                    counter += newCounter;
+                }
             }
         }
 
+        post.setChildPostCount(counter);
         return counter;
     }
 }

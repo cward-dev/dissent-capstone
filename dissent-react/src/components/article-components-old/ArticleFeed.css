@@ -1,0 +1,19 @@
+.source-author-line {
+  font-style: italic;
+  color: lightgray;
+}
+
+a {
+  color: whitesmoke;
+}
+
+a:hover {
+  color: whitesmoke;
+  
+}
+
+.tag-pie-chart {
+  width: 35px;
+  border: 1px solid black;
+    border-radius: 500px;
+}

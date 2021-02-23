@@ -83,7 +83,7 @@ function Post ( { post, postLevel, user, parentPost, startsCollapsed, handlePost
               <button onClick={handleEditPost} className="btn btn-link btn-sm mr-2 p-0">Edit</button>
               <button onClick={handleDeletePost} className="btn btn-link btn-sm mr-2 p-0">Delete</button>
             </> : null}
-            <button onClick={handleCollapse} className="btn btn-link btn-sm p-0">{collapsed ? "Expand" : "Collapse"}</button>
+            <button onClick={handleCollapse} className="btn btn-link btn-sm p-0">{collapsed ? `Expand (${post.childPostCount})` : `Collapse (${post.childPostCount})`}</button>
           </div>
           {currentOption === 1 ? <EditPost originalPost={post} articleId={post.articleId} setCurrentOption={setCurrentOption} user={user} handlePostAdded={handlePostAdded} /> : null}
           {currentOption === 2 ? <DeletePost originalPost={post} articleId={post.articleId} setCurrentOption={setCurrentOption} user={user} handlePostAdded={handlePostAdded} /> : null}
