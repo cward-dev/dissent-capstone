@@ -59,6 +59,8 @@ class ArticleTopicJdbcTemplateRepositoryTest {
     void shouldNotDeleteByKey() {
         boolean success = repository.deleteByKey("abc", 123);
     }
+
+
 }
 
 

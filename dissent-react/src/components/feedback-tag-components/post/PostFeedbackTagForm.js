@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
-import FeedbackTagButton from './FeedbackTagButton.js';
-import Errors from '../Errors.js';
+import PostFeedbackTagButton from './PostFeedbackTagButton.js';
+import Errors from '../../Errors.js';
 
-function FeedbackTagForm({ object, user, handleTagClick }) {
+function PostFeedbackTagForm({ object, user, handleTagClick }) {
   const [feedbackTags, setFeedbackTags] = useState([]);
   const [update, setUpdate] = useState([]);
   const [errors, setErrors] = useState([]);
@@ -33,7 +33,7 @@ function FeedbackTagForm({ object, user, handleTagClick }) {
 
   const makeFeedbackTag = (feedbackTag) => {
     return (
-      <FeedbackTagButton key={feedbackTag.feedbackTagId} feedbackTag={feedbackTag} object={object} isPost={true} user={user} setErrors={setErrors} handleButtonUpdate={handleButtonUpdate} />
+      <PostFeedbackTagButton key={feedbackTag.feedbackTagId} feedbackTag={feedbackTag} object={object} user={user} setErrors={setErrors} handleButtonUpdate={handleButtonUpdate} />
     );
   };
 
@@ -46,4 +46,4 @@ function FeedbackTagForm({ object, user, handleTagClick }) {
     </>
   );
 
-} export default FeedbackTagForm;
+} export default PostFeedbackTagForm;

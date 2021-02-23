@@ -31,8 +31,8 @@ public class ArticleTopicController {
     public ResponseEntity<Object> delete(@PathVariable String articleId, @PathVariable int topicId) {
         Result<Void> result = service.deleteArticleTopicByKey(articleId, topicId);
         if (result.isSuccess()) {
-            return new ResponseEntity<>(HttpStatus.CREATED);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
-        return ErrorResponse.build(result);
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 }

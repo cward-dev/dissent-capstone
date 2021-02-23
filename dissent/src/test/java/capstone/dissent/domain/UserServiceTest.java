@@ -154,7 +154,7 @@ class UserServiceTest {
     }
 
     @Test
-    void shouldNotHaveWithUserId() {
+    void shouldNotAddWithUserId() {
         User user = USER_1;
         user.setUserId("XXXX");
         user.setPassword("Abc34dvb!");
@@ -245,12 +245,15 @@ class UserServiceTest {
     @Test
     void shouldFindByUserName(){
        User user = USER_1;
-        when(repository.findById(user.getUserId())).thenReturn(USER_1);
 
-        User userOut = service.findById(user.getUserId());
+        when(repository.findByUsername(user.getUsername())).thenReturn(USER_1);
 
-        assertTrue(user.equals(userOut));
+        User userOut = service.findByUsername(user.getUsername());
+
+       assertEquals(user.getUserId(),userOut.getUserId());
     }
+
+
 
 
 

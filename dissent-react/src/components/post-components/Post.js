@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import PostFeedbackTagIcon from "../feedback-tag-components/post/PostFeedbackTagIcon.js";
-import FeedbackTagForm from "../feedback-tag-components/FeedbackTagForm.js";
+import ArticleFeedbackTagForm from "../feedback-tag-components/article/ArticleFeedbackTagForm.js";
 import AddReplyPost from "./AddReplyPost.js";
 import EditPost from "./EditPost.js";
 import DeletePost from "./DeletePost.js";
@@ -59,7 +59,6 @@ function Post ( { post, postLevel, user, parentPost, startsCollapsed, handlePost
 
   return (
     <div>
-      {feedbackTagMenuDisplayed ? <FeedbackTagForm object={post} user={user} /> : null}
       <div className="media">
         <PostFeedbackTagIcon post={post} feedbackTagMenuDisplayed={feedbackTagMenuDisplayed} setFeedbackTagMenuDisplayed={setFeedbackTagMenuDisplayed} user={user} />
         <div className="media-body">
