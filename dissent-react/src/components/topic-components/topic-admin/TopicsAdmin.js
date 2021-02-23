@@ -44,18 +44,30 @@ function TopicsAdmin ( { handleTopicsUpdated, user } ) {
       {topicToDelete ? <DeleteTopic topic={topicToDelete} setTopicToDelete={setTopicToDelete} user={user} /> : null}
       {topicToReactivate ? <ReactivateTopic topic={topicToReactivate} setTopicToReactivate={setTopicToReactivate} user={user} /> : null}
       <hr className="mt-4"></hr>
+      <h2>Active</h2>
       <table className="table table-light table-striped mt-3">
         <thead className="thead-dark">
           <tr>
-            <th scope="col">ID #</th>
             <th scope="col">Topic Name</th>
-            <th scope="col">Is Active?</th>
+            <th scope="col"># Articles</th>
+            <th scope="col">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {topics.filter(t => t.active).sort((a, b) => (a.name < b.name) ? 1 : -1).map(t => makeTopicAdminRow(t))}
+        </tbody>
+      </table>
+      <h2 className="mt-5">Inactive</h2>
+      <table className="table table-light table-striped mt-3">
+        <thead className="thead-dark">
+          <tr>
+            <th scope="col">Topic Name</th>
             <th scope="col">Articles</th>
             <th scope="col">Actions</th>
           </tr>
         </thead>
         <tbody>
-          {topics.map(t => makeTopicAdminRow(t))}
+          {topics.filter(t => !t.active).sort((a, b) => (a.name < b.name) ? 1 : -1).map(t => makeTopicAdminRow(t))}
         </tbody>
       </table>
     </div>

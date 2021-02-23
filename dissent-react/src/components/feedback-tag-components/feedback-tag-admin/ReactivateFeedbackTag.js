@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import Errors from '../../Errors.js';
 
-function ReactivateTopic ( { topic, setTopicToReactivate, user } ) {
+function ReactivateFeedbackTag ( { feedbackTag, setFeedbackTagToReactivate, user } ) {
 
   const [errors, setErrors] = useState([]);
 
@@ -9,7 +9,7 @@ function ReactivateTopic ( { topic, setTopicToReactivate, user } ) {
     event.preventDefault();
 
     try {
-      const response = await fetch(`http://localhost:8080/api/topic/activate/${topic.topicId}`, { method: "PUT" } );
+      const response = await fetch(`http://localhost:8080/api/feedback-tag/activate/${feedbackTag.feedbackTagId}`, { method: "PUT" } );
 
       if (response.status === 204) {
         handleCancel();
@@ -23,7 +23,7 @@ function ReactivateTopic ( { topic, setTopicToReactivate, user } ) {
   }
 
   const handleCancel = () => {
-    setTopicToReactivate(null);
+    setFeedbackTagToReactivate(null);
   }
 
   return (
@@ -33,11 +33,11 @@ function ReactivateTopic ( { topic, setTopicToReactivate, user } ) {
         <div>Are you sure?</div>
         <div className="col text-right">
           <button type="button" className="btn btn-light btn-sm" onClick={handleCancel}>Cancel</button>
-          <button type="submit" className="btn btn-info btn-sm ml-2">Reactivate {topic.topicName}</button>
+          <button type="submit" className="btn btn-info btn-sm ml-2">Reactivate {feedbackTag.name}</button>
         </div>
       </div>
     </form>
   );
 }
 
-export default ReactivateTopic;
+export default ReactivateFeedbackTag;

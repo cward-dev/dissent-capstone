@@ -2,12 +2,13 @@ import { useState, useEffect } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import Errors from '../../Errors.js';
 
-function AddTopic ( { user } ) {
+function AddFeedbackTag ( { user } ) {
 
-  const [addTopic, setAddTopic] = useState(false);
+  const [addFeedbackTag, setAddFeedbackTag] = useState(false);
 
-  const [topic, setTopic] = useState( {
-    "topicName": ""
+  const [feedbackTag, setFeedbackTag] = useState( {
+    "name": "",
+    "colorHex": "",
   } );
 
   const [errors, setErrors] = useState([]);
@@ -15,9 +16,9 @@ function AddTopic ( { user } ) {
   const history = useHistory();
 
   const handleChange = (event) => {
-    const updatedTopic = {...topic};
-    updatedTopic[event.target.name] = event.target.value;
-    setTopic(updatedTopic);
+    const updatedFeedbackTag = {...feedbackTag};
+    updatedFeedbackTag[event.target.name] = event.target.value;
+    setFeedbackTag(updatedFeedbackTag);
   };
 
   const handleAddSubmit = async (event) => { // TODO WHY AREN'T COMPONENTS UPDATING WITH ROUTE?
@@ -29,20 +30,20 @@ function AddTopic ( { user } ) {
         "Content-Type": "application/json",
         "Accept": "application/json"
       },
-      body: JSON.stringify(topic)
+      body: JSON.stringify(feedbackTag)
     };
 
     try {
-      const response = await fetch("http://localhost:8080/api/topic", init);
+      const response = await fetch("http://localhost:8080/api/feedback-tag", init);
 
       if (response.status === 201 || response.status === 400) {
         const data = await response.json();
 
-        if (data.topicId) {
+        if (data.feedbackTagId) {
           handleCancel();
           setErrors([]);
         } else {
-          setErrors(data);
+          setErrors([data]);
         }
       } else {
         throw new Error(["Something unexpected went wrong, sorry!"]);
@@ -53,30 +54,32 @@ function AddTopic ( { user } ) {
   }
 
   const handleAddClick = () => {
-    setAddTopic(true);
+    setAddFeedbackTag(true);
   }
 
   const handleCancel = () => {
-    setAddTopic(false);
+    setAddFeedbackTag(false);
   }
 
   return (
     <form onSubmit={handleAddSubmit}>
       <Errors errors={errors} />
-      {addTopic ?
+      {addFeedbackTag ?
         <div className="form-row mb-4">
           <div className="col-9">
-            <label htmlFor="content" className="pl-2 pt-2">New Topic</label>
+            <label htmlFor="name" className="pl-2 pt-2">New Feedback Tag</label>
           </div>
-          <input type="text" className="form-control mb-3 mx-2" id="topicName" name="topicName" onChange={handleChange} />
+          <input type="text" className="form-control mb-3 mx-2" id="name" name="name" onChange={handleChange} />
+          <label htmlFor="colorHex" className="pl-2 pt-2">Color</label>
+          <input type="color" id="colorHex" name ="colorHex" className="col-2 form-control ml-2 p-1" required onChange={handleChange}></input>
           <div className="col text-right">
             <button type="button" className="btn btn-light btn-sm" onClick={handleCancel}>Cancel</button>
             <button type="submit" className="btn btn-dark mx-2 btn-sm">Submit</button>
           </div>
         </div>
-      : <div className="d-flex flex-row justify-content-center"><button className="btn btn-secondary btn-sm col" onClick={handleAddClick}>Add Topic</button></div>}
+      : <div className="d-flex flex-row justify-content-center"><button className="btn btn-secondary btn-sm col" onClick={handleAddClick}>Add Feedback Tag</button></div>}
     </form>
   );
 }
 
-export default AddTopic;
+export default AddFeedbackTag;

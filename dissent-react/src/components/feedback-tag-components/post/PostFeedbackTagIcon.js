@@ -34,7 +34,6 @@ function PostFeedbackTagIcon( { setErrors, post, user } ) {
 
   const handleTagClick = () => {
     getData();
-    setFeedbackTagMenuDisplayed(false);
   }
  
   return(

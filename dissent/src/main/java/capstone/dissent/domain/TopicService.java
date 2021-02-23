@@ -74,6 +74,10 @@ public class TopicService {
         return result;
     }
 
+    public boolean activateById(int topicId) {
+        return repository.activateById(topicId);
+    }
+
     public boolean deleteById(int topicId) {
         return repository.deleteById(topicId);
     }
@@ -103,7 +107,7 @@ public class TopicService {
     }
 
     private boolean checkForDuplicate(Topic topic) {
-        return findAll().stream().anyMatch(t -> t.getTopicId() != topic.getTopicId()
+        return findAllWithInactive().stream().anyMatch(t -> t.getTopicId() != topic.getTopicId()
                 && t.getTopicName().equalsIgnoreCase(topic.getTopicName()));
     }
 }

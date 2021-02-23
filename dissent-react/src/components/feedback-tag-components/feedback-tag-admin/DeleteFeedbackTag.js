@@ -1,19 +1,16 @@
 import { useState } from 'react';
 import Errors from '../../Errors.js';
 
-function ReactivateTopic ( { topic, setTopicToReactivate, user } ) {
+function DeleteFeedbackTag ( { feedbackTag, setFeedbackTagToDelete, user } ) {
 
   const [errors, setErrors] = useState([]);
 
-  const handleReactivateSubmit = async (event) => {
-    event.preventDefault();
-
+  const handleDeleteSubmit = async (event) => {
     try {
-      const response = await fetch(`http://localhost:8080/api/topic/activate/${topic.topicId}`, { method: "PUT" } );
+      const response = await fetch(`http://localhost:8080/api/feedback-tag/${feedbackTag.feedbackTagId}`, { method: "DELETE" } );
 
       if (response.status === 204) {
         handleCancel();
-        setErrors([]);
       } else {
         throw new Error(["Something unexpected went wrong, sorry!"]);
       }
@@ -23,21 +20,21 @@ function ReactivateTopic ( { topic, setTopicToReactivate, user } ) {
   }
 
   const handleCancel = () => {
-    setTopicToReactivate(null);
+    setFeedbackTagToDelete(null);
   }
 
   return (
-    <form onSubmit={handleReactivateSubmit}>
+    <form onSubmit={handleDeleteSubmit}>
       <Errors errors={errors} />
       <div className="d-flex flex-row justify-content-between align-items-center alert alert-dark">
         <div>Are you sure?</div>
         <div className="col text-right">
           <button type="button" className="btn btn-light btn-sm" onClick={handleCancel}>Cancel</button>
-          <button type="submit" className="btn btn-info btn-sm ml-2">Reactivate {topic.topicName}</button>
+          <button type="submit" className="btn btn-danger btn-sm ml-2" onClick={handleDeleteSubmit}>Inactivate {feedbackTag.name}</button>
         </div>
       </div>
     </form>
   );
 }
 
-export default ReactivateTopic;
+export default DeleteFeedbackTag;

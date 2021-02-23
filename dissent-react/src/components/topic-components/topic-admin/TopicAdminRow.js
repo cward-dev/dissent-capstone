@@ -1,28 +1,29 @@
 function TopicAdminRow ( { topic, setTopicToEdit, setTopicToDelete, setTopicToReactivate, user } ) {
 
   const handleEditClick = () => {
+    cancelAll();
     setTopicToEdit(topic);
-    setTopicToDelete(null);
-    setTopicToReactivate(null);
   };
 
   const handleDeleteClick = () => {
+    cancelAll();
     setTopicToDelete(topic);
-    setTopicToEdit(null);
-    setTopicToReactivate(null);
   };
 
   const handleReactivateClick = () => {
+    cancelAll();
     setTopicToReactivate(topic);
-    setTopicToDelete(null);
+  };
+
+  const cancelAll = () => {
     setTopicToEdit(null);
+    setTopicToDelete(null);
+    setTopicToReactivate(null);
   };
 
   return (
     <tr>
-      <th scope="row">{topic.topicId}</th>
-      <td>{topic.topicName}</td>
-      <td>{topic.active ? "Yes" : "No"}</td>
+      <td scope="row">{topic.topicName}</td>
       <td>{topic.articles.length}</td>
       <td className="text-left d-flex flex-row">
         <button className="btn btn-secondary btn-sm col" onClick={handleEditClick}>Edit</button>

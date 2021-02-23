@@ -73,6 +73,15 @@ public class TopicController {
         return ErrorResponse.build(result);
     }
 
+    @PutMapping("/activate/{topicId}")
+    public ResponseEntity<Topic> activateById(@PathVariable int topicId) {
+        if (service.activateById(topicId)) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
     @DeleteMapping("/{topicId}")
     public ResponseEntity<Topic> deleteById(@PathVariable int topicId) {
         if (service.deleteById(topicId)) {

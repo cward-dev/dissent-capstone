@@ -31,7 +31,7 @@ public class PostFeedbackTagJdbcTemplateRepository implements PostFeedbackTagRep
                 + "ft.is_active as is_active "
                 + "from post_feedback_tag pft "
                 + "inner join feedback_tag ft on pft.feedback_tag_id = ft.feedback_tag_id "
-                + "where pft.post_id = ?;";
+                + "where pft.post_id = ? and ft.is_active = true;";
 
         var postFeedbackTags = jdbcTemplate.query(
                 sql, new PostFeedbackTagMapper(), postId);
@@ -71,7 +71,7 @@ public class PostFeedbackTagJdbcTemplateRepository implements PostFeedbackTagRep
                 + "ft.is_active as is_active "
                 + "from post_feedback_tag pft "
                 + "inner join feedback_tag ft on pft.feedback_tag_id = ft.feedback_tag_id "
-                + "where pft.user_id = ?;";
+                + "where pft.user_id = ? and ft.is_active = true;";
 
         var postFeedbackTags = jdbcTemplate.query(
                 sql, new PostFeedbackTagMapper(), userId);
