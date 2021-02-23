@@ -34,10 +34,12 @@ function PostFeedbackTagIcon( { setErrors, post, user } ) {
 
   const handleTagClick = () => {
     getData();
+    setFeedbackTagMenuDisplayed(false);
   }
  
   return(
-    <div className="d-flex flex-row align-items-center">
+    <div className="d-flex flex-row align-items-start">
+      {feedbackTagMenuDisplayed ? <PostFeedbackTagForm object={post} user={user} handleTagClick={handleTagClick} /> : null}
       <div>
         <div className={`container feedbackTagIconPost`}>
           {feedbackTags && feedbackTags.length > 0 ? 
@@ -65,7 +67,6 @@ function PostFeedbackTagIcon( { setErrors, post, user } ) {
           />}
         </div>
       </div>
-      {feedbackTagMenuDisplayed ? <PostFeedbackTagForm object={post} user={user} handleTagClick={handleTagClick} /> : null}
     </div>
   );
 
