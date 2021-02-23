@@ -1,47 +1,57 @@
 import { useState, useEffect } from 'react';
-import { Route, BrowserRouter as Router, Switch, Link } from 'react-router-dom';
-import EditTopic from './EditTopic';
-import DeleteTopic from './DeleteTopic';
+import { Link, useHistory } from 'react-router-dom';
+import Errors from '../Errors.js';
 
-function Topic ( { topic, user } ) {
+function DeleteTopic ( { topic, handleDeleteClick, handleTopicsUpdate, user } ) {
 
-  const [selection, setSelection] = useState(0);
+  const [editedTopic, setEditedTopic] = useState( {
+    "topicName": ''
+  } );
 
-  const { topicId, topicName, articles, active } = topic;
+  const [errors, setErrors] = useState([]);
 
-  const handleEditClick = () => {
-    setSelection(1);
+  const history = useHistory();
+
+  const handleChange = (event) => {
+    const updatedTopic = {...topic};
+    updatedTopic[event.target.name] = event.target.value;
+    setEditedTopic(updatedTopic);
   };
 
-  const handleDeleteClick = () => {
-    setSelection(2);
-  };
+  const handleDeleteSubmit = async (event) => {
+    try {
+      const response = await fetch(`http://localhost:8080/api/topic/${topic.topicId}`, { method: "DELETE" } );
+
+      if (response.status === 204) {
+        history.push(``)
+        handleTopicsUpdate();
+        handleCancel();
+      } else {
+        throw new Error(["Something unexpected went wrong, sorry!"]);
+      }
+    } catch (error) {
+      setErrors(["Something unexpected went wrong, sorry!"]);
+    }
+  }
+
+  const handleCancel = () => {
+    handleDeleteClick();
+  }
 
   return (
-    <div>
-      <div className="d-flex flex-row">
-      {selection === 0 ? 
-        <Link className="col btn btn-link p-1" to={`/t/${topicName}`}>
-          <li className="list-group-item d-flex justify-content-between align-items-center">
-            {topicName}
-            <span className="badge badge-dark badge-pill">{articles.length}</span>
-          </li>
-        </Link>
-        : null }
-      {selection === 1 ? 
-        <EditTopic  />
-        : null }
-      {selection === 2 ? 
-        <DeleteTopic />
-        : null }
+    <form onSubmit={handleDeleteSubmit}>
+      <hr></hr>
+      <Errors errors={errors} />
+      <div className="form-row alert alert-dark">
+        <div className="mb-3">Are you sure? Deletions are permanent.</div>
+        <div className="col text-right">
+          <button type="button" className="btn btn-light btn-sm" onClick={handleCancel}>Cancel</button>
+          <button type="submit" className="btn btn-danger btn-sm ml-2">Delete</button>
+        </div>
       </div>
-      {user.userRole === "admin" && selection === 0 ? <div className="d-flex flex-row justify-content-end p-1">
-        <button className="btn btn-sm btn-secondary" onClick={handleEditClick}>Edit</button>
-        <button className="btn btn-sm btn-secondary ml-2" onClick={handleDeleteClick}>Delete</button>
-        </div> : null}
-    </div>
-
+      <hr></hr>
+    </form>
   );
 }
 
-export default Topic;
+export default DeleteTopic;

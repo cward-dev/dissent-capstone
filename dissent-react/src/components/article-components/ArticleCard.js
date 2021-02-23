@@ -120,7 +120,7 @@ function ArticleCard ( { articleId, articleOpen, setAddPost, user } ) {
           </div>
         </div>
         <div className="card-footer w-100 text-muted px-1">
-          {!editTopics && topics.length > 0 ? <div className="alert alert-dark p-1 px-2 mx-2 text-left">| {topics.sort((a, b) => (a.topicName > b.topicName) ? 1 : -1).map(topic => `${topic.topicName} | `)}</div> : null}
+          {!editTopics && topics.length > 0 ? <div className="d-flex flex-row badge badge-secondary p-1 px-2 mx-2 mb-3 text-left">-{topics.sort((a, b) => (a.topicName > b.topicName) ? 1 : -1).map(topic => <><span>{"\u00a0"}</span><Link to={`/t/${topic.topicName}`}>{topic.topicName}</Link><span>{"\u00a0"}-</span></>)}</div> : null}
           {editTopics ? <EditArticleTopics article={article} topics={topics} setTopics={setTopics} user={user} /> : null}
           {deleteArticle ? <DeleteArticle article={article} setDeleteArticle={setDeleteArticle} user={user} /> : null}
           <div className="d-flex flex-row">

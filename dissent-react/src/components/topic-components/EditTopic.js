@@ -2,9 +2,9 @@ import { useState, useEffect } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import Errors from '../Errors.js';
 
-function EditTopic ( { setAdminBarSelection, user } ) {
+function EditTopic ( { topic, handleEditClick, handleTopicsUpdate, user } ) {
 
-  const [topic, setTopic] = useState( {
+  const [editedTopic, setEditedTopic] = useState( {
     "topicName": ''
   } );
 
@@ -15,35 +15,28 @@ function EditTopic ( { setAdminBarSelection, user } ) {
   const handleChange = (event) => {
     const updatedTopic = {...topic};
     updatedTopic[event.target.name] = event.target.value;
-    setTopic(updatedTopic);
+    setEditedTopic(updatedTopic);
   };
 
-  const handleAddSubmit = async (event) => { // TODO WHY AREN'T COMPONENTS UPDATING WITH ROUTE?
+  const handleEditSubmit = async (event) => { // TODO WHY AREN'T COMPONENTS UPDATING WITH ROUTE?
     event.preventDefault();
 
     const init = {
-      method: "POST",
+      method: "PUT",
       headers: {
         "Content-Type": "application/json",
         "Accept": "application/json"
       },
-      body: JSON.stringify(topic)
+      body: JSON.stringify(editedTopic)
     };
 
     try {
-      const response = await fetch("http://localhost:8080/api/topic", init);
+      const response = await fetch(`http://localhost:8080/api/topic/${topic.topicId}`, init);
 
-      if (response.status === 201 || response.status === 400) {
-        const data = await response.json();
-
-        if (data.topicId) {
-          // TODO kinda hokey
-          history.push(`/`);
-          history.push(`/t/${topic.topicName}`);
-          handleCancel();
-        } else {
-          setErrors(data);
-        }
+      if (response.status === 204) {
+        history.push(`./${editedTopic.topicName}`)
+        handleTopicsUpdate();
+        handleCancel();
       } else {
         throw new Error(["Something unexpected went wrong, sorry!"]);
       }
@@ -53,22 +46,24 @@ function EditTopic ( { setAdminBarSelection, user } ) {
   }
 
   const handleCancel = () => {
-    setAdminBarSelection(0);
+    handleEditClick();
   }
 
   return (
-    <form onSubmit={handleAddSubmit}>
+    <form className onSubmit={handleEditSubmit}>
       <Errors errors={errors} />
-      <div className="form-row mb-4">
-        <div className="col-9">
-          <label htmlFor="content" className="pl-2 pt-2">New Topic</label>
+      <hr></hr>
+      <div className="form-row mx-1">
+        <div className="col">
+          <label htmlFor="content" className="pl-2 pt-2">Edit Topic - {topic.topicName}</label>
         </div>
-        <input type="text" className="form-control mb-3 mx-3" id="topicName" name="topicName" onChange={handleChange} />
+        <input type="text" className="form-control mb-3" id="topicName" name="topicName" defaultValue={topic.topicName} required onChange={handleChange} />
         <div className="col text-right">
           <button type="button" className="btn btn-light btn-sm" onClick={handleCancel}>Cancel</button>
           <button type="submit" className="btn btn-dark ml-2 mr-3 btn-sm">Submit</button>
         </div>
       </div>
+      <hr></hr>
     </form>
   );
 }
