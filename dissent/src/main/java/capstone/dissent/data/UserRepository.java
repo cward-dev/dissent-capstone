@@ -24,7 +24,5 @@ public interface UserRepository {
     // delete
     boolean deleteById(String userId);
 
-    // helpers
-    HashMap<FeedbackTag, Integer> getTagData(User user);
 
 }

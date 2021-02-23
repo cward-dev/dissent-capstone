@@ -139,12 +139,6 @@ public class UserJdbcTemplateRepository implements UserRepository {
     }
 
 
-    // helper
-    @Override
-    public HashMap<FeedbackTag, Integer> getTagData(User user) {
-        return null;
-    }
-
     private void updateRoles(User user) {
 
         // delete all roles, then re-add (scorched-earth method {safe})
