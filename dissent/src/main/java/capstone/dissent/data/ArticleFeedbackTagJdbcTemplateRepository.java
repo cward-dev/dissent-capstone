@@ -1,10 +1,13 @@
 package capstone.dissent.data;
 
 import capstone.dissent.data.mappers.ArticleFeedbackTagMapper;
+import capstone.dissent.models.Article;
 import capstone.dissent.models.ArticleFeedbackTag;
+import capstone.dissent.models.FeedbackTagHelper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Repository
@@ -17,7 +20,7 @@ public class ArticleFeedbackTagJdbcTemplateRepository implements ArticleFeedback
     }
 
     @Override
-    public List<ArticleFeedbackTag> findByArticleId(String articleId) {
+    public List<FeedbackTagHelper> findByArticleId(String articleId) {
         final String sql = "select "
                 + "aft.article_id as article_id, "
                 + "aft.user_id as user_id, "
@@ -29,8 +32,31 @@ public class ArticleFeedbackTagJdbcTemplateRepository implements ArticleFeedback
                 + "inner join feedback_tag ft on aft.feedback_tag_id = ft.feedback_tag_id "
                 + "where aft.article_id = ?;";
 
-        return jdbcTemplate.query(
+        var articleFeedbackTags = jdbcTemplate.query(
                 sql, new ArticleFeedbackTagMapper(), articleId);
+
+        List<FeedbackTagHelper> list = new ArrayList<>();
+        if (articleFeedbackTags.size() > 0) {
+            for (ArticleFeedbackTag i : articleFeedbackTags) {
+                if (list.size() == 0) {
+                    list.add(new FeedbackTagHelper(i.getFeedbackTag().getName(), 1, i.getFeedbackTag().getColorHex()));
+                    continue;
+                }
+                boolean found = false;
+                for (FeedbackTagHelper feedbackTagHelper : list) {
+                    if (feedbackTagHelper.getTitle().equalsIgnoreCase(i.getFeedbackTag().getName())) {
+                        feedbackTagHelper.setValue(feedbackTagHelper.getValue() + 1);
+                        found = true;
+                        break;
+                    }
+                }
+                if (!found) {
+                    list.add(new FeedbackTagHelper(i.getFeedbackTag().getName(), 1, i.getFeedbackTag().getColorHex()));
+                }
+            }
+        }
+
+        return list;
     }
 
     @Override

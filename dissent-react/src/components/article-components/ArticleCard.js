@@ -1,19 +1,41 @@
 import { useState , useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import FeedbackTagIcon from '../feedback-tag-components/FeedbackTagIcon';
+import ArticleFeedbackTagIcon from '../feedback-tag-components/article/ArticleFeedbackTagIcon';
 import FeedbackTagForm from '../feedback-tag-components/FeedbackTagForm';
+import EditArticle from './EditArticle';
 import DeleteArticle from './DeleteArticle';
 import Errors from '../Errors.js';
 import './ArticleCard.css';
 
-function ArticleCard ( { article, articleOpen, setAddPost, user } ) {
+const PLACEHOLDER_ARTICLE = {
+  "title": "Loading",
+  "description": "Description",
+  "sourceId": "sourceid",
+  "author": "Author",
+  "articleUrl": "https://www.google.com",
+  "articleImageUrl": "https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png",
+  "datePublished": "2021-2-10",
+  "datePosted": "2021-2-10",
+  "source": {
+    "sourceId": "",
+    "sourceName": "",
+    "websiteUrl": "",
+    "description": ""
+  },
+  "posts": [],
+  "topics": []
+};
 
-  const [feedbackTagMenuDisplayed, setFeedbackTagMenuDisplayed] = useState(false);
-  const [feedbackUpdate, setFeedbackUpdate] = useState([]);
+function ArticleCard ( { articleId, articleOpen, setAddPost, user } ) {
+
+  const [article, setArticle] = useState(PLACEHOLDER_ARTICLE);
+  const [timePassed, setTimePassed] = useState("");
+
+  const [editArticle, setEditArticle] = useState(false);
   const [deleteArticle, setDeleteArticle] = useState(false);
   const [errors, setErrors] = useState([]);
 
-  const { articleId, title, description, author, articleUrl, articleImageUrl, datePublished, datePosted, source, topics, posts, feedbackTags } = article;
+  const { title, description, author, articleUrl, articleImageUrl, datePublished, datePosted, source, topics, posts, feedbackTags } = article;
 
   const getTimePassed = (date) => {
     const timestampDate = new Date(date);
@@ -27,7 +49,6 @@ function ArticleCard ( { article, articleOpen, setAddPost, user } ) {
     if (timeSincePosted < 86400) return Math.trunc(timeSincePosted / 3600) + " hours ago";
 
     const daysSincePosted = Math.abs((timestampDate.getDate() - currentDate.getDate()));
-
     if (daysSincePosted === 1) return "1 day ago";
     if (daysSincePosted < 7) return daysSincePosted + " days ago";
     if (daysSincePosted < 14) return "1 week ago";
@@ -37,47 +58,39 @@ function ArticleCard ( { article, articleOpen, setAddPost, user } ) {
 
     return Math.trunc(daysSincePosted / 365) + " years ago"
   };
-  
-  const timePassed = getTimePassed(datePublished);
 
-  const getDiscussionLength = () => {
-    let counter = 0;
+  useEffect(()=> {
+    const getData = async () => {
+      try {
+        const response = await fetch(`http://localhost:8080/api/article/${articleId}`);
 
-    const countChildPosts = (post) => {
-      for (let p of post.childPosts) {
-        if (p.active) {
-          counter++;
+        if (response.status === 200) {
+          const data = await response.json();
+          setArticle(data);
+          setTimePassed(getTimePassed(data.datePublished));
+        } else if (response.status === 404) {
+          setErrors(["Something went wrong with our database, sorry!"]);
         }
-        countChildPosts(p);
+      } catch (error) {
+        setErrors(["Something went wrong with our database, sorry!"]);
       }
     };
-
-    for (let p of posts) {
-      if (p.active) {
-        counter++;
-      }
-      countChildPosts(p);
-    }
-    return counter;
-  }
-
-  const discussionLength = getDiscussionLength();
-
+    getData();
+  },[]);
+  
   const handleAddPost = () => {
     setAddPost(true);
-  }
+  };
+
+  const handleEdit = () => {
+    setEditArticle(true);
+    setDeleteArticle(false);
+  };
 
   const handleDelete = () => {
     setDeleteArticle(true);
-  }
-
-  const handleTagClick = () => {
-    if (feedbackUpdate) {
-      setFeedbackUpdate(false);
-    } else {
-      setFeedbackUpdate(true);
-    }
-  }
+    setEditArticle(false);
+  };
 
   return (
     <>
@@ -92,26 +105,27 @@ function ArticleCard ( { article, articleOpen, setAddPost, user } ) {
           <p className="card-text">{description}</p>
           <div className="row">
             <div className="col-8">
-              <p className="source-author-line card-text"><a className="source-link" href={source.websiteUrl}>{source.sourceName}</a><br />{author}</p>
+              <p className="source-author-line card-text"><a className="source-link" href={source.websiteUrl}>{source.sourceName}</a><br />{author}<br />{topics.map(topic => `| ${topic.topicName} |`)}</p>
             </div>
             <div className="col-4 text-right align-bottom">
-              <p className="source-author-line card-text"><br />{timePassed}</p>
+              <p className="source-author-line card-text"><br /><br />{timePassed}</p>
             </div>
 
           </div>
         </div>
         <div className="card-footer w-100 text-muted px-1">
+          {editArticle ? <EditArticle article={article} setEditArticle={setEditArticle} user={user} /> : null}
           {deleteArticle ? <DeleteArticle article={article} setDeleteArticle={setDeleteArticle} user={user} /> : null}
-          {feedbackTagMenuDisplayed ? <FeedbackTagForm object={article} user={user} /> : null}
           <div className="d-flex flex-row">
             <div className="align-self-start">
-              <FeedbackTagIcon feedbackTagMenuDisplayed={feedbackTagMenuDisplayed} setFeedbackTagMenuDisplayed={setFeedbackTagMenuDisplayed} setErrors={setErrors} object={article} user={user} />
+              <ArticleFeedbackTagIcon setErrors={setErrors} article={article} user={user} />
             </div>
             <div className="col text-right">
               {user.userRole === "admin" ? <>
-                    <button onClick={handleDelete} className="btn btn-secondary mr-2 px-2 py-1">Delete</button>
+                <button onClick={handleEdit} className="btn btn-secondary mr-2 px-2 py-1">Edit Topics</button>
+                <button onClick={handleDelete} className="btn btn-secondary mr-2 px-2 py-1">Delete</button>
                   </> : null}
-              {articleOpen ? <button className="btn btn-secondary px-2 py-1" onClick={handleAddPost}>Add Post</button> : <Link className="btn btn-secondary px-2 py-1" to={`/article/${articleId}`}>Discussion ({discussionLength})</Link>}
+              {articleOpen ? <button className="btn btn-secondary px-2 py-1" onClick={handleAddPost}>Add Post</button> : <Link className="btn btn-secondary px-2 py-1" to={`/article/${articleId}`}>Discussion ({article.discussionLength})</Link>}
             </div>
           </div>
         </div>

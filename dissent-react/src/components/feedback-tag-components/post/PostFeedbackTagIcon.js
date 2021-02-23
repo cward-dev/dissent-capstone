@@ -1,10 +1,25 @@
 import {useState , useEffect} from 'react';
 import { PieChart } from 'react-minimal-pie-chart';
-import Article from '../article-components/ArticleCard';
-import FeedbackForm from './FeedbackTagForm';
-import './FeedbackTagIcon.css';
+import FeedbackForm from '../FeedbackTagForm';
+import '../FeedbackTagIcon.css';
  
-function FeedbackTagIcon( { feedbackTagMenuDisplayed, setFeedbackTagMenuDisplayed, object, user } ) {
+function PostFeedbackTagIcon( { feedbackTagMenuDisplayed, setFeedbackTagMenuDisplayed, setErrors, post, user } ) {
+
+  const [feedbackTags, setFeedbackTags] = useState([]);
+
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        const response = await fetch(`http://localhost:8080/api/post/feedback-tag/post/${post.postId}`);
+        const data = await response.json();
+        setFeedbackTags(data);
+      } catch (error) {
+        console.log(error);
+        // setErrors(["Something went wrong with our database, sorry!"]);
+      }
+    };
+    getData();
+  }, [post]);
 
   let handleClick = () => {
     if (feedbackTagMenuDisplayed) {
@@ -16,14 +31,14 @@ function FeedbackTagIcon( { feedbackTagMenuDisplayed, setFeedbackTagMenuDisplaye
  
   return(
     <div>
-        <div className={`container ${object.postId ? "feedbackTagIconPost" : "feedbackTagIconArticle" }`}>
-          {object.feedbackTags && object.feedbackTags.length > 0 ? 
+        <div className={`container feedbackTagIconPost`}>
+          {feedbackTags && feedbackTags.length > 0 ? 
           <PieChart
             onClick={handleClick}
             center={[50, 50]}
             animate
             animationDuration={500}
-            data={object.feedbackTags}
+            data={feedbackTags}
             radius={50}
             viewBoxSize={[100, 100]}
           /> : 
@@ -45,4 +60,4 @@ function FeedbackTagIcon( { feedbackTagMenuDisplayed, setFeedbackTagMenuDisplaye
   );
 
 }
-export default FeedbackTagIcon;
+export default PostFeedbackTagIcon;

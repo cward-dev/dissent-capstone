@@ -1,14 +1,12 @@
 import { useState , useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import FeedbackTagIcon from '../feedback-tag-components/FeedbackTagIcon';
-import FeedbackTagForm from '../feedback-tag-components/FeedbackTagForm';
-import DeleteArticle from './DeleteArticle';
 import Errors from '../Errors';
 import './RawArticleCard.css';
 import placeholderImage from '../images/D-logo.png';
 
-function RawArticleCard ( { article, user, handleSetArticles } ) {
+function RawArticleCard ( { rawArticle, user, handleSetArticles } ) {
 
+  const [article, setArticle] = useState(rawArticle);
   const [added, setAdded] = useState(false);
   const [errors, setErrors] = useState([]);
 

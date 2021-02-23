@@ -3,6 +3,7 @@ package capstone.dissent.domain;
 import capstone.dissent.data.PostFeedbackTagRepository;
 import capstone.dissent.data.PostRepository;
 import capstone.dissent.models.ArticleFeedbackTag;
+import capstone.dissent.models.FeedbackTagHelper;
 import capstone.dissent.models.Post;
 import capstone.dissent.models.PostFeedbackTag;
 import org.springframework.stereotype.Service;
@@ -51,8 +52,16 @@ public class PostService {
         return postRepository.findById(postId);
     }
 
-    public PostFeedbackTag findByKey(String postId, String userId, int feedbackTagId) {
+    public PostFeedbackTag findPostFeedbackTagByKey(String postId, String userId, int feedbackTagId) {
         return postFeedbackTagRepository.findByKey(postId, userId, feedbackTagId);
+    }
+
+    public List<FeedbackTagHelper> findPostFeedbackTagByPostId(String postId) {
+        return postFeedbackTagRepository.findByPostId(postId);
+    }
+
+    public List<FeedbackTagHelper> findPostFeedbackTagByUserId(String userId) {
+        return postFeedbackTagRepository.findByUserId(userId);
     }
 
     public Result<Post> add(Post post) {

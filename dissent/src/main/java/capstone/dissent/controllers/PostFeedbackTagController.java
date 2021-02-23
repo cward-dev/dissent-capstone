@@ -3,6 +3,7 @@ package capstone.dissent.controllers;
 import capstone.dissent.domain.PostService;
 import capstone.dissent.domain.Result;
 import capstone.dissent.models.ArticleFeedbackTag;
+import capstone.dissent.models.FeedbackTagHelper;
 import capstone.dissent.models.PostFeedbackTag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,9 +21,19 @@ public class PostFeedbackTagController {
         this.service = service;
     }
 
+    @GetMapping("/post/{postId}")
+    public List<FeedbackTagHelper> findByPostId(@PathVariable String postId) {
+        return service.findPostFeedbackTagByPostId(postId);
+    }
+
+    @GetMapping("/user/{userId}")
+    public List<FeedbackTagHelper> findByUserId(@PathVariable String userId) {
+        return service.findPostFeedbackTagByUserId(userId);
+    }
+
     @GetMapping("/{postId}/{userId}/{feedbackTagId}")
     public ResponseEntity<PostFeedbackTag> findByKey(@PathVariable String postId, @PathVariable String userId, @PathVariable int feedbackTagId) {
-        PostFeedbackTag postFeedbackTag = service.findByKey(postId, userId, feedbackTagId);
+        PostFeedbackTag postFeedbackTag = service.findPostFeedbackTagByKey(postId, userId, feedbackTagId);
         if (postFeedbackTag == null) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }

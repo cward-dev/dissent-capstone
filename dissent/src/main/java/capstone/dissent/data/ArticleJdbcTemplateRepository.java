@@ -44,6 +44,7 @@ public class ArticleJdbcTemplateRepository implements ArticleRepository {
                 addFeedbackTags(article);
                 addTopics(article);
                 addPosts(article);
+                getArticleDiscussionLength(article);
             }
         }
 
@@ -67,6 +68,7 @@ public class ArticleJdbcTemplateRepository implements ArticleRepository {
             addFeedbackTags(article);
             addTopics(article);
             addPosts(article);
+            getArticleDiscussionLength(article);
         }
 
         return article;
@@ -89,6 +91,7 @@ public class ArticleJdbcTemplateRepository implements ArticleRepository {
                 addFeedbackTags(article);
                 addTopics(article);
                 addPosts(article);
+                getArticleDiscussionLength(article);
             }
         }
 
@@ -111,6 +114,7 @@ public class ArticleJdbcTemplateRepository implements ArticleRepository {
                 addFeedbackTags(article);
                 addTopics(article);
                 addPosts(article);
+                getArticleDiscussionLength(article);
             }
         }
 
@@ -173,20 +177,6 @@ public class ArticleJdbcTemplateRepository implements ArticleRepository {
 
         return jdbcTemplate.update(sql, false, articleId)>0;
     }
-
-//    @Override
-//    public HashMap<String, Integer> getTagData(Article article) {
-//        final String sql = "select ft.feedback_tag_id, ft.feedback_tag_name" +
-//                " from article_feedback_tag aft inner join feedback_tag ft on  aft.feedback_tag_id = ft.feedback_tag_id"
-//                + " where aft.article_id = ?;";
-//
-//           var allTags = jdbcTemplate.query(sql,new FeedbackTagMapper(),article.getArticleId());
-//
-//           for(FeedbackTag tag : allTags){
-//               article.addFeedbackTagToArticle(tag.getName());
-//           }
-//        return article.getFeedbackTags();
-//    }
 
     private void addFeedbackTags(Article article) {
 
@@ -255,5 +245,28 @@ public class ArticleJdbcTemplateRepository implements ArticleRepository {
 
         var source = jdbcTemplate.query(sql, new SourceMapper(), article.getArticleId()).stream().findAny().orElse(null);
         article.setSource(source);
+    }
+
+    private void getArticleDiscussionLength(Article article) {
+        final String sql = "select p.post_id, p.parent_post_id, p.article_id, p.user_id, p.is_dissenting, p.date_posted, p.content, p.is_active, "
+                + "u.username as username, u.email, u.password_hash, u.photo_url, u.country, u.bio, u.is_active "
+                + "from post p "
+                + "inner join `user` u on p.user_id = u.user_id "
+                + "where p.article_id = ?;";
+
+        List<Post> posts = postRepository.findByArticleId(article.getArticleId());
+
+        article.setDiscussionLength(postCounterHelper(posts, 0));
+    }
+
+    private int postCounterHelper(List<Post> posts, int counter) {
+        for (Post p : posts) {
+            if (p.isActive()) {
+                counter++;
+                counter = postCounterHelper(p.getChildPosts(), counter);
+            }
+        }
+
+        return counter;
     }
 }

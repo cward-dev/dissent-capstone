@@ -2,6 +2,7 @@ package capstone.dissent.data;
 
 import capstone.dissent.models.ArticleFeedbackTag;
 import capstone.dissent.models.FeedbackTag;
+import capstone.dissent.models.FeedbackTagHelper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +29,7 @@ class ArticleFeedbackTagJdbcTemplateRepositoryTest {
 
     @Test
     void shouldFindArticleFeedbackTagsForArticleId() {
-        List<ArticleFeedbackTag> articleFeedbackTags = repository.findByArticleId("c32bec11-b9a0-434b-bda7-08b9cf2007e2");
+        List<FeedbackTagHelper> articleFeedbackTags = repository.findByArticleId("c32bec11-b9a0-434b-bda7-08b9cf2007e2");
         assertTrue(articleFeedbackTags.size() > 0);
     }
 
