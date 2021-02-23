@@ -36,6 +36,12 @@ class PostFeedbackTagJdbcTemplateRepositoryTest {
     }
 
     @Test
+    void shouldNotFindPostFeedbackTagForInvalidPostId(){
+        List<FeedbackTagHelper> postFeedbackTags = repository.findByPostId("X");
+        assertEquals(0,postFeedbackTags.size());
+    }
+
+    @Test
     void shouldAdd() {
         PostFeedbackTag postFeedbackTag = makePostFeedbackTag();
         assertTrue(repository.add(postFeedbackTag));
@@ -77,6 +83,19 @@ class PostFeedbackTagJdbcTemplateRepositoryTest {
         PostFeedbackTag tag = repository.findByKey("x","x",-1);
 
         assertNull(tag);
+    }
+
+    @Test
+    void shouldFindPostFeedBackTagsByUser (){
+        List<FeedbackTagHelper> feedbackTag = repository.findByUserId("dffec086-b1e9-455a-aab4-ff6c6611fef0");
+        assertEquals(2, feedbackTag.size());
+
+    }
+    @Test
+    void shouldNotFindPostsByInvalidUser(){
+        List<FeedbackTagHelper> feedbackTag = repository.findByUserId("X");
+        assertEquals(0, feedbackTag.size());
+
     }
 
 }

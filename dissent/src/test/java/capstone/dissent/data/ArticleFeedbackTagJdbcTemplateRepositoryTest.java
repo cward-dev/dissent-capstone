@@ -76,4 +76,16 @@ class ArticleFeedbackTagJdbcTemplateRepositoryTest {
         ArticleFeedbackTag tag = repository.findByKey("a","b",-1);
         assertNull(tag);
     }
+
+    @Test
+    void shouldFindFeedBackTagsByArticleId(){
+        List<FeedbackTagHelper> tags = repository.findByArticleId("c32bec11-b9a0-434b-bda7-08b9cf2007e2");
+        assertEquals(1,tags.size());
+    }
+
+    @Test
+    void shouldNotFindFeedBackTagsByInvalidArticleId(){
+        List<FeedbackTagHelper> tags = repository.findByArticleId("0");
+        assertEquals(0,tags.size());
+    }
 }
