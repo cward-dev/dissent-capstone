@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-function FeedbackTagButton ( { feedbackTag, object, user, setErrors, handleButtonUpdate } ) {
+function PostFeedbackTagButton ( { feedbackTag, object, user, setErrors, handleButtonUpdate } ) {
 
   const [thisFeedbackTag, setThisFeedbackTag] = useState(feedbackTag);
   const [tagToggled, setTagToggled] = useState(false);
@@ -9,7 +9,7 @@ function FeedbackTagButton ( { feedbackTag, object, user, setErrors, handleButto
   useEffect(()=> {
     const getData = async () => {
       try {
-        const response = await fetch(`http://localhost:8080/api/article/feedback-tag/${object.articleId}/${user.userId}/${feedbackTag.feedbackTagId}`);
+        const response = await fetch(`http://localhost:8080/api/post/feedback-tag/${object.postId}/${user.userId}/${feedbackTag.feedbackTagId}`);
 
         if (response.status === 200) {
           setTagToggled(true);
@@ -25,7 +25,7 @@ function FeedbackTagButton ( { feedbackTag, object, user, setErrors, handleButto
 
   const addObjectFeedbackTag = async () => {
     const addedTag = {
-      "articleId": object.articleId,
+      "postId": object.postId,
       "userId": user.userId,
       "feedbackTag": {
         "feedbackTagId": feedbackTag.feedbackTagId
@@ -43,7 +43,7 @@ function FeedbackTagButton ( { feedbackTag, object, user, setErrors, handleButto
 
     try {
 
-      const response = await fetch("http://localhost:8080/api/article/feedback-tag", init);
+      const response = await fetch("http://localhost:8080/api/post/feedback-tag", init);
       
       if (response.status === 201 || response.status === 400) {
         setTagToggled(true);
@@ -66,7 +66,7 @@ function FeedbackTagButton ( { feedbackTag, object, user, setErrors, handleButto
   }
 
   const deleteObjectFeedbackTag = async () => {
-    fetch(`http://localhost:8080/api/article/feedback-tag/${object.articleId}/${user.userId}/${feedbackTag.feedbackTagId}`, {
+    fetch(`http://localhost:8080/api/post/feedback-tag/${object.postId}/${user.userId}/${feedbackTag.feedbackTagId}`, {
       method: "DELETE"
     })
       .then(response => {
@@ -74,7 +74,7 @@ function FeedbackTagButton ( { feedbackTag, object, user, setErrors, handleButto
           setTagToggled(false);
           setErrors([]);
         } else if (response.status === 404) {
-          Promise.reject('Tag for article not found.');
+          Promise.reject('Tag for post not found.');
         } else {
           Promise.reject('Shoot! Something unexpected went wrong :(');
         }
@@ -103,4 +103,4 @@ function FeedbackTagButton ( { feedbackTag, object, user, setErrors, handleButto
 
 }
 
-export default FeedbackTagButton;
+export default PostFeedbackTagButton;

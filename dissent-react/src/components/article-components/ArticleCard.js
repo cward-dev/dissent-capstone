@@ -1,8 +1,7 @@
 import { useState , useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import ArticleFeedbackTagIcon from '../feedback-tag-components/article/ArticleFeedbackTagIcon';
-import FeedbackTagForm from '../feedback-tag-components/FeedbackTagForm';
-import EditArticle from './EditArticle';
+import EditArticleTopics from '../article-topic-components/EditArticleTopics';
 import DeleteArticle from './DeleteArticle';
 import Errors from '../Errors.js';
 import './ArticleCard.css';
@@ -29,13 +28,14 @@ const PLACEHOLDER_ARTICLE = {
 function ArticleCard ( { articleId, articleOpen, setAddPost, user } ) {
 
   const [article, setArticle] = useState(PLACEHOLDER_ARTICLE);
+  const [topics, setTopics] = useState([]);
   const [timePassed, setTimePassed] = useState("");
 
-  const [editArticle, setEditArticle] = useState(false);
+  const [editTopics, setEditTopics] = useState(false);
   const [deleteArticle, setDeleteArticle] = useState(false);
   const [errors, setErrors] = useState([]);
 
-  const { title, description, author, articleUrl, articleImageUrl, datePublished, datePosted, source, topics, posts, feedbackTags } = article;
+  const { title, description, author, articleUrl, articleImageUrl, datePublished, datePosted, source, posts, feedbackTags } = article;
 
   const getTimePassed = (date) => {
     const timestampDate = new Date(date);
@@ -67,6 +67,7 @@ function ArticleCard ( { articleId, articleOpen, setAddPost, user } ) {
         if (response.status === 200) {
           const data = await response.json();
           setArticle(data);
+          setTopics(data.topics);
           setTimePassed(getTimePassed(data.datePublished));
         } else if (response.status === 404) {
           setErrors(["Something went wrong with our database, sorry!"]);
@@ -76,20 +77,25 @@ function ArticleCard ( { articleId, articleOpen, setAddPost, user } ) {
       }
     };
     getData();
-  },[]);
+  },[topics]);
   
   const handleAddPost = () => {
     setAddPost(true);
+    setEditTopics(false);
   };
 
-  const handleEdit = () => {
-    setEditArticle(true);
-    setDeleteArticle(false);
+  const handleEditTopics = () => {
+    if (editTopics) {
+      setEditTopics(false);
+    } else {
+      setEditTopics(true);
+      setDeleteArticle(false);
+    }
   };
 
   const handleDelete = () => {
     setDeleteArticle(true);
-    setEditArticle(false);
+    setEditTopics(false);
   };
 
   return (
@@ -105,16 +111,17 @@ function ArticleCard ( { articleId, articleOpen, setAddPost, user } ) {
           <p className="card-text">{description}</p>
           <div className="row">
             <div className="col-8">
-              <p className="source-author-line card-text"><a className="source-link" href={source.websiteUrl}>{source.sourceName}</a><br />{author}<br />{topics.map(topic => `| ${topic.topicName} |`)}</p>
+              <p className="source-author-line card-text"><a className="source-link" href={source.websiteUrl}>{source.sourceName}</a><br />{author}</p>
             </div>
             <div className="col-4 text-right align-bottom">
-              <p className="source-author-line card-text"><br /><br />{timePassed}</p>
+              <p className="source-author-line card-text"><br />{timePassed}</p>
             </div>
 
           </div>
         </div>
         <div className="card-footer w-100 text-muted px-1">
-          {editArticle ? <EditArticle article={article} setEditArticle={setEditArticle} user={user} /> : null}
+          {!editTopics && topics.length > 0 ? <div className="alert alert-dark p-1 px-2 mx-2 text-left">| {topics.sort((a, b) => (a.topicName > b.topicName) ? 1 : -1).map(topic => `${topic.topicName} | `)}</div> : null}
+          {editTopics ? <EditArticleTopics article={article} topics={topics} setTopics={setTopics} user={user} /> : null}
           {deleteArticle ? <DeleteArticle article={article} setDeleteArticle={setDeleteArticle} user={user} /> : null}
           <div className="d-flex flex-row">
             <div className="align-self-start">
@@ -122,7 +129,7 @@ function ArticleCard ( { articleId, articleOpen, setAddPost, user } ) {
             </div>
             <div className="col text-right">
               {user.userRole === "admin" ? <>
-                <button onClick={handleEdit} className="btn btn-secondary mr-2 px-2 py-1">Edit Topics</button>
+                <button onClick={handleEditTopics} className="btn btn-secondary mr-2 px-2 py-1">Edit Topics</button>
                 <button onClick={handleDelete} className="btn btn-secondary mr-2 px-2 py-1">Delete</button>
                   </> : null}
               {articleOpen ? <button className="btn btn-secondary px-2 py-1" onClick={handleAddPost}>Add Post</button> : <Link className="btn btn-secondary px-2 py-1" to={`/article/${articleId}`}>Discussion ({article.discussionLength})</Link>}
