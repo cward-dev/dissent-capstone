@@ -1,25 +1,28 @@
 import {useState , useEffect} from 'react';
 import { PieChart } from 'react-minimal-pie-chart';
-import FeedbackForm from '../FeedbackTagForm';
+import Post from '../../post-components/Post';
+import PostFeedbackTagForm from './PostFeedbackTagForm';
 import '../FeedbackTagIcon.css';
  
-function PostFeedbackTagIcon( { feedbackTagMenuDisplayed, setFeedbackTagMenuDisplayed, setErrors, post, user } ) {
+function PostFeedbackTagIcon( { setErrors, post, user } ) {
 
   const [feedbackTags, setFeedbackTags] = useState([]);
+  const [feedbackTagMenuDisplayed, setFeedbackTagMenuDisplayed] = useState(false);
+
+  const getData = async () => {
+    try {
+      const response = await fetch(`http://localhost:8080/api/post/feedback-tag/post/${post.postId}`);
+      const data = await response.json();
+      setFeedbackTags(data);
+    } catch (error) {
+      console.log(error);
+      setErrors(["Something went wrong with our database, sorry!"]);
+    }
+  };
 
   useEffect(() => {
-    const getData = async () => {
-      try {
-        const response = await fetch(`http://localhost:8080/api/post/feedback-tag/post/${post.postId}`);
-        const data = await response.json();
-        setFeedbackTags(data);
-      } catch (error) {
-        console.log(error);
-        // setErrors(["Something went wrong with our database, sorry!"]);
-      }
-    };
     getData();
-  }, [post]);
+  }, [feedbackTags]);
 
   let handleClick = () => {
     if (feedbackTagMenuDisplayed) {
@@ -28,9 +31,15 @@ function PostFeedbackTagIcon( { feedbackTagMenuDisplayed, setFeedbackTagMenuDisp
       setFeedbackTagMenuDisplayed(true);
     }
   }
+
+  const handleTagClick = () => {
+    getData();
+    setFeedbackTagMenuDisplayed(false);
+  }
  
   return(
-    <div>
+    <div className="d-flex flex-row align-items-center">
+      <div>
         <div className={`container feedbackTagIconPost`}>
           {feedbackTags && feedbackTags.length > 0 ? 
           <PieChart
@@ -56,6 +65,8 @@ function PostFeedbackTagIcon( { feedbackTagMenuDisplayed, setFeedbackTagMenuDisp
             viewBoxSize={[100, 100]}
           />}
         </div>
+      </div>
+      {feedbackTagMenuDisplayed ? <PostFeedbackTagForm object={post} user={user} handleTagClick={handleTagClick} /> : null}
     </div>
   );
 

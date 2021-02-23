@@ -1,14 +1,13 @@
 import {useState , useEffect} from 'react';
 import { PieChart } from 'react-minimal-pie-chart';
 import Article from '../../article-components/ArticleCard';
-import FeedbackTagForm from '../FeedbackTagForm';
+import ArticleFeedbackTagForm from './ArticleFeedbackTagForm';
 import '../FeedbackTagIcon.css';
  
 function ArticleFeedbackTagIcon( { setErrors, article, user } ) {
 
   const [feedbackTags, setFeedbackTags] = useState([]);
   const [feedbackTagMenuDisplayed, setFeedbackTagMenuDisplayed] = useState(false);
-  const [feedbackUpdate, setFeedbackUpdate] = useState(false);
 
   const getData = async () => {
     try {
@@ -23,7 +22,7 @@ function ArticleFeedbackTagIcon( { setErrors, article, user } ) {
 
   useEffect(() => {
     getData();
-  }, [feedbackTags, feedbackUpdate]);
+  }, [feedbackTags]);
 
   let handleClick = () => {
     if (feedbackTagMenuDisplayed) {
@@ -67,7 +66,7 @@ function ArticleFeedbackTagIcon( { setErrors, article, user } ) {
           />}
         </div>
       </div>
-      {feedbackTagMenuDisplayed ? <FeedbackTagForm object={article} user={user} handleTagClick={handleTagClick} /> : null}
+      {feedbackTagMenuDisplayed ? <ArticleFeedbackTagForm object={article} user={user} handleTagClick={handleTagClick} /> : null}
     </div>
   );
 

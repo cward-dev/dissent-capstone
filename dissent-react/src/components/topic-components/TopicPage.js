@@ -8,7 +8,6 @@ function TopicPage ( { user } ) {
   const [topic, setTopic] = useState({});
   const [articles, setArticles] = useState([]);
   const [errors, setErrors] = useState([]);
-  const history = useHistory();
 
   useEffect(() => {
     const getData = async () => {
@@ -27,7 +26,7 @@ function TopicPage ( { user } ) {
 
   const makeArticle = (article) => {
     return (
-      <ArticleCard key={article.articleId} article={article} user={user} />
+      <ArticleCard key={article.articleId} articleId={article.articleId} user={user} />
     );
   };
 

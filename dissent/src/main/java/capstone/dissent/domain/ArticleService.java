@@ -142,9 +142,8 @@ public class ArticleService {
     public Result<Void> deleteArticleTopicByKey(String articleId, int topicId){
         Result<Void> result = new Result<>();
         if (!articleTopicRepository.deleteByKey(articleId, topicId)) {
-            return result;
+            result.addMessage("Article topic not found", ResultType.NOT_FOUND);
         }
-        result.addMessage("Article topic not found", ResultType.NOT_FOUND);
         return result;
     }
 
