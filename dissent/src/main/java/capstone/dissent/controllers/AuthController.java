@@ -51,7 +51,8 @@ public class AuthController {
             }
 
         } catch (AuthenticationException ex) {
-            ex.printStackTrace();
+            System.out.println("Bad Credentials");
+
         }
 
         return new ResponseEntity<>(HttpStatus.FORBIDDEN);

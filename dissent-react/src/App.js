@@ -24,7 +24,7 @@ const DEFAULT_USER = {
 }
 
 function App() {
-  const [user, setUser] = useState(DEFAULT_USER);
+  const [user, setUser] = useState(null);
 
   const handleSetUser = (user) => {
     setUser(user);
@@ -37,7 +37,9 @@ function App() {
   return (      
     <Router>
       <Navbar user={user} />
-      <AdminBar user={user} />
+      {(user != null && user.roles === "ROLE_ADMIN") &&
+        <AdminBar user={user} />
+      }
       <div className="container">
         <div className="row">
           <div className="col-8 alert alert-secondary pt-4">
@@ -61,7 +63,7 @@ function App() {
                 <UserPage user={user} />
               </Route>
               <Route path='/login'>
-                <Login />
+                <Login handleSetUser={handleSetUser} />
               </Route>
               <Route path='/' exact>
                 <HomePage user={user} />
