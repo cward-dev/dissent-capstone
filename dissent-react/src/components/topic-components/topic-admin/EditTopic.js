@@ -55,10 +55,10 @@ function EditTopic ( { topic, setTopicToEdit, user } ) {
         <div className="col">
           <label htmlFor="topicName" className="pl-2 pt-2">Edit Topic - {topic.topicName}</label>
         </div>
-        <input type="text" className="form-control mb-3" id="topicName" name="topicName" value={topic.topicName} required onChange={handleChange} />
-        <div className="col text-right">
+        <input type="text" className="form-control mb-3 mx-2" id="topicName" name="topicName" value={topic.topicName} required onChange={handleChange} />
+        <div className="col text-right mr-2">
           <button type="button" className="btn btn-light btn-sm" onClick={handleCancel}>Cancel</button>
-          <button type="submit" className="btn btn-dark btn-sm ml-2">Submit</button>
+          <button type="submit" className="btn btn-dark btn-sm mx-2">Submit</button>
         </div>
       </div>
     </form>
