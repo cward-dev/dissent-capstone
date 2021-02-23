@@ -62,7 +62,7 @@ function RawArticleCard ( { rawArticle, user, handleSetArticles } ) {
     };
 
     try {
-      const response = await fetch("http://localhost:8080/api/article", init);
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/article`, init);
 
       if (response.status === 201 || response.status === 400) {
         const data = await response.json();

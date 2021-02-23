@@ -31,7 +31,7 @@ function EditTopic ( { setAdminBarSelection, user } ) {
     };
 
     try {
-      const response = await fetch("http://localhost:8080/api/topic", init);
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/topic`, init);
 
       if (response.status === 201 || response.status === 400) {
         const data = await response.json();

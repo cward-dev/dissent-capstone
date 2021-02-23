@@ -11,7 +11,7 @@ function PostFeedbackTagIcon( { setErrors, post, user } ) {
 
   const getData = async () => {
     try {
-      const response = await fetch(`http://localhost:8080/api/post/feedback-tag/post/${post.postId}`);
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/post/feedback-tag/post/${post.postId}`);
       const data = await response.json();
       setFeedbackTags(data);
     } catch (error) {

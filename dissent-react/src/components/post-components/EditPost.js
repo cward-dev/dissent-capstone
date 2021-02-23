@@ -29,7 +29,7 @@ function EditPost ( { originalPost, articleId, setCurrentOption, user, handlePos
     };
 
     try {
-      const response = await fetch(`http://localhost:8080/api/post/${originalPost.postId}`, init);
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/post/${originalPost.postId}`, init);
 
       if (response.status === 204) {
         handlePostAdded();

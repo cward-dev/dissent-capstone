@@ -62,7 +62,7 @@ function ArticleCard ( { articleId, articleOpen, setAddPost, user } ) {
   useEffect(()=> {
     const getData = async () => {
       try {
-        const response = await fetch(`http://localhost:8080/api/article/${articleId}`);
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/api/article/${articleId}`);
 
         if (response.status === 200) {
           const data = await response.json();

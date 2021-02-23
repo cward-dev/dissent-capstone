@@ -21,7 +21,7 @@ function ArticleTopic ( { topic, article, setErrors, topics, setTopics } ) {
     };
 
     try {
-      const response = await fetch("http://localhost:8080/api/article/topic", init);
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/article/topic`, init);
 
       if (response.status === 201) {
         setArticleTopicExists(true);
@@ -39,7 +39,7 @@ function ArticleTopic ( { topic, article, setErrors, topics, setTopics } ) {
   const deleteArticleTopic = async () => {
 
     try {
-      const response = await fetch(`http://localhost:8080/api/article/topic/${article.articleId}/${topic.topicId}`, { method: "DELETE"} );
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/article/topic/${article.articleId}/${topic.topicId}`, { method: "DELETE"} );
 
       if (response.status === 204) {
         setArticleTopicExists(false);

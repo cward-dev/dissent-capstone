@@ -10,7 +10,7 @@ function ArticleFeedbackTagForm({ object, user, handleTagClick }) {
   useEffect(() => {
     const getData = async () => {
       try {
-        const response = await fetch(`http://localhost:8080/api/feedback-tag`);
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/api/feedback-tag`);
         const data = await response.json();
         setFeedbackTags(data);
       } catch (error) {

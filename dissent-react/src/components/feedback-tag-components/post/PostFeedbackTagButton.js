@@ -9,7 +9,7 @@ function PostFeedbackTagButton ( { feedbackTag, object, user, setErrors, handleB
   useEffect(()=> {
     const getData = async () => {
       try {
-        const response = await fetch(`http://localhost:8080/api/post/feedback-tag/${object.postId}/${user.userId}/${feedbackTag.feedbackTagId}`);
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/api/post/feedback-tag/${object.postId}/${user.userId}/${feedbackTag.feedbackTagId}`);
 
         if (response.status === 200) {
           setTagToggled(true);
@@ -43,7 +43,7 @@ function PostFeedbackTagButton ( { feedbackTag, object, user, setErrors, handleB
 
     try {
 
-      const response = await fetch("http://localhost:8080/api/post/feedback-tag", init);
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/post/feedback-tag`, init);
       
       if (response.status === 201 || response.status === 400) {
         setTagToggled(true);
@@ -66,7 +66,7 @@ function PostFeedbackTagButton ( { feedbackTag, object, user, setErrors, handleB
   }
 
   const deleteObjectFeedbackTag = async () => {
-    fetch(`http://localhost:8080/api/post/feedback-tag/${object.postId}/${user.userId}/${feedbackTag.feedbackTagId}`, {
+    fetch(`${process.env.REACT_APP_API_URL}/api/post/feedback-tag/${object.postId}/${user.userId}/${feedbackTag.feedbackTagId}`, {
       method: "DELETE"
     })
       .then(response => {

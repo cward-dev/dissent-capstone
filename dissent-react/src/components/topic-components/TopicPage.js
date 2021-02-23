@@ -12,7 +12,7 @@ function TopicPage ( { user } ) {
   useEffect(() => {
     const getData = async () => {
       try {
-        const response = await fetch(`http://localhost:8080/api/topic/name/${topicName}`);
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/api/topic/name/${topicName}`);
         const data = await response.json();
         setTopic(data);
         setArticles(data.articles);

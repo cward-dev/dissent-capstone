@@ -11,7 +11,7 @@ function EditArticleTopics ( { article, topics, setTopics, user } ) {
   useEffect(()=> {
     const getData = async () => {
       try {
-        const response = await fetch(`http://localhost:8080/api/topic`);
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/api/topic`);
 
         if (response.status === 200) {
           const data = await response.json();
