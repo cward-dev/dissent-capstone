@@ -1,9 +1,8 @@
 import { useState, useEffect } from 'react';
 import Topic from './Topic.js';
-import AddTopic from './AddTopic.js';
 import Errors from '../Errors.js';
 
-function TopicSidebar ( { user } ) {
+function TopicSidebar ( { topicsUpdated, user } ) {
 
   const [topics, setTopics] = useState([]);
   const [errors, setErrors] = useState([]);
@@ -20,7 +19,7 @@ function TopicSidebar ( { user } ) {
 
   useEffect(() => {
     getData();
-  }, []);
+  }, [topicsUpdated]);
 
   const handleUpdate = () => {
     getData();

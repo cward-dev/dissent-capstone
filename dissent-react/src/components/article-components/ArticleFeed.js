@@ -11,9 +11,6 @@ function ArticleFeed( { articles, user } ) {
 
   return (
     <div>
-      <div className="alert alert-dark mb-4 text-center">
-        <h2>Latest Articles</h2>
-      </div>
       {articles.sort((a, b) => (new Date(a.datePublished) < new Date(b.datePublished)) ? 1 : -1).map(article => makeArticle(article))}
     </div>
   );

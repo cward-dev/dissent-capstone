@@ -1,13 +1,13 @@
 import { useState, useEffect } from 'react';
 import { Link, useHistory, useParams } from 'react-router-dom';
-import Errors from '../Errors.js';
+import Errors from '../../Errors.js';
 import TopicAdminRow from './TopicAdminRow.js';
 import AddTopic from './AddTopic.js';
 import EditTopic from './EditTopic.js';
 import DeleteTopic from './DeleteTopic.js';
 import ReactivateTopic from './ReactivateTopic.js';
 
-function TopicAdmin ( { user } ) {
+function TopicsAdmin ( { handleTopicsUpdated, user } ) {
   const [topics, setTopics] = useState([]);
   const [topicToEdit, setTopicToEdit] = useState(null);
   const [topicToDelete, setTopicToDelete] = useState(null);
@@ -20,6 +20,7 @@ function TopicAdmin ( { user } ) {
         const response = await fetch(`http://localhost:8080/api/topic/with-inactive`);
         const data = await response.json();
         setTopics(data);
+        handleTopicsUpdated();
       } catch (error) {
         setErrors(["Something went wrong with our database, sorry!"]);
       }
@@ -36,7 +37,7 @@ function TopicAdmin ( { user } ) {
   return (
     <div>
       <Errors errors={errors} />
-      <h1 className="d-flex flex-row justify-content-center mb-4">Topic Admin</h1>
+      <h1 className="d-flex flex-row justify-content-center mb-4">Topics Admin</h1>
       <hr className="mb-4"></hr>
       {!topicToEdit && !topicToDelete && !topicToReactivate ? <AddTopic /> : null}
       {topicToEdit ? <EditTopic topic={topicToEdit} setTopicToEdit={setTopicToEdit} user={user} /> : null}
@@ -46,7 +47,7 @@ function TopicAdmin ( { user } ) {
       <table className="table table-light table-striped mt-3">
         <thead className="thead-dark">
           <tr>
-            <th scope="col">#</th>
+            <th scope="col">ID #</th>
             <th scope="col">Topic Name</th>
             <th scope="col">Is Active?</th>
             <th scope="col">Articles</th>
@@ -61,4 +62,4 @@ function TopicAdmin ( { user } ) {
   );
 }
 
-export default TopicAdmin;
+export default TopicsAdmin;

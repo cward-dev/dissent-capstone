@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, useHistory } from 'react-router-dom';
-import Errors from '../Errors.js';
+import Errors from '../../Errors.js';
 
 function AddTopic ( { handleUpdate, user } ) {
 

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import Errors from '../Errors.js';
+import Errors from '../../Errors.js';
 
 function ReactivateTopic ( { topic, setTopicToReactivate, user } ) {
 
