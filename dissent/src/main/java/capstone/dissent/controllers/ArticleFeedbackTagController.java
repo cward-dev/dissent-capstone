@@ -3,6 +3,7 @@ package capstone.dissent.controllers;
 import capstone.dissent.domain.ArticleService;
 import capstone.dissent.domain.Result;
 import capstone.dissent.models.ArticleFeedbackTag;
+import capstone.dissent.models.FeedbackTagHelper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +18,12 @@ public class ArticleFeedbackTagController {
 
     public ArticleFeedbackTagController(ArticleService service) {
         this.service = service;
+    }
+
+    @GetMapping("/article/{articleId}")
+    public List<FeedbackTagHelper> findByArticleId(@PathVariable String articleId) {
+        List<FeedbackTagHelper> result = service.findArticleFeedbackTagsByArticleId(articleId);
+        return result;
     }
 
     @GetMapping("/{articleId}/{userId}/{feedbackTagId}")

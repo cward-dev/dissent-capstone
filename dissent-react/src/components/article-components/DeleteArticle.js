@@ -16,8 +16,7 @@ function DeleteArticle ( { article, setDeleteArticle, user } ) {
 
       if (response.status === 204) {
 
-        // TODO kinda hokey
-        history.push(`./`);
+        history.push("/");
         handleCancel();
       } else if (response.status === 404) {
         throw new Error([`Post ID #${article.articleId} not found`]);

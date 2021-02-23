@@ -1,26 +1,11 @@
 import { useState, useEffect } from 'react';
 
-import FeedbackTagIcon from "./FeedbackTagIcon";
-
 function FeedbackTagButton ( { feedbackTag, object, user, setErrors, handleButtonUpdate } ) {
 
   const [thisFeedbackTag, setThisFeedbackTag] = useState(feedbackTag);
   const [tagToggled, setTagToggled] = useState(false);
   const [tagExists, setTagExists] = useState(false);
 
-  // function updateTagToggles(){ 
-  //   for(const articleFeedbackTag in ArticleFeedbackTagsForUser){
-  //     if(articleFeedbackTag.feedbackTag.feedbackTagName === "Sound"){
-  //       setSoundToggled(true);
-  //     }
-  //     if(articleFeedbackTag.feedbackTag.feedbackTagName === "Fallacious"){
-  //       setFallaciousToggled(true);
-  //     }
-  //     if(articleFeedbackTag.feedbackTag.feedbackTagName === "Biased"){
-  //       setBiasedToggled(true);
-  //     }
-  //   }
-  // }
   useEffect(()=> {
     const getData = async () => {
       try {

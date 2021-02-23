@@ -1,9 +1,6 @@
 package capstone.dissent.models;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.PastOrPresent;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -34,6 +31,9 @@ public class Post {
     // TODO: Discuss User vs userId.
     @NotNull(message = "Post must have a user")
     User user;
+
+    @Min(value = 0, message =  "Post cannot have less than zero children")
+    int childPostCount;
 
     List<Post> childPosts = new ArrayList<>();
     List<FeedbackTagHelper> feedbackTags = new ArrayList<>();
@@ -137,6 +137,14 @@ public class Post {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public int getChildPostCount() {
+        return childPostCount;
+    }
+
+    public void setChildPostCount(int childPostCount) {
+        this.childPostCount = childPostCount;
     }
 
     public List<Post> getChildPosts() {

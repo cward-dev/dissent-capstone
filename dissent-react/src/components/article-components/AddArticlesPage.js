@@ -45,7 +45,6 @@ function AddArticlesPage( { user } ) {
       const response = await fetch("http://newsapi.org/v2/top-headlines?country=us&apiKey=46f374bc4801471fa5acc0956d739b7c");
       const data = await response.json();
       rawArticles = data.articles;
-      console.log(rawArticles);
     } catch (error) {
       setErrors(["Something went wrong with our fetch, sorry!"]);
     }
@@ -75,11 +74,8 @@ function AddArticlesPage( { user } ) {
         },
         "posts": []
       };
-
       newArticles.push(article);
     }
-
-    console.log(newArticles);
     setArticles(newArticles);
   };
 

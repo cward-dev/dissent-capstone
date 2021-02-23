@@ -39,6 +39,9 @@ public class Article {
     @PastOrPresent(message = "Article cannot have a future post date")
     LocalDateTime datePosted;
 
+    @Min(value = 0, message = "Discussion length cannot be less than zero.")
+    int discussionLength;
+
     boolean isActive = true;
 
     Source source;
@@ -143,6 +146,14 @@ public class Article {
 
     public void setActive(boolean active) {
         isActive = active;
+    }
+
+    public int getDiscussionLength() {
+        return discussionLength;
+    }
+
+    public void setDiscussionLength(int discussionLength) {
+        this.discussionLength = discussionLength;
     }
 
     public Source getSource() {

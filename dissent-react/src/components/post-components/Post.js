@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import FeedbackTagIcon from "../feedback-tag-components/FeedbackTagIcon.js";
+import PostFeedbackTagIcon from "../feedback-tag-components/post/PostFeedbackTagIcon.js";
 import FeedbackTagForm from "../feedback-tag-components/FeedbackTagForm.js";
 import AddReplyPost from "./AddReplyPost.js";
 import EditPost from "./EditPost.js";
@@ -61,7 +61,7 @@ function Post ( { post, postLevel, user, parentPost, startsCollapsed, handlePost
     <div>
       {feedbackTagMenuDisplayed ? <FeedbackTagForm object={post} user={user} /> : null}
       <div className="media">
-        <FeedbackTagIcon objectId={post.postId} feedbackTagMenuDisplayed={feedbackTagMenuDisplayed} setFeedbackTagMenuDisplayed={setFeedbackTagMenuDisplayed} object={post} user={user} />
+        <PostFeedbackTagIcon post={post} feedbackTagMenuDisplayed={feedbackTagMenuDisplayed} setFeedbackTagMenuDisplayed={setFeedbackTagMenuDisplayed} user={user} />
         <div className="media-body">
           <div className="pr-3">
               <div className="d-flex">
@@ -83,7 +83,7 @@ function Post ( { post, postLevel, user, parentPost, startsCollapsed, handlePost
               <button onClick={handleEditPost} className="btn btn-link btn-sm mr-2 p-0">Edit</button>
               <button onClick={handleDeletePost} className="btn btn-link btn-sm mr-2 p-0">Delete</button>
             </> : null}
-            <button onClick={handleCollapse} className="btn btn-link btn-sm p-0">{collapsed ? "Expand" : "Collapse"}</button>
+            <button onClick={handleCollapse} className="btn btn-link btn-sm p-0">{collapsed ? `Expand (${post.childPostCount})` : `Collapse (${post.childPostCount})`}</button>
           </div>
           {currentOption === 1 ? <EditPost originalPost={post} articleId={post.articleId} setCurrentOption={setCurrentOption} user={user} handlePostAdded={handlePostAdded} /> : null}
           {currentOption === 2 ? <DeletePost originalPost={post} articleId={post.articleId} setCurrentOption={setCurrentOption} user={user} handlePostAdded={handlePostAdded} /> : null}

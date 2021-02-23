@@ -42,7 +42,7 @@ public class ArticleController {
        return service.findArticleByTopicId(topicId);
     }
 
-    @GetMapping("/{date1}/{date2}")
+    @GetMapping("/dates/{date1}/{date2}")
     public List<Article> findPostedDateRange(@PathVariable String date1, @PathVariable String date2){
         LocalDateTime dateTime1 = LocalDateTime.parse(date1);
         LocalDateTime dateTime2 = LocalDateTime.parse(date2);
