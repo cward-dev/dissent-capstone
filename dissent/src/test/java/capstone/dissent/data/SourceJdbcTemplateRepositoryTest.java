@@ -94,4 +94,16 @@ class SourceJdbcTemplateRepositoryTest {
         assertEquals(null, repository.findById("X"));
 
     }
+
+    @Test
+    void shouldFindSourceByNameAndUrl(){
+        Source source = repository.findBySourceNameAndUrl("European Southern Observatory","https://www.eso.org/");
+        assertEquals("d293ae18-63e0-49b7-87fd-9856bcf52884", source.getSourceId());
+    }
+
+    @Test
+    void shouldNotFindSourceByNameAndUrl(){
+        Source source = repository.findBySourceNameAndUrl("???","www.?.com");
+        assertNull(source);
+    }
 }

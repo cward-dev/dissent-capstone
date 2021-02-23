@@ -34,7 +34,7 @@ class UserJdbcTemplateRepositoryTest {
         List<User> user = repository.findAll();
 
         assertNotNull(user);
-        assertTrue(user.size() > 0);
+        assertTrue(user.size() >= 2 || user.size() >= 4);
     }
 
 
@@ -50,6 +50,24 @@ class UserJdbcTemplateRepositoryTest {
     }
 
     @Test
+    void shouldNotFindById(){
+        assertNull(repository.findById("X"));
+    }
+
+    @Test
+    void shouldFindByUsername(){
+        User user = repository.findByUsername("dissenter101");
+        assertNotNull(user);
+        assertEquals("milan@stoj.com", user.getEmail());
+
+    }
+    @Test
+    void shouldNotFindByUserName(){
+        assertNull(repository.findByUsername("Santa"));
+    }
+
+
+    @Test
     void shouldAdd() {
         User expected = makeUser();
         User actual = repository.add(expected);
@@ -58,6 +76,7 @@ class UserJdbcTemplateRepositoryTest {
         assertEquals(expected.getUsername(), actual.getUsername());
 
     }
+
 
     @Test
     void shouldUpdate() {
@@ -70,14 +89,36 @@ class UserJdbcTemplateRepositoryTest {
     }
 
     @Test
-    void shouldDelete() {
-        User user = makeUser();
-        user = repository.add(user);
+    void shouldNotUpdate(){
+        User user = new User();
+        user.setUserId("XXX");
 
-        boolean actual = repository.deleteById(user.getUserId());
-
-        assertTrue(actual);
+        boolean success = repository.edit(user);
+        assertFalse(success);
     }
+
+    @Test
+    void shouldDelete() {
+        boolean actual = repository.deleteById("b");
+        assertTrue(actual);
+        assertEquals("deleted",repository.findById("b").getEmail());
+    }
+
+
+    @Test
+    void shouldFindUserRoles(){
+        User user = repository.findById("dffec086-b1e9-455a-aab4-ff6c6611fef0");
+        System.out.println(user.getRoles());
+        assertTrue(user.getRoles().size()==2);
+    }
+
+    @Test
+    void shouldFindByUserName(){
+        User user = repository.findByUsername("dissenter101");
+        assertEquals("milan@stoj.com",user.getEmail());
+    }
+
+
 
 
     private User makeUser() {

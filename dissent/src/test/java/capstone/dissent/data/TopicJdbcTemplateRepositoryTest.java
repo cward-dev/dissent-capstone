@@ -92,6 +92,19 @@ class TopicJdbcTemplateRepositoryTest {
         assertFalse(repository.deleteById(45));
     }
 
+    @Test
+    void shouldFindTopicByName(){
+        Topic topic = repository.findByTopicName("Science");
+        assertEquals(1,topic.getTopicId());
+    }
+
+    @Test
+    void shouldNotFindTopicByName(){
+        Topic topic = repository.findByTopicName("Bananas");
+        assertNull(topic);
+    }
+
+
     private Topic makeTopic() {
         Topic topic = new Topic();
         topic.setTopicName("Sports");
