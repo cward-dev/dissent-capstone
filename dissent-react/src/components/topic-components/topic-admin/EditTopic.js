@@ -1,16 +1,14 @@
-import { useState, useEffect } from 'react';
-import { Link, useHistory } from 'react-router-dom';
-import Errors from '../Errors.js';
+import { useState } from 'react';
+import Errors from '../../Errors.js';
 
-function EditTopic ( { topic, handleEditClick, handleTopicsUpdate, user } ) {
+function EditTopic ( { topic, setTopicToEdit, user } ) {
 
   const [editedTopic, setEditedTopic] = useState( {
-    "topicName": ''
+    "topicId": topic.topicId,
+    "topicName": topic.topicName
   } );
-
   const [errors, setErrors] = useState([]);
 
-  const history = useHistory();
 
   const handleChange = (event) => {
     const updatedTopic = {...topic};
@@ -18,7 +16,7 @@ function EditTopic ( { topic, handleEditClick, handleTopicsUpdate, user } ) {
     setEditedTopic(updatedTopic);
   };
 
-  const handleEditSubmit = async (event) => { // TODO WHY AREN'T COMPONENTS UPDATING WITH ROUTE?
+  const handleEditSubmit = async (event) => {
     event.preventDefault();
 
     const init = {
@@ -34,9 +32,10 @@ function EditTopic ( { topic, handleEditClick, handleTopicsUpdate, user } ) {
       const response = await fetch(`http://localhost:8080/api/topic/${topic.topicId}`, init);
 
       if (response.status === 204) {
-        history.push(`./${editedTopic.topicName}`)
-        handleTopicsUpdate();
         handleCancel();
+      } else if (response.status === 400) {
+        const data = await response.json();
+        setErrors(data);
       } else {
         throw new Error(["Something unexpected went wrong, sorry!"]);
       }
@@ -46,24 +45,22 @@ function EditTopic ( { topic, handleEditClick, handleTopicsUpdate, user } ) {
   }
 
   const handleCancel = () => {
-    handleEditClick();
+    setTopicToEdit(null);
   }
 
   return (
-    <form className onSubmit={handleEditSubmit}>
+    <form onSubmit={handleEditSubmit}>
       <Errors errors={errors} />
-      <hr></hr>
       <div className="form-row mx-1">
         <div className="col">
-          <label htmlFor="content" className="pl-2 pt-2">Edit Topic - {topic.topicName}</label>
+          <label htmlFor="topicName" className="pl-2 pt-2">Edit Topic - {topic.topicName}</label>
         </div>
-        <input type="text" className="form-control mb-3" id="topicName" name="topicName" defaultValue={topic.topicName} required onChange={handleChange} />
-        <div className="col text-right">
+        <input type="text" className="form-control mb-3 mx-2" id="topicName" name="topicName" value={topic.topicName} required onChange={handleChange} />
+        <div className="col text-right mr-2">
           <button type="button" className="btn btn-light btn-sm" onClick={handleCancel}>Cancel</button>
-          <button type="submit" className="btn btn-dark ml-2 mr-3 btn-sm">Submit</button>
+          <button type="submit" className="btn btn-dark btn-sm mx-2">Submit</button>
         </div>
       </div>
-      <hr></hr>
     </form>
   );
 }

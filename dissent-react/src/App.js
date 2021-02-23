@@ -2,6 +2,8 @@ import { useState, useEffect, React } from 'react';
 import { Route, BrowserRouter as Router, Switch, Link } from 'react-router-dom';
 import HomePage from './components/article-components/HomePage.js';
 import TopicPage from './components/topic-components/TopicPage.js';
+import TopicsAdmin from './components/topic-components/topic-admin/TopicsAdmin.js';
+import FeedbackTagsAdmin from './components/feedback-tag-components/feedback-tag-admin/FeedbackTagsAdmin.js';
 import About from './components/pages/About.js';
 import UserPage from './components/pages/UserPage.js';
 import ArticlePage from './components/article-components/ArticlePage.js';
@@ -27,7 +29,7 @@ const DEFAULT_USER = {
 }
 
 function App() {
-
+  const [topicsUpdated, setTopicsUpdated] = useState(false);
   const [user, setUser] = useState();
 
   useEffect(() => {
@@ -73,7 +75,15 @@ function App() {
     } else {
       throw new Error('There was a problem logging in...')
     }
-  }
+  };
+
+  const handleTopicsUpdated = () => {
+    if (topicsUpdated) {
+      setTopicsUpdated(false);
+    } else {
+      setTopicsUpdated(true);
+    }
+  };
 
   const logout = () => {
     setUser(null);
@@ -99,6 +109,15 @@ function App() {
             <div className="col-8 alert alert-secondary pt-4">
               <Switch>
                 <Route path={'/article/add'} exact>
+                  <AddArticlesPage user={user} />
+                </Route>
+                <Route path={'/admin/feedback-tags'} exact>
+                  <FeedbackTagsAdmin user={user} />
+                </Route>
+                <Route path={'/admin/topics'} exact>
+                  <TopicsAdmin handleTopicsUpdated={handleTopicsUpdated} user={user} />
+                </Route>
+                <Route path={'/admin/article/add'} exact>
                   <AddArticlesPage user={user} />
                 </Route>
                 <Route path={'/article/:articleId'} exact>
@@ -131,7 +150,7 @@ function App() {
               </Switch>
             </div>
             <div className="col container alert alert-secondary ml-4">
-              <TopicSidebar user={user} />
+              <TopicSidebar topicsUpdated={topicsUpdated} user={user} />
             </div>
           </div>
         </div>

@@ -19,7 +19,7 @@ function UserCard ( { user } ) {
   return (
     <div key={userId} className="card flex-row flex-wrap text-white bg-dark mb-4">
       <div className="border-0">
-        <img src={photoUrl} class="user-page-img" />
+        <img src={photoUrl} className="user-page-img" />
       </div>
       <div className="col-7 p-3">
         <h4 className="card-title">{username}</h4>

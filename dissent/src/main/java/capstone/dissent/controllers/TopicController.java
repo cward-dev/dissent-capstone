@@ -24,9 +24,9 @@ public class TopicController {
         return service.findAll();
     }
 
-    @GetMapping("/inactive")
-    public List<Topic> findAllInactive() {
-        return service.findAllInactive();
+    @GetMapping("/with-inactive")
+    public List<Topic> findAllWithInactive() {
+        return service.findAllWithInactive();
     }
 
     @GetMapping("/{topicId}")
@@ -71,6 +71,15 @@ public class TopicController {
         }
 
         return ErrorResponse.build(result);
+    }
+
+    @PutMapping("/activate/{topicId}")
+    public ResponseEntity<Topic> activateById(@PathVariable int topicId) {
+        if (service.activateById(topicId)) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @DeleteMapping("/{topicId}")

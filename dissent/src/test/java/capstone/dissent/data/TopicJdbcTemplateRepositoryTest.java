@@ -1,6 +1,5 @@
 package capstone.dissent.data;
 
-import capstone.dissent.models.Post;
 import capstone.dissent.models.Topic;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -37,7 +36,7 @@ class TopicJdbcTemplateRepositoryTest {
 
     @Test
     void shouldFindAllInactive() {
-        List<Topic> topics = repository.findAllInactive();
+        List<Topic> topics = repository.findAllWithInactive();
 
         assertNotNull(topics);
         assertTrue(topics.size() > 0);

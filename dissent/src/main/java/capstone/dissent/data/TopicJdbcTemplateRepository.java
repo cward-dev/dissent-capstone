@@ -39,8 +39,8 @@ public class TopicJdbcTemplateRepository implements TopicRepository {
     }
 
     @Override
-    public List<Topic> findAllInactive() {
-        final String sql = "select topic_id, topic_name, is_active from topic where is_active = false limit 1000;";
+    public List<Topic> findAllWithInactive() {
+        final String sql = "select topic_id, topic_name, is_active from topic limit 1000;";
         List<Topic> result = jdbcTemplate.query(sql, new TopicMapper());
 
         if (result.size() > 0) {
@@ -68,7 +68,7 @@ public class TopicJdbcTemplateRepository implements TopicRepository {
 
     @Override
     public Topic findByTopicName(String topicName) {
-        final String sql = "select topic_id, topic_name, is_active from topic where UPPER(topic_name) = UPPER(?);";
+        final String sql = "select topic_id, topic_name, is_active from topic where UPPER(topic_name) = UPPER(?) and is_active = true;";
 
         Topic result = jdbcTemplate.query(sql, new TopicMapper(), topicName).stream()
                 .findAny().orElse(null);
@@ -96,15 +96,6 @@ public class TopicJdbcTemplateRepository implements TopicRepository {
 
     @Override
     public Topic add(Topic topic) {
-        Topic inactiveTopic = findInactiveByName(topic.getTopicName());
-        if (inactiveTopic != null) {
-            if (activateById(inactiveTopic.getTopicId())) {
-                inactiveTopic.setActive(true);
-                return inactiveTopic;
-            }
-            return null;
-        }
-
         final String sql = "insert into topic (topic_name) values (?);";
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
@@ -154,18 +145,5 @@ public class TopicJdbcTemplateRepository implements TopicRepository {
 
     private void addArticles(Topic topic) {
         topic.setArticles(articleRepository.findArticleByTopicId(topic.getTopicId()));
-//        final String sql = "select a.article_id, a.title, a.`description`, a.source_id, a.author, a.article_url,"
-//                + " a.article_image_url, a.date_published, a.date_posted, a.is_active,"
-//                + " s.source_id, s.source_name, s.website_url, s.`description`"
-//                + " from article a inner join article_topic ta on a.article_id = ta.article_id"
-//                + " inner join `source` s on a.source_id = s.source_id"
-//                + " where ta.topic_id = ?;";
-//
-//        var topics = jdbcTemplate.query(sql, new ArticleMapper(), topic.getTopicId());
-//
-//        topic.setArticles(topics);
     }
-
-    final String sql = "select s.source_id, s.source_name, s.website_url, s.`description`"
-            + " from `source` s inner join article a on s.source_id = a.source_id where a.article_id = ?;";
 }

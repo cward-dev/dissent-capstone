@@ -219,7 +219,7 @@ public class ArticleJdbcTemplateRepository implements ArticleRepository {
 
         final String sql = "select t.topic_id, t.topic_name, t.is_active " +
                 " from topic t inner join article_topic ta on t.topic_id = ta.topic_id "
-                + "where ta.article_id = ?;";
+                + "where ta.article_id = ? and t.is_active = true;";
       
         var topics = jdbcTemplate.query(sql,new TopicMapper(),article.getArticleId());
 

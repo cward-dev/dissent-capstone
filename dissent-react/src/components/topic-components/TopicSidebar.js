@@ -1,12 +1,10 @@
 import { useState, useEffect } from 'react';
 import Topic from './Topic.js';
-import AddTopic from './AddTopic.js';
 import Errors from '../Errors.js';
 
-function TopicSidebar ( { user } ) {
+function TopicSidebar ( { topicsUpdated, user } ) {
 
   const [topics, setTopics] = useState([]);
-  const [adminTools, setAdminTools] = useState(false);
   const [errors, setErrors] = useState([]);
 
   const getData = async () => {
@@ -21,33 +19,20 @@ function TopicSidebar ( { user } ) {
 
   useEffect(() => {
     getData();
-  }, []);
+  }, [topicsUpdated]);
 
   const handleUpdate = () => {
     getData();
   };
 
-  const handleAdminTools = () => {
-    if (adminTools) {
-      setAdminTools(false);
-    } else {
-    setAdminTools(true);
-    }
-  };
-
   const makeTopic = (topic) => {
-    return <Topic key={topic.topicId} topic={topic} handleUpdate={handleUpdate} adminTools={adminTools} user={user} />;
+    return <Topic key={topic.topicId} topic={topic} handleUpdate={handleUpdate} user={user} />;
   };
 
   return (
     <div>
       <h5 className="text-center">Topics</h5>
       <hr></hr>
-      {(user && user.userRole === "admin") ? <button className="btn btn-dark btn-sm col mb-3" onClick={handleAdminTools}>
-          Toggle Admin Tools
-        </button> 
-        : null}
-      {(user && user.userRole === "admin") && adminTools ? <AddTopic handleUpdate={handleUpdate} /> : null}
       <Errors errors={errors} />
       <ul className="list-group">
         {topics.sort((a, b) => (a.topicName > b.topicName) ? 1 : -1).map(topic => makeTopic(topic))}

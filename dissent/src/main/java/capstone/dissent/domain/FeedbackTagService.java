@@ -29,8 +29,8 @@ public class FeedbackTagService {
         return repository.findAll();
     }
 
-    public List<FeedbackTag> findAllInactive() {
-        return repository.findAllInactive();
+    public List<FeedbackTag> findAllWithInactive() {
+        return repository.findAllWithInactive();
     }
 
     public FeedbackTag findById(int feedbackTagId) {
@@ -70,6 +70,10 @@ public class FeedbackTagService {
         return result;
     }
 
+    public boolean activateById(int feedbackTagId) {
+        return repository.activateById(feedbackTagId);
+    }
+
     public boolean deleteById(int feedbackTagId) {
         return repository.deleteById(feedbackTagId);
     }
@@ -99,7 +103,7 @@ public class FeedbackTagService {
     }
 
     private boolean checkForDuplicate(FeedbackTag feedbackTag) {
-        return findAll().stream().anyMatch(ft -> ft.getFeedbackTagId() != feedbackTag.getFeedbackTagId()
+        return findAllWithInactive().stream().anyMatch(ft -> ft.getFeedbackTagId() != feedbackTag.getFeedbackTagId()
                 && ft.getName().equalsIgnoreCase(feedbackTag.getName()));
     }
 }

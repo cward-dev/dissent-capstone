@@ -35,10 +35,10 @@ class FeedbackTagServiceTest {
     }
 
     @Test
-    void shouldFindALlInactive() {
+    void shouldFindALlWithInactive() {
         List<FeedbackTag> expected = List.of(new FeedbackTag(5, "Not Nice", "#000000", false));
-        when(repository.findAllInactive()).thenReturn(expected);
-        List<FeedbackTag> actual = repository.findAllInactive();
+        when(repository.findAllWithInactive()).thenReturn(expected);
+        List<FeedbackTag> actual = repository.findAllWithInactive();
 
         assertEquals(expected, actual);
     }

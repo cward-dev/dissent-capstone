@@ -36,9 +36,6 @@ function NewsAPIFeed ( { articles, user, setArticles } ) {
 
   return (
     <div>
-      <div className="alert alert-dark mb-4 text-center">
-        <h2>Add New Articles</h2>
-      </div>
       {articles.sort((a, b) => (new Date(a.datePosted) < new Date(b.datePosted)) ? 1 : -1).map(article => makeArticle(article))}
     </div>
   );
