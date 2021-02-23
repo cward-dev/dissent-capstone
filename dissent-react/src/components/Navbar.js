@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import LogoTextOnly from './images/logo-text-only.png';
 
-function Navbar ({user}) {
+function Navbar ({user, handleLogout}) {
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-light mb-4">
       <div className="container-fluid">
@@ -21,12 +21,11 @@ function Navbar ({user}) {
             <li className="nav-item">
               <Link className="nav-link active" to="/about" aria-current="page">About</Link>
             </li>
-            <li className="nav-item">
-              <Link className="nav-link active" to="/user">Profile</Link>
-            </li>
-            <li className="nav-item">
-              <Link className="nav-link active" to="/user/log-out">Log Out</Link>
-            </li>
+            {user && 
+              <li className="nav-item">
+                <Link className="nav-link active" onClick={handleLogout}>Log Out</Link>
+              </li>
+            }
           </ul>
         </div> 
       </div>

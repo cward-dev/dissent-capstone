@@ -36,7 +36,7 @@ function App() {
 
   return (      
     <Router>
-      <Navbar user={user} />
+      <Navbar user={user} handleLogout={handleLogout} />
       {(user != null && user.roles === "ROLE_ADMIN") &&
         <AdminBar user={user} />
       }

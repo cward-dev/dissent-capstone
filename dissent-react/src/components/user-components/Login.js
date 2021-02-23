@@ -1,16 +1,23 @@
 import { useState } from 'react';
 import Errors from '../Errors';
 import jwt_decode from 'jwt-decode'; 
+import { Link, useHistory, useLocation } from 'react-router-dom';
 
 function Login({ handleSetUser }) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState([]);
 
+  const history = useHistory();
+  const location = useLocation();
+
+  const { state: { from } = { from : '/' } } = location;
+
   const login = (token) => {
-    const { sub: username, authorities } = jwt_decode(token);
+    const { userId, sub: username, authorities } = jwt_decode(token);
     const roles = authorities.split(',');
     const user = {
+      userId,
       username,
       roles,
       token,
@@ -40,6 +47,7 @@ function Login({ handleSetUser }) {
       if (response.status === 200) {
         const { jwt_token } = await response.json(); 
         login(jwt_token);
+        history.push(from);
 
       } else if (response.status === 403) {
         throw new Error('Bad username or password')
@@ -69,6 +77,7 @@ function Login({ handleSetUser }) {
         </div>
         <div>
           <button type="submit" class="btn btn-dark my-3">Login</button>
+          <button type="submit" class="btn btn-dark my-3 mx-3"><Link to={from}>Cancel</Link></button>
         </div>
       </form>
     </div>

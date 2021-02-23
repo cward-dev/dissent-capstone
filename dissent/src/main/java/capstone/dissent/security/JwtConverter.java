@@ -1,16 +1,16 @@
 package capstone.dissent.security;
 
+import capstone.dissent.data.UserJdbcTemplateRepository;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
+import capstone.dissent.data.UserRepository;
 
 import java.security.Key;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Component
@@ -22,6 +22,11 @@ public class JwtConverter {
     private final String ISSUER = "dissent";
     private final int EXPIRATION_MINUTES = 15;
     private final int EXPIRATION_MILLIS = EXPIRATION_MINUTES * 60 * 1000;
+    private UserRepository userRepository;
+
+    public JwtConverter(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     public String getTokenFromUser(User user) {
 
@@ -37,6 +42,7 @@ public class JwtConverter {
                 // able to add additional claims -
                 // data-points or bits of info about user, api "claims" about user
                 .claim("authorities", authorities)
+                .claim("userId", userRepository.findByUsername(user.getUsername()).getUserId())
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_MILLIS))
                 .signWith(key)
                 .compact();

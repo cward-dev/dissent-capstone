@@ -79,7 +79,7 @@ function Post ( { post, postLevel, user, parentPost, startsCollapsed, handlePost
           </div>
           <div className="pr-3 mb-3">
             <button onClick={handleAddReplyPost} className="btn btn-link btn-sm mr-2 p-0">Reply</button>
-            {post.active && (post.user.userId === user.userId || user.userRole === "admin") ? <>
+            {post.active && (post.user.username === user.username || user.userRole === "admin") ? <>
               <button onClick={handleEditPost} className="btn btn-link btn-sm mr-2 p-0">Edit</button>
               <button onClick={handleDeletePost} className="btn btn-link btn-sm mr-2 p-0">Delete</button>
             </> : null}
