@@ -36,7 +36,7 @@ function Topic ( { topic, handleUpdate, adminTools, user } ) {
           <li className="list-group-item d-flex justify-content-start align-items-center">{topicName}</li>
         </Link>
       </div>
-      {user.userRole === "admin" && adminTools ?
+      {(user && user.userRole === "admin") && adminTools ?
               <div className="text-right mx-2 my-1">
                 <button className="btn btn-secondary btn-sm mx-2" onClick={handleEditClick}>Edit</button>
                 <button className="btn btn-secondary btn-sm" onClick={handleDeleteClick}>Delete</button>

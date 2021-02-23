@@ -8,6 +8,6 @@ POST {{url}} HTTP/1.1
 Content-Type: application/json
 
 {
-  "username": "milan-stoj",
-  "password": "P4$$word"
+  "username": "admin",
+  "password": "admin"
 }

@@ -11,6 +11,7 @@ import NotFound from './components/pages/NotFound.js';
 import Navbar from './components/Navbar.js';
 import AdminBar from './components/AdminBar.js';
 import Login from './components/user-components/Login';
+import Register from './components/user-components/Register';
 import './App.css';
 
 const DEFAULT_USER = {
@@ -24,7 +25,7 @@ const DEFAULT_USER = {
 }
 
 function App() {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(null); // replace with default user for dev
 
   const handleSetUser = (user) => {
     setUser(user);
@@ -37,7 +38,7 @@ function App() {
   return (      
     <Router>
       <Navbar user={user} handleLogout={handleLogout} />
-      {(user != null && user.roles === "ROLE_ADMIN") &&
+      {(user != null && Object.values(user.roles).join(',').includes("ADMIN")) &&
         <AdminBar user={user} />
       }
       <div className="container">
@@ -64,6 +65,9 @@ function App() {
               </Route>
               <Route path='/login'>
                 <Login handleSetUser={handleSetUser} />
+              </Route>
+              <Route path='/register'>
+                <Register handleSetUser={handleSetUser}/>
               </Route>
               <Route path='/' exact>
                 <HomePage user={user} />

@@ -128,7 +128,7 @@ function ArticleCard ( { articleId, articleOpen, setAddPost, user } ) {
               <ArticleFeedbackTagIcon setErrors={setErrors} article={article} user={user} />
             </div>
             <div className="col text-right">
-              {user.userRole === "admin" ? <>
+              {(user != null && Object.values(user.roles).join(',').includes("ADMIN")) ? <>
                 <button onClick={handleEditTopics} className="btn btn-secondary mr-2 px-2 py-1">Edit Topics</button>
                 <button onClick={handleDelete} className="btn btn-secondary mr-2 px-2 py-1">Delete</button>
                   </> : null}

@@ -43,11 +43,11 @@ function TopicSidebar ( { user } ) {
     <div>
       <h5 className="text-center">Topics</h5>
       <hr></hr>
-      {user.userRole === "admin" ? <button className="btn btn-dark btn-sm col mb-3" onClick={handleAdminTools}>
+      {(user && user.userRole === "admin") ? <button className="btn btn-dark btn-sm col mb-3" onClick={handleAdminTools}>
           Toggle Admin Tools
         </button> 
         : null}
-      {user.userRole === "admin" && adminTools ? <AddTopic handleUpdate={handleUpdate} /> : null}
+      {(user && user.userRole === "admin") && adminTools ? <AddTopic handleUpdate={handleUpdate} /> : null}
       <Errors errors={errors} />
       <ul className="list-group">
         {topics.sort((a, b) => (a.topicName > b.topicName) ? 1 : -1).map(topic => makeTopic(topic))}

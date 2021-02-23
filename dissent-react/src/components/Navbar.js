@@ -10,9 +10,14 @@ function Navbar ({user, handleLogout}) {
           <ul className="navbar-nav me-auto mb-2 mb-lg-0">
             {!user 
               ?
+              <>
                 <li className="nav-item">
                   <Link className="nav-link active" to="/login" aria-current="page">Login</Link>
                 </li>
+                <li className="nav-item">
+                  <Link className="nav-link active" to="/register" aria-current="page">Register</Link>
+                </li>
+              </>
               : 
                 <li className="nav-item">
                   <Link className="nav-link active" to="/user">{user.username}</Link>
@@ -23,7 +28,7 @@ function Navbar ({user, handleLogout}) {
             </li>
             {user && 
               <li className="nav-item">
-                <Link className="nav-link active" onClick={handleLogout}>Log Out</Link>
+                <Link className="nav-link active" onClick={handleLogout} to="/">Log Out</Link>
               </li>
             }
           </ul>

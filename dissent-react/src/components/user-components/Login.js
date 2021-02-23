@@ -63,8 +63,8 @@ function Login({ handleSetUser }) {
   }
 
   return (
-    <div class="col-7">
-      <h2>Login</h2>
+    <div>
+      <h2 className="mb-3">Login</h2>
       <Errors errors={errors} />
       <form onSubmit={handleSubmit}>
         <div class="form-group">
