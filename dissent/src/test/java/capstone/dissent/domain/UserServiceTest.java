@@ -67,7 +67,7 @@ class UserServiceTest {
         userIn.setUserId(null);
         User userOut = new User();
         userIn.setEmail("test@email.com");
-        userIn.setPassword("Pa55w()rd");
+        userIn.setPassword("PA55w()rd");
 
         when(repository.add(userIn)).thenReturn(userOut);
         Result<User> result = service.add(userIn);

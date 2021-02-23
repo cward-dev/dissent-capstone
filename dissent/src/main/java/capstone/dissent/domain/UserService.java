@@ -144,7 +144,8 @@ public class UserService implements UserDetailsService {
 
         // Regex's to check valid password.
         String regexDigit = ".*\\d.*";
-        String regexLowerCase = "[a-zA-Z].*";
+        String regexLowerCase = ".*[a-z].*";
+        String regexUpperCase = ".*[A-Z].*";
         String regexLength = "(?=\\S+$).{8,20}";
         String regexSpecial = "[a-zA-Z0-9]*";
 
@@ -153,7 +154,7 @@ public class UserService implements UserDetailsService {
             result.addMessage("Password must contain a digit 0-9.", ResultType.INVALID);
         }
 
-        if (!password.matches(regexLowerCase)) {
+        if (!(password.matches(regexLowerCase) && password.matches(regexUpperCase))) {
             result.addMessage("Password must contain an upper and lowercase letter.", ResultType.INVALID);
         }
 
