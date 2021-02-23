@@ -12,6 +12,8 @@ import Navbar from './components/Navbar.js';
 import AdminBar from './components/AdminBar.js';
 import Login from './components/user-components/Login';
 import Register from './components/user-components/Register';
+import jwt_decode from 'jwt-decode'; 
+import AuthContext from './components/AuthContext'
 import './App.css';
 
 const DEFAULT_USER = {
@@ -27,62 +29,105 @@ const DEFAULT_USER = {
 function App() {
   const [user, setUser] = useState(null); // replace with default user for dev
 
-  const handleSetUser = (user) => {
+  const login = (token) => {
+    const { userId, sub: username, authorities } = jwt_decode(token);
+    const roles = authorities.split(',');
+    const user = {
+      userId,
+      username,
+      roles,
+      token,
+      hasRole(role) {
+        return this.roles.includes(role);
+      }
+    }
     setUser(user);
   }
 
-  const handleLogout = () => {
+  const authenticate = async (username, password) => {
+    const response = await fetch('http://localhost:8080/authenticate', {
+      method: 'POST',
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        username,
+        password
+      })
+    });
+
+    if (response.status === 200) {
+      const { jwt_token } = await response.json(); 
+      login(jwt_token);
+    } else if (response.status === 403) {
+      throw new Error('Bad username or password')
+    } else {
+      throw new Error('There was a problem logging in...')
+    }
+  }
+
+  const logout = () => {
     setUser(null);
   }
 
-  return (      
-    <Router>
-      <Navbar user={user} handleLogout={handleLogout} />
-      {(user != null && Object.values(user.roles).join(',').includes("ADMIN")) &&
-        <AdminBar user={user} />
-      }
-      <div className="container">
-        <div className="row">
-          <div className="col-8 alert alert-secondary pt-4">
-            <Switch>
-              <Route path={'/article/add'} exact>
-                <AddArticlesPage user={user} />
-              </Route>
-              <Route path={'/article/:articleId'} exact>
-                <ArticlePage user={user} />
-              </Route>
-              <Route path={'/t/:topicName'} exact>
-                <TopicPage user={user} />
-              </Route>
-              <Route path='/about' exact>
-                <About user={user} />
-              </Route>
-              <Route path='/topic' exact>
-                <TopicPage user={user} />
-              </Route>
-              <Route path='/user' exact>
-                <UserPage user={user} />
-              </Route>
-              <Route path='/login'>
-                <Login handleSetUser={handleSetUser} />
-              </Route>
-              <Route path='/register'>
-                <Register handleSetUser={handleSetUser}/>
-              </Route>
-              <Route path='/' exact>
-                <HomePage user={user} />
-              </Route>
-              <Route path='*' exact>
-                <NotFound user={user} />
-              </Route>
-            </Switch>
-          </div>
-          <div className="col container alert alert-secondary ml-4">
-            <TopicSidebar user={user} />
+  const auth = {
+    user,
+    login, 
+    authenticate,
+    logout
+  }
+
+
+  return (
+    <AuthContext.Provider value = {auth}>
+      <Router>
+        <Navbar />
+        {(user != null && Object.values(user.roles).join(',').includes("ADMIN")) &&
+          <AdminBar user={user} />
+        }
+        <div className="container">
+          <div className="row">
+            <div className="col-8 alert alert-secondary pt-4">
+              <Switch>
+                <Route path={'/article/add'} exact>
+                  <AddArticlesPage user={user} />
+                </Route>
+                <Route path={'/article/:articleId'} exact>
+                  <ArticlePage user={user} />
+                </Route>
+                <Route path={'/t/:topicName'} exact>
+                  <TopicPage user={user} />
+                </Route>
+                <Route path='/about' exact>
+                  <About user={user} />
+                </Route>
+                <Route path='/topic' exact>
+                  <TopicPage user={user} />
+                </Route>
+                <Route path='/user' exact>
+                  <UserPage user={user} />
+                </Route>
+                <Route path='/login'>
+                  <Login />
+                </Route>
+                <Route path='/register'>
+                  <Register />
+                </Route>
+                <Route path='/' exact>
+                  <HomePage user={user} />
+                </Route>
+                <Route path='*' exact>
+                  <NotFound user={user} />
+                </Route>
+              </Switch>
+            </div>
+            <div className="col container alert alert-secondary ml-4">
+              <TopicSidebar user={user} />
+            </div>
           </div>
         </div>
-      </div>
-    </Router>
+      </Router>
+    </AuthContext.Provider>
   );
 }
 

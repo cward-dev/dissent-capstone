@@ -1,9 +1,10 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import Errors from '../Errors';
-import jwt_decode from 'jwt-decode'; 
 import { Link, useHistory, useLocation } from 'react-router-dom';
+import AuthContext from '../AuthContext'
 
-function Login({ handleSetUser }) {
+function Login() {
+  const auth = useContext(AuthContext);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState([]);
@@ -13,50 +14,13 @@ function Login({ handleSetUser }) {
 
   const { state: { from } = { from : '/' } } = location;
 
-  const login = (token) => {
-    const { userId, sub: username, authorities } = jwt_decode(token);
-    const roles = authorities.split(',');
-    const user = {
-      userId,
-      username,
-      roles,
-      token,
-      hasRole(role) {
-        return this.roles.includes(role);
-      }
-    }
-
-    handleSetUser(user);
-  }
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     try{
-      const response = await fetch('http://localhost:8080/authenticate', {
-        method: 'POST',
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          username,
-          password
-        })
-      });
-
-      if (response.status === 200) {
-        const { jwt_token } = await response.json(); 
-        login(jwt_token);
-        history.push(from);
-
-      } else if (response.status === 403) {
-        throw new Error('Bad username or password')
-
-      } else {
-        throw new Error('There was a problem logging in...')
-
-      }
-
+      await auth.authenticate(username, password)
+      history.push(from);
     } catch (err) {
       setErrors([err.message]);
     }

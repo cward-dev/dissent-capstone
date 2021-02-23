@@ -1,9 +1,10 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import Errors from '../Errors';
-import jwt_decode from 'jwt-decode';
 import { Link, useHistory, useLocation } from 'react-router-dom';
+import AuthContext from '../AuthContext'
 
-function Register({handleSetUser}) {
+function Register() {
+  const auth = useContext(AuthContext);
   const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('')
@@ -14,21 +15,6 @@ function Register({handleSetUser}) {
   const history = useHistory();
   const location = useLocation();
   const { state: { from } = { from: '/' } } = location;
-
-  const login = (token) => {
-    const { userId, sub: username, authorities } = jwt_decode(token);
-    const roles = authorities.split(',');
-    const user = {
-      userId,
-      username,
-      roles,
-      token,
-      hasRole(role) {
-        return this.roles.includes(role);
-      }
-    }
-    handleSetUser(user);
-  }
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -49,32 +35,17 @@ function Register({handleSetUser}) {
       });
 
       if (response.status === 201) {
-        const authresponse = await fetch('http://localhost:8080/authenticate', {
-          method: 'POST',
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({
-            username,
-            password
-          })
-        });
-        if (authresponse.status === 200) {
-          const { jwt_token } = await authresponse.json(); 
-          login(jwt_token);
+        try {
+          await auth.authenticate(username, password);
           history.push(from);
-        } else {
+        } catch(err) {
           throw new Error('Issue with server')
         }
-      } else {
-        const data = await response.json()
-        setErrors(data)
       }
     } catch (err) {
       setErrors([err.message]);
     }
   }
-
 
   return (
     <div>
