@@ -1,6 +1,6 @@
 import { useState , useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import FeedbackTagIcon from '../feedback-tag-components/FeedbackTagIcon';
+import ArticleFeedbackTagIcon from '../feedback-tag-components/article/ArticleFeedbackTagIcon';
 import FeedbackTagForm from '../feedback-tag-components/FeedbackTagForm';
 import DeleteArticle from './DeleteArticle';
 import Errors from '../Errors.js';
@@ -39,29 +39,6 @@ function ArticleCard ( { article, articleOpen, setAddPost, user } ) {
   };
   
   const timePassed = getTimePassed(datePublished);
-
-  const getDiscussionLength = () => {
-    let counter = 0;
-
-    const countChildPosts = (post) => {
-      for (let p of post.childPosts) {
-        if (p.active) {
-          counter++;
-        }
-        countChildPosts(p);
-      }
-    };
-
-    for (let p of posts) {
-      if (p.active) {
-        counter++;
-      }
-      countChildPosts(p);
-    }
-    return counter;
-  }
-
-  const discussionLength = getDiscussionLength();
 
   const handleAddPost = () => {
     setAddPost(true);
@@ -102,16 +79,16 @@ function ArticleCard ( { article, articleOpen, setAddPost, user } ) {
         </div>
         <div className="card-footer w-100 text-muted px-1">
           {deleteArticle ? <DeleteArticle article={article} setDeleteArticle={setDeleteArticle} user={user} /> : null}
-          {feedbackTagMenuDisplayed ? <FeedbackTagForm object={article} user={user} /> : null}
+          {feedbackTagMenuDisplayed ? <FeedbackTagForm object={article} user={user} handleTagClick={handleTagClick} /> : null}
           <div className="d-flex flex-row">
             <div className="align-self-start">
-              <FeedbackTagIcon feedbackTagMenuDisplayed={feedbackTagMenuDisplayed} setFeedbackTagMenuDisplayed={setFeedbackTagMenuDisplayed} setErrors={setErrors} object={article} user={user} />
+              <ArticleFeedbackTagIcon feedbackTagMenuDisplayed={feedbackTagMenuDisplayed} setFeedbackTagMenuDisplayed={setFeedbackTagMenuDisplayed} feedbackUpdate={feedbackUpdate} setErrors={setErrors} article={article} user={user} />
             </div>
             <div className="col text-right">
               {user.userRole === "admin" ? <>
                     <button onClick={handleDelete} className="btn btn-secondary mr-2 px-2 py-1">Delete</button>
                   </> : null}
-              {articleOpen ? <button className="btn btn-secondary px-2 py-1" onClick={handleAddPost}>Add Post</button> : <Link className="btn btn-secondary px-2 py-1" to={`/article/${articleId}`}>Discussion ({discussionLength})</Link>}
+              {articleOpen ? <button className="btn btn-secondary px-2 py-1" onClick={handleAddPost}>Add Post</button> : <Link className="btn btn-secondary px-2 py-1" to={`/article/${articleId}`}>Discussion ({article.discussionLength})</Link>}
             </div>
           </div>
         </div>

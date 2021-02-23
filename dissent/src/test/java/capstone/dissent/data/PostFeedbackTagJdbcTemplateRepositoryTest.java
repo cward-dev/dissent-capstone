@@ -1,6 +1,7 @@
 package capstone.dissent.data;
 
 import capstone.dissent.models.FeedbackTag;
+import capstone.dissent.models.FeedbackTagHelper;
 import capstone.dissent.models.PostFeedbackTag;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -29,7 +30,7 @@ class PostFeedbackTagJdbcTemplateRepositoryTest {
 
     @Test
     void shouldFindPostFeedbackTagsForPostId() {
-        List<PostFeedbackTag> postFeedbackTags = repository.findByPostId("a7db5cb6-446a-4c8e-836e-006d9ff239b5");
+        List<FeedbackTagHelper> postFeedbackTags = repository.findByPostId("a7db5cb6-446a-4c8e-836e-006d9ff239b5");
         assertTrue(postFeedbackTags.size() > 0);
     }
 

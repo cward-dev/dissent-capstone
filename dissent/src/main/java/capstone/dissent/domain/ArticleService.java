@@ -4,11 +4,8 @@ package capstone.dissent.domain;
 import capstone.dissent.data.ArticleFeedbackTagRepository;
 import capstone.dissent.data.ArticleRepository;
 import capstone.dissent.data.ArticleTopicRepository;
-import capstone.dissent.models.Article;
+import capstone.dissent.models.*;
 
-import capstone.dissent.models.ArticleTopic;
-import capstone.dissent.models.ArticleFeedbackTag;
-import capstone.dissent.models.Source;
 import org.springframework.stereotype.Service;
 
 import javax.validation.ConstraintViolation;
@@ -59,6 +56,10 @@ public class ArticleService {
 
     public ArticleFeedbackTag findArticleFeedbackTagByKey(String articleId, String userId, int feedbackTagId) {
         return articleFeedbackTagRepository.findByKey(articleId, userId, feedbackTagId);
+    }
+
+    public List<FeedbackTagHelper> findArticleFeedbackTagsByArticleId(String articleId) {
+        return articleFeedbackTagRepository.findByArticleId(articleId);
     }
 
     public Result<Article> add(Article article) {

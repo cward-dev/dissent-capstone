@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import FeedbackTagButton from './FeedbackTagButton.js';
 import Errors from '../Errors.js';
 
-function FeedbackTagForm({ object, user }) {
+function FeedbackTagForm({ object, user, handleTagClick }) {
   const [feedbackTags, setFeedbackTags] = useState([]);
   const [update, setUpdate] = useState([]);
   const [errors, setErrors] = useState([]);
@@ -28,6 +28,7 @@ function FeedbackTagForm({ object, user }) {
     } else {
       setUpdate(true);
     }
+    handleTagClick();
   }
 
   const makeFeedbackTag = (feedbackTag) => {

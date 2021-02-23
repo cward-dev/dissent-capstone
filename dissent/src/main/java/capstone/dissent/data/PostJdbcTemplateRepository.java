@@ -2,10 +2,7 @@ package capstone.dissent.data;
 
 import capstone.dissent.data.mappers.PostFeedbackTagMapper;
 import capstone.dissent.data.mappers.PostMapper;
-import capstone.dissent.models.ArticleFeedbackTag;
-import capstone.dissent.models.FeedbackTagHelper;
-import capstone.dissent.models.Post;
-import capstone.dissent.models.PostFeedbackTag;
+import capstone.dissent.models.*;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -28,7 +25,7 @@ public class PostJdbcTemplateRepository implements PostRepository {
     @Override
     public List<Post> findAll() {
         final String sql = "select p.post_id, p.parent_post_id, p.article_id, p.user_id, p.is_dissenting, p.date_posted, p.content, p.is_active, "
-                + "u.username as username, u.email, u.password_hash, u.photo_url, u.country, u.bio, u.is_active "
+                + "u.username as username, u.email as email, u.password_hash, u.photo_url, u.country, u.bio, u.is_active "
                 + "from post p "
                 + "inner join `user` u on p.user_id = u.user_id limit 1000;";
         List<Post> result = jdbcTemplate.query(sql, new PostMapper(jdbcTemplate));
@@ -36,6 +33,7 @@ public class PostJdbcTemplateRepository implements PostRepository {
         if (result.size() > 0) {
             for(Post post : result) {
                 addFeedbackTags(post);
+                post.setChildPostCount(postChildCounter(post, 0));
             }
         }
 
@@ -45,7 +43,7 @@ public class PostJdbcTemplateRepository implements PostRepository {
     @Override
     public List<Post> findByArticleId(String articleId) {
         final String sql = "select p.post_id, p.parent_post_id, p.article_id, p.user_id, p.is_dissenting, p.date_posted, p.content, p.is_active, "
-                + "u.username as username, u.email, u.password_hash, u.photo_url, u.country, u.bio, u.is_active "
+                + "u.username as username, u.email as email, u.password_hash, u.photo_url, u.country, u.bio, u.is_active "
                 + "from post p "
                 + "inner join `user` u on p.user_id = u.user_id "
                 + "where p.article_id = ? and p.parent_post_id IS NULL;";
@@ -55,6 +53,7 @@ public class PostJdbcTemplateRepository implements PostRepository {
         if (result.size() > 0) {
             for(Post post : result) {
                 addFeedbackTags(post);
+                post.setChildPostCount(postChildCounter(post, 0));
             }
         }
 
@@ -74,6 +73,7 @@ public class PostJdbcTemplateRepository implements PostRepository {
         if (result.size() > 0) {
             for(Post post : result) {
                 addFeedbackTags(post);
+                post.setChildPostCount(postChildCounter(post, 0));
             }
         }
 
@@ -93,6 +93,7 @@ public class PostJdbcTemplateRepository implements PostRepository {
         if (result.size() > 0) {
             for(Post post : result) {
                 addFeedbackTags(post);
+                post.setChildPostCount(postChildCounter(post, 0));
             }
         }
 
@@ -102,7 +103,7 @@ public class PostJdbcTemplateRepository implements PostRepository {
     @Override
     public Post findById(String postId) {
         final String sql = "select p.post_id, p.parent_post_id, p.article_id, p.user_id, p.is_dissenting, p.date_posted, p.content, p.is_active, "
-                + "u.username as username, u.email, u.password_hash, u.photo_url, u.country, u.bio, u.is_active "
+                + "u.username as username, u.email as email, u.password_hash, u.photo_url, u.country, u.bio, u.is_active "
                 + "from post p "
                 + "inner join `user` u on p.user_id = u.user_id "
                 + "where (p.post_id = ?);";
@@ -112,6 +113,7 @@ public class PostJdbcTemplateRepository implements PostRepository {
 
         if (result != null) {
             addFeedbackTags(result);
+            result.setChildPostCount(postChildCounter(result, 0));
         }
 
         return result;
@@ -202,19 +204,17 @@ public class PostJdbcTemplateRepository implements PostRepository {
         }
 
         post.setFeedbackTags(list);
+    }
 
-//        HashMap<String, FeedbackTagHelper> hm = new HashMap<>();
-//        if (feedbackTags.size() > 0) {
-//            for (PostFeedbackTag i : feedbackTags) {
-//                FeedbackTagHelper feedbackTagHashmapHelper = hm.get(i.getFeedbackTag().getName());
-//                Integer j = null;
-//                if (feedbackTagHashmapHelper != null) {
-//                    j = feedbackTagHashmapHelper.getValue();
-//                }
-//                hm.put(i.getFeedbackTag().getName(), new FeedbackTagHelper(i.getFeedbackTag().getName(), (j == null) ? 1 : j + 1, i.getFeedbackTag().getColorHex()));
-//            }
-//        }
-//
-//        post.setFeedbackTags(hm);
+    private int postChildCounter(Post post, int counter) {
+        counter++;
+        for (Post p : post.getChildPosts()) {
+            if (p.isActive()) {
+                counter++;
+                counter = postChildCounter(p, counter);
+            }
+        }
+
+        return counter;
     }
 }

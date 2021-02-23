@@ -1,11 +1,11 @@
-@url = http://localhost:8080/api/article/
+@url = http://localhost:8080/api/article
 
 ### return All -
 GET {{url}} HTTP/1.1
 
 
 ### should return article
-GET {{url}}/s7d98a02-sm21-s82k-dm2k-dn2ja82ks0sj HTTP/1.1
+GET {{url}}/c32bec11-b9a0-434b-bda7-08b9cf2007e2 HTTP/1.1
 
 ### should not return article 404
 GET {{url}}/zzz HTTP/1.1
