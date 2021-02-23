@@ -16,7 +16,7 @@ function AdminBar ( { user } ) {
   
   return (
     <>
-      {user.userRole === "admin" ?
+      {user.hasRole("ROLE_ADMIN") ?
       <>
         <div className="container alert alert-secondary d-flex flex-row justify-content-end mb-4">
           <div className="mr-auto align-self-center"><h5 className="pt-1 mr-4">Admin</h5></div>
