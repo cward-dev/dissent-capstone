@@ -64,14 +64,14 @@ function AddTopic ( { user } ) {
     <form onSubmit={handleAddSubmit}>
       <Errors errors={errors} />
       {addTopic ?
-        <div className="form-row mb-4">
+        <div className="form-row mb-4 mx-1">
           <div className="col-9">
             <label htmlFor="content" className="pl-2 pt-2">New Topic</label>
           </div>
           <input type="text" className="form-control mb-3 mx-2" id="topicName" name="topicName" onChange={handleChange} />
-          <div className="col text-right">
+          <div className="col text-right mr-2">
             <button type="button" className="btn btn-light btn-sm" onClick={handleCancel}>Cancel</button>
-            <button type="submit" className="btn btn-dark mx-2 btn-sm">Submit</button>
+            <button type="submit" className="btn btn-dark btn-sm mx-2">Submit</button>
           </div>
         </div>
       : <div className="d-flex flex-row justify-content-center"><button className="btn btn-secondary btn-sm col" onClick={handleAddClick}>Add Topic</button></div>}
