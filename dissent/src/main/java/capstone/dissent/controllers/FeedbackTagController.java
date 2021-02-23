@@ -21,13 +21,12 @@ public class FeedbackTagController {
 
     @GetMapping
     public List<FeedbackTag> findAll() {
-        List<FeedbackTag> result = service.findAll();
-        return result;
+        return service.findAll();
     }
 
-    @GetMapping("/inactive")
-    public List<FeedbackTag> findAllInactive() {
-        return service.findAllInactive();
+    @GetMapping("/with-inactive")
+    public List<FeedbackTag> findAllWithInactive() {
+        return service.findAllWithInactive();
     }
 
     @GetMapping("/{feedbackTagId}")
@@ -62,6 +61,15 @@ public class FeedbackTagController {
         }
 
         return ErrorResponse.build(result);
+    }
+
+    @PutMapping("/activate/{feedbackTagId}")
+    public ResponseEntity<FeedbackTag> activateById(@PathVariable int feedbackTagId) {
+        if (service.activateById(feedbackTagId)) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @DeleteMapping("/{feedbackTagId}")

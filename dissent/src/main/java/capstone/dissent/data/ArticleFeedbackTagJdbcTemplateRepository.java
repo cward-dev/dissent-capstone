@@ -30,7 +30,7 @@ public class ArticleFeedbackTagJdbcTemplateRepository implements ArticleFeedback
                 + "ft.is_active as is_active "
                 + "from article_feedback_tag aft "
                 + "inner join feedback_tag ft on aft.feedback_tag_id = ft.feedback_tag_id "
-                + "where aft.article_id = ?;";
+                + "where aft.article_id = ? and ft.is_active = true;";
 
         var articleFeedbackTags = jdbcTemplate.query(
                 sql, new ArticleFeedbackTagMapper(), articleId);

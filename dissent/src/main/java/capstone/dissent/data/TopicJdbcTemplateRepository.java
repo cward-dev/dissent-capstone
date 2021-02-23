@@ -96,15 +96,6 @@ public class TopicJdbcTemplateRepository implements TopicRepository {
 
     @Override
     public Topic add(Topic topic) {
-        Topic inactiveTopic = findInactiveByName(topic.getTopicName());
-        if (inactiveTopic != null) {
-            if (activateById(inactiveTopic.getTopicId())) {
-                inactiveTopic.setActive(true);
-                return inactiveTopic;
-            }
-            return null;
-        }
-
         final String sql = "insert into topic (topic_name) values (?);";
 
         KeyHolder keyHolder = new GeneratedKeyHolder();

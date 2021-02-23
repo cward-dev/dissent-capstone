@@ -34,7 +34,6 @@ function ArticleFeedbackTagIcon( { setErrors, article, user } ) {
 
   const handleTagClick = () => {
     getData();
-    setFeedbackTagMenuDisplayed(false);
   }
  
   return(

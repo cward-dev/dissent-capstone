@@ -1,19 +1,21 @@
 import { useState } from 'react';
 import Errors from '../../Errors.js';
 
-function EditTopic ( { topic, setTopicToEdit, user } ) {
+function EditFeedbackTag ( { feedbackTag, setFeedbackTagToEdit, user } ) {
 
-  const [editedTopic, setEditedTopic] = useState( {
-    "topicId": topic.topicId,
-    "topicName": topic.topicName
+  const [editedFeedbackTag, setEditedFeedbackTag] = useState( {
+    "feedbackTagId": feedbackTag.feedbackTagId,
+    "name": feedbackTag.name,
+    "colorHex": feedbackTag.colorHex,
+    "active": feedbackTag.active,
   } );
   const [errors, setErrors] = useState([]);
 
 
   const handleChange = (event) => {
-    const updatedTopic = {...topic};
-    updatedTopic[event.target.name] = event.target.value;
-    setEditedTopic(updatedTopic);
+    const updatedFeedbackTag = {...feedbackTag};
+    updatedFeedbackTag[event.target.name] = event.target.value;
+    setEditedFeedbackTag(updatedFeedbackTag);
   };
 
   const handleEditSubmit = async (event) => {
@@ -25,11 +27,11 @@ function EditTopic ( { topic, setTopicToEdit, user } ) {
         "Content-Type": "application/json",
         "Accept": "application/json"
       },
-      body: JSON.stringify(editedTopic)
+      body: JSON.stringify(editedFeedbackTag)
     };
 
     try {
-      const response = await fetch(`http://localhost:8080/api/topic/${topic.topicId}`, init);
+      const response = await fetch(`http://localhost:8080/api/feedback-tag/${feedbackTag.feedbackTagId}`, init);
 
       if (response.status === 204) {
         handleCancel();
@@ -45,7 +47,7 @@ function EditTopic ( { topic, setTopicToEdit, user } ) {
   }
 
   const handleCancel = () => {
-    setTopicToEdit(null);
+    setFeedbackTagToEdit(null);
   }
 
   return (
@@ -53,9 +55,11 @@ function EditTopic ( { topic, setTopicToEdit, user } ) {
       <Errors errors={errors} />
       <div className="form-row mx-1">
         <div className="col">
-          <label htmlFor="topicName" className="pl-2 pt-2">Edit Topic - {topic.topicName}</label>
+          <label htmlFor="content" className="pl-2 pt-2">Edit Feedback Tag - {feedbackTag.name}</label>
         </div>
-        <input type="text" className="form-control mb-3" id="topicName" name="topicName" value={topic.topicName} required onChange={handleChange} />
+        <input type="text" className="form-control mb-3 mx-2" id="name" name="name" value={feedbackTag.name} onChange={handleChange} />
+        <label htmlFor="colorHex" className="pl-2 pt-2">Color</label>
+        <input type="color" id="colorHex" name ="colorHex" className="col-2 form-control ml-2 p-1" defaultValue={feedbackTag.colorHex} required onChange={handleChange}></input>
         <div className="col text-right">
           <button type="button" className="btn btn-light btn-sm" onClick={handleCancel}>Cancel</button>
           <button type="submit" className="btn btn-dark btn-sm ml-2">Submit</button>
@@ -65,4 +69,4 @@ function EditTopic ( { topic, setTopicToEdit, user } ) {
   );
 }
 
-export default EditTopic;
+export default EditFeedbackTag;

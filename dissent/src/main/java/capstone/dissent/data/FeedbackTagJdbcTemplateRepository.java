@@ -28,8 +28,8 @@ public class FeedbackTagJdbcTemplateRepository implements FeedbackTagRepository 
     }
 
     @Override
-    public List<FeedbackTag> findAllInactive() {
-        final String sql = "select feedback_tag_id, feedback_tag_name, color_hex, is_active from feedback_tag where is_active = false limit 1000;";
+    public List<FeedbackTag> findAllWithInactive() {
+        final String sql = "select feedback_tag_id, feedback_tag_name, color_hex, is_active from feedback_tag limit 1000;";
         return jdbcTemplate.query(sql, new FeedbackTagMapper());
     }
 
@@ -51,15 +51,6 @@ public class FeedbackTagJdbcTemplateRepository implements FeedbackTagRepository 
 
     @Override
     public FeedbackTag add(FeedbackTag feedbackTag) {
-        FeedbackTag inactiveFeedbackTag = findInactiveByName(feedbackTag.getName());
-        if (inactiveFeedbackTag != null) {
-            if (activateById(inactiveFeedbackTag.getFeedbackTagId())) {
-                inactiveFeedbackTag.setActive(true);
-                return inactiveFeedbackTag;
-            }
-            return null;
-        }
-
         final String sql = "insert into feedback_tag (feedback_tag_name, color_hex) values (?,?);";
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
@@ -84,7 +75,7 @@ public class FeedbackTagJdbcTemplateRepository implements FeedbackTagRepository 
         final String sql = "update feedback_tag set "
                 + "feedback_tag_name = ?, "
                 + "color_hex = ? "
-                + "where feedback_tag_id = ? and is_active = true;";
+                + "where feedback_tag_id = ?;";
 
         return jdbcTemplate.update(sql, feedbackTag.getName(), feedbackTag.getColorHex(), feedbackTag.getFeedbackTagId()) > 0;
     }
