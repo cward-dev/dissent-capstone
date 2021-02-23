@@ -1,8 +1,13 @@
 package capstone.dissent.models;
 
+import javax.validation.constraints.NotBlank;
+
 public class ArticleFeedbackTag {
 
+    @NotBlank(message = "Must have an article Id")
     private String articleId;
+
+    @NotBlank(message = "Must have an user Id")
     private String userId;
 
     private FeedbackTag feedbackTag;

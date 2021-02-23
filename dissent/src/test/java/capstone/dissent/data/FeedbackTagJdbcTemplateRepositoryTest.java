@@ -93,11 +93,14 @@ class FeedbackTagJdbcTemplateRepositoryTest {
         assertFalse(repository.deleteById(45));
     }
 
+
     private FeedbackTag makeFeedbackTag() {
         FeedbackTag feedbackTag = new FeedbackTag();
         feedbackTag.setName("Super Sound");
         feedbackTag.setColorHex("#000000");
         return feedbackTag;
     }
+
+
 
 }

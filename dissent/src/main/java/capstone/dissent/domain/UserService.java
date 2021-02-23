@@ -102,10 +102,6 @@ public class UserService implements UserDetailsService {
             return result;
         }
 
-        if (user.getUserId() == null || user.getUserId().isBlank()) {
-            result.addMessage("User ID must be set for `edit` operation", ResultType.INVALID);
-            return result;
-        }
 
         if (!repository.edit(user)) {
             result.addMessage(String.format("User ID: %s, not found", user.getUserId()), ResultType.NOT_FOUND);
@@ -148,20 +144,17 @@ public class UserService implements UserDetailsService {
 
         // Regex's to check valid password.
         String regexDigit = ".*\\d.*";
-        String regexLowerCase = "[a-zA-Z].*";
+        String regexLowerCase = ".*[a-z].*";
+        String regexUpperCase = ".*[A-Z].*";
         String regexLength = "(?=\\S+$).{8,20}";
         String regexSpecial = "[a-zA-Z0-9]*";
 
-        if (password == null) {
-            result.addMessage("Password cannot be empty.", ResultType.INVALID);
-            return result;
-        }
 
         if (!password.matches(regexDigit)) {
             result.addMessage("Password must contain a digit 0-9.", ResultType.INVALID);
         }
 
-        if (!password.matches(regexLowerCase)) {
+        if (!(password.matches(regexLowerCase) && password.matches(regexUpperCase))) {
             result.addMessage("Password must contain an upper and lowercase letter.", ResultType.INVALID);
         }
 

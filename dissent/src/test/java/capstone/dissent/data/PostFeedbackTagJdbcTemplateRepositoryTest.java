@@ -2,6 +2,7 @@ package capstone.dissent.data;
 
 import capstone.dissent.models.FeedbackTag;
 import capstone.dissent.models.FeedbackTagHelper;
+import capstone.dissent.models.Post;
 import capstone.dissent.models.PostFeedbackTag;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -64,4 +65,18 @@ class PostFeedbackTagJdbcTemplateRepositoryTest {
 
         return postFeedbackTag;
     }
+
+    @Test
+    void shouldFindByKey(){
+        PostFeedbackTag tag = repository.findByKey("a7db5cb6-446a-4c8e-836e-006d9ff239b5","dffec086-b1e9-455a-aab4-ff6c6611fef0",2);
+
+        assertNotNull(tag);
+    }
+    @Test
+    void shouldNotFindByKey(){
+        PostFeedbackTag tag = repository.findByKey("x","x",-1);
+
+        assertNull(tag);
+    }
+
 }

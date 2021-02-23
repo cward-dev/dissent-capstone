@@ -63,4 +63,17 @@ class ArticleFeedbackTagJdbcTemplateRepositoryTest {
 
         return articleFeedbackTag;
     }
+
+    @Test
+    void shouldFindByKey(){
+        ArticleFeedbackTag tag = repository.findByKey("a", "b", 1);
+
+        assertNotNull(tag);
+    }
+
+    @Test
+    void shouldNotFindByKey(){
+        ArticleFeedbackTag tag = repository.findByKey("a","b",-1);
+        assertNull(tag);
+    }
 }

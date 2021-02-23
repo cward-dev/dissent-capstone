@@ -169,6 +169,24 @@ begin
             'https://cdn.eso.org/images/thumb700x/eso1907a.jpg', 
             'United States', 
             'The truth is out there.'
+		),
+        (
+			'A', 
+            'Update-dissenter', 
+            'UPDATE@stoj.com', 
+			'testPass', 
+            'https://cdn.eso.org/images/thumb700x/eso1907a.jpg', 
+            'United States', 
+            'The truth is out there.'
+		),
+        (
+			'b', 
+            'Delete-Dissenter101', 
+            'Delete@stoj.com', 
+			'testPass', 
+            'https://cdn.eso.org/images/thumb700x/eso1907a.jpg', 
+            'United States', 
+            'The truth is out there.'
 		);
         
 	insert into user_role 
@@ -312,7 +330,8 @@ begin
 	insert into article_feedback_tag 
 		(article_id, user_id, feedback_tag_id)
     values
-		('c32bec11-b9a0-434b-bda7-08b9cf2007e2', 'dffec086-b1e9-455a-aab4-ff6c6611fef0', 1); # Sound
+		('c32bec11-b9a0-434b-bda7-08b9cf2007e2', 'dffec086-b1e9-455a-aab4-ff6c6611fef0', 1), # Sound
+        ('a','b',1);
 
 end //
 -- 4. Change the statement terminator back to the original.

@@ -84,6 +84,24 @@ class PostJdbcTemplateRepositoryTest {
         assertFalse(repository.deleteById("this-leads-to-nothing"));
     }
 
+
+    @Test
+    void shouldFindByTimeStampRange() {
+        List<Post> posts = repository.findByTimestampRange(LocalDateTime.of(2020, 02, 01, 01, 01),
+                LocalDateTime.of(2021, 02, 15, 23, 01));
+
+        assertEquals(1, posts.size());
+    }
+
+    @Test
+    void shouldNotFindByTimeStampRange() {
+        List<Post> posts = repository.findByTimestampRange(LocalDateTime.of(1999, 02, 01, 01, 01),
+                LocalDateTime.of(1999, 02, 15, 23, 01));
+
+        assertEquals(0, posts.size());
+
+    }
+
     private Post makePost() {
         Post post = new Post();
         post.setParentPostId("a7db5cb6-446a-4c8e-836e-006d9ff239b5");

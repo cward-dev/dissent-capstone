@@ -140,10 +140,6 @@ public class Article {
         this.datePosted = datePosted;
     }
 
-    public int getMAX_CHARACTERS() {
-        return MAX_CHARACTERS;
-    }
-
     public boolean isActive() {
         return isActive;
     }

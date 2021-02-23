@@ -162,6 +162,7 @@ public class UserJdbcTemplateRepository implements UserRepository {
     }
 
     private void deleteRoles(User user) {
+        if (user == null) return;
         jdbcTemplate.update("delete from user_role where user_id = ?;", user.getUserId());
     }
 
