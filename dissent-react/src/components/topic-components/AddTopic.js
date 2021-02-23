@@ -76,7 +76,6 @@ function AddTopic ( { handleUpdate, user } ) {
           </div>
         </div>
       : <div className="d-flex flex-row justify-content-center"><button className="btn btn-secondary btn-sm col" onClick={handleAddClick}>Add Topic</button></div>}
-      <hr></hr>
     </form>
   );
 }

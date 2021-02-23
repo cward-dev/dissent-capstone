@@ -29,8 +29,8 @@ public class TopicService {
         return repository.findAll();
     }
 
-    public List<Topic> findAllInactive() {
-        return repository.findAllInactive();
+    public List<Topic> findAllWithInactive() {
+        return repository.findAllWithInactive();
     }
 
     public Topic findById(int topicId) {

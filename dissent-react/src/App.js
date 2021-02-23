@@ -2,6 +2,7 @@ import { useState, useEffect, React } from 'react';
 import { Route, BrowserRouter as Router, Switch, Link } from 'react-router-dom';
 import HomePage from './components/article-components/HomePage.js';
 import TopicPage from './components/topic-components/TopicPage.js';
+import TopicAdmin from './components/topic-components/TopicAdmin.js';
 import About from './components/pages/About.js';
 import UserPage from './components/pages/UserPage.js';
 import ArticlePage from './components/article-components/ArticlePage.js';
@@ -41,7 +42,10 @@ function App() {
         <div className="row">
           <div className="col-8 alert alert-secondary pt-4">
             <Switch>
-              <Route path={'/article/add'} exact>
+              <Route path={'/admin/topics'} exact>
+                <TopicAdmin user={user} />
+              </Route>
+              <Route path={'/admin/article/add'} exact>
                 <AddArticlesPage user={user} />
               </Route>
               <Route path={'/article/:articleId'} exact>

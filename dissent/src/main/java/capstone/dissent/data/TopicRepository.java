@@ -8,7 +8,7 @@ public interface TopicRepository {
 
     public List<Topic> findAll();
 
-    public List<Topic> findAllInactive();
+    public List<Topic> findAllWithInactive();
 
     public Topic findById(int topicId);
 
