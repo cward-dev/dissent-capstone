@@ -27,7 +27,15 @@ const DEFAULT_USER = {
 }
 
 function App() {
-  const [user, setUser] = useState(null); // replace with default user for dev
+
+  const [user, setUser] = useState();
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      login(token)
+    }
+  }, []);
 
   const login = (token) => {
     const { userId, sub: username, authorities } = jwt_decode(token);
@@ -42,6 +50,7 @@ function App() {
       }
     }
     setUser(user);
+    localStorage.setItem("token", token)
   }
 
   const authenticate = async (username, password) => {
@@ -68,6 +77,7 @@ function App() {
 
   const logout = () => {
     setUser(null);
+    localStorage.clear();
   }
 
   const auth = {
@@ -82,7 +92,7 @@ function App() {
     <AuthContext.Provider value = {auth}>
       <Router>
         <Navbar />
-        {(user != null && Object.values(user.roles).join(',').includes("ADMIN")) &&
+        {(user != null && user.hasRole("ROLE_ADMIN")) &&
           <AdminBar user={user} />
         }
         <div className="container">
