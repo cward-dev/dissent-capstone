@@ -55,7 +55,7 @@ public class UserController {
         if (result.isSuccess()) {
             // happy path
             HashMap<String, String> map = new HashMap<>();
-            map.put("appUserId", String.valueOf(user.getUserId()));
+            map.put("userId", String.valueOf(user.getUserId()));
             return new ResponseEntity<>(map, HttpStatus.CREATED);
         }
 

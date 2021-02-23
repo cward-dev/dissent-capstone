@@ -36,6 +36,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter { // 2
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable();
+        http.cors();
         http.authorizeRequests()
                 .antMatchers("/api/user/create-account").permitAll() // allow anyone to create an account.
                 .antMatchers("/authenticate").permitAll()   // allow anyone to attempt authentication

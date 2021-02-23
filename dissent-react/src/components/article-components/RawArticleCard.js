@@ -104,7 +104,7 @@ function RawArticleCard ( { rawArticle, user, handleSetArticles } ) {
         <div className="card-footer w-100 text-muted px-1">
           <div className="d-flex flex-row justify-content-end">
             <Errors errors={errors} />
-            {user.userRole === "admin" ? <>
+            {(user != null && user.hasRole("ROLE_ADMIN")) ? <>
                   {added ? <button className="btn btn-success mr-2 px-2 py-1">Article Added</button> : <button onClick={handleAddClick} className="btn btn-secondary mr-2 px-2 py-1">Add Article</button>}
                 </> : null}
           </div>

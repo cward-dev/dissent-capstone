@@ -13,6 +13,8 @@ function UserCard ( { user } ) {
 
   const { userId, username, photoUrl, country, bio, role, posts, feedbackTags } = TEST_USER;
 
+  
+
 
   return (
     <div key={userId} className="card flex-row flex-wrap text-white bg-dark mb-4">

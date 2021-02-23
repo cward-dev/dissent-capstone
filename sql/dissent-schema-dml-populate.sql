@@ -12,8 +12,8 @@ values
 	(
 		'dffec086-b1e9-455a-aab4-ff6c6611fef0', 
         'admin@dissent.com',
-        'd1ssent',
-		'dissenter101', 
+        '$2y$12$oIbcF6nwDEYjwTx6Mnk6Uurksu9rVPsTtcrB2dAufrOWATwAxLWsW',
+		'admin', 
 		'https://www.birdnote.org/sites/default/files/Daffy_Duck-2-warner-bros-625.jpg', 
 		'United States', 
 		'The truth is out there.'
