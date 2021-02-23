@@ -24,9 +24,9 @@ public class TopicController {
         return service.findAll();
     }
 
-    @GetMapping("/inactive")
-    public List<Topic> findAllInactive() {
-        return service.findAllInactive();
+    @GetMapping("/with-inactive")
+    public List<Topic> findAllWithInactive() {
+        return service.findAllWithInactive();
     }
 
     @GetMapping("/{topicId}")

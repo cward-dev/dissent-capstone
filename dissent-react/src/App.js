@@ -2,6 +2,7 @@ import { useState, useEffect, React } from 'react';
 import { Route, BrowserRouter as Router, Switch, Link } from 'react-router-dom';
 import HomePage from './components/article-components/HomePage.js';
 import TopicPage from './components/topic-components/TopicPage.js';
+import TopicsAdmin from './components/topic-components/topic-admin/TopicsAdmin.js';
 import About from './components/pages/About.js';
 import UserPage from './components/pages/UserPage.js';
 import ArticlePage from './components/article-components/ArticlePage.js';
@@ -24,14 +25,23 @@ const DEFAULT_USER = {
 
 function App() {
   const [user, setUser] = useState(DEFAULT_USER);
+  const [topicsUpdated, setTopicsUpdated] = useState(false);
 
   const handleSetUser = (user) => {
     setUser(user);
-  }
+  };
 
   const handleLogout = () => {
     setUser(null);
-  }
+  };
+
+  const handleTopicsUpdated = () => {
+    if (topicsUpdated) {
+      setTopicsUpdated(false);
+    } else {
+      setTopicsUpdated(true);
+    }
+  };
 
   return (      
     <Router>
@@ -41,7 +51,10 @@ function App() {
         <div className="row">
           <div className="col-8 alert alert-secondary pt-4">
             <Switch>
-              <Route path={'/article/add'} exact>
+              <Route path={'/admin/topics'} exact>
+                <TopicsAdmin handleTopicsUpdated={handleTopicsUpdated} user={user} />
+              </Route>
+              <Route path={'/admin/article/add'} exact>
                 <AddArticlesPage user={user} />
               </Route>
               <Route path={'/article/:articleId'} exact>
@@ -68,7 +81,7 @@ function App() {
             </Switch>
           </div>
           <div className="col container alert alert-secondary ml-4">
-            <TopicSidebar user={user} />
+            <TopicSidebar topicsUpdated={topicsUpdated} user={user} />
           </div>
         </div>
       </div>

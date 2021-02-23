@@ -18,8 +18,8 @@ function AdminBar ( { user } ) {
     <>
       <div className="container alert alert-secondary d-flex flex-row justify-content-end mb-4">
         <div className="mr-auto align-self-center"><h5 className="pt-1 mr-4">Admin</h5></div>
-        <Link className="btn btn-dark mr-2" to="/article/add">Add Articles</Link>
-        <div className="ml-2" />
+        <Link className="btn btn-dark mr-2" to="/admin/topics">Topics</Link>
+        <Link className="btn btn-dark mr-2" to="/admin/article/add">Add Articles</Link>
         <button className="btn btn-dark mr-2" onClick={onViewUsers}>View Users</button>
       </div>
       {adminBarSelection == 0 ? null:

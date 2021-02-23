@@ -82,6 +82,8 @@ function AddArticlesPage( { user } ) {
   return (
     <div className="container">
       <Errors errors={errors} />
+      <h1 className="d-flex flex-row justify-content-center mb-4">Add New Articles</h1>
+      <hr className="mb-4"></hr>
       <NewsAPIFeed articles={articles} setArticles={setArticles} user={user} />
       <button className="col btn btn-danger" onClick={fetchArticles}>Get Articles</button>
     </div>

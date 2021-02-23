@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, useHistory } from 'react-router-dom';
-import Errors from '../Errors.js';
+import Errors from '../../Errors.js';
 
 function AddTopic ( { handleUpdate, user } ) {
 
@@ -76,7 +76,6 @@ function AddTopic ( { handleUpdate, user } ) {
           </div>
         </div>
       : <div className="d-flex flex-row justify-content-center"><button className="btn btn-secondary btn-sm col" onClick={handleAddClick}>Add Topic</button></div>}
-      <hr></hr>
     </form>
   );
 }

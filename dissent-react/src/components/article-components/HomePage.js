@@ -20,6 +20,8 @@ function HomePage( { user } ) {
 
   return (
     <div className="container">
+      <h1 className="d-flex flex-row justify-content-center mb-4">Latest Articles</h1>
+      <hr className="mb-4"></hr>
       <ArticleFeed articles={articles} user={user} />
     </div>
   );
