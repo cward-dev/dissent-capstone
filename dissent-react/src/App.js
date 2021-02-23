@@ -10,6 +10,7 @@ import TopicSidebar from './components/topic-components/TopicSidebar.js';
 import NotFound from './components/pages/NotFound.js';
 import Navbar from './components/Navbar.js';
 import AdminBar from './components/AdminBar.js';
+import Login from './components/user-components/Login';
 import './App.css';
 
 const DEFAULT_USER = {
@@ -58,6 +59,9 @@ function App() {
               </Route>
               <Route path='/user' exact>
                 <UserPage user={user} />
+              </Route>
+              <Route path='/login'>
+                <Login />
               </Route>
               <Route path='/' exact>
                 <HomePage user={user} />
