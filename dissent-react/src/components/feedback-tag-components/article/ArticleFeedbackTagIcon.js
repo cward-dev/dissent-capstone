@@ -25,6 +25,9 @@ function ArticleFeedbackTagIcon( { setErrors, article, user } ) {
   }, [feedbackTags]);
 
   let handleClick = () => {
+    if (!user) {
+      return;
+    }
     if (feedbackTagMenuDisplayed) {
       setFeedbackTagMenuDisplayed(false);
     } else {
