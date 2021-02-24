@@ -1,6 +1,27 @@
 import { useContext, useEffect, useState } from 'react';
+import UserFeedbackTagIcon from '../feedback-tag-components/user/UserFeedbackTagIcon'
+import AuthContext from '../AuthContext';
 
 function UserCard ({user}) {
+
+  const auth = useContext(AuthContext);
+
+  const [posts, setPosts] = useState([])
+
+  useEffect(() => {
+    getData();
+  }, []);
+
+  const getData = async () => {
+    try {
+      const response = await fetch(`http://localhost:8080/api/post/user/${user.userId}`);
+      const data = await response.json();
+      setPosts(data);
+    } catch (error) {
+      console.log("Something went wrong.")
+    }
+  };
+
 
   return (
     <div key={user.userId} className="card flex-row flex-wrap text-white bg-dark mb-4">
@@ -11,11 +32,12 @@ function UserCard ({user}) {
         <h4 className="card-title">{user.username}</h4>
         <p className="card-text">{user.country}</p>
         <p className="card-text">{user.bio}</p>
+        <p className="card-text">Roles: {Object.values(user.roles).toString()}</p>
       </div>
       <div className="col text-center p-2">
-        <a className="nav-link active" href="http://www.google.com"><img className="tag-pie-chart-user-profile" src="http://www.pngpix.com/wp-content/uploads/2016/10/PNGPIX-COM-Pie-Chart-PNG-Image.png" /></a>
+        <UserFeedbackTagIcon user={auth.user} thisUser={user} />
       </div>
-      <div className="card-footer w-100 text-white p-2 border-white">Total Posts: </div>
+      <div className="card-footer w-100 text-white p-2 border-white">Total Posts: {posts.length} </div>
     </div>
   );
 }

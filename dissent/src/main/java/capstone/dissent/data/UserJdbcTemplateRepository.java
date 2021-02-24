@@ -65,7 +65,7 @@ public class UserJdbcTemplateRepository implements UserRepository {
     @Override
     public List<User> findAll() {
         final String sql = "select * from `user` limit 1000;";
-        return jdbcTemplate.query(sql, new UserMapper());
+        return jdbcTemplate.query(sql, new UserMapper(jdbcTemplate));
     }
 
     @Override
@@ -74,7 +74,7 @@ public class UserJdbcTemplateRepository implements UserRepository {
                 "from `user`" +
                 "where user_id = ?;";
 
-        User user = jdbcTemplate.query(sql, new UserMapper(), userId).stream()
+        User user = jdbcTemplate.query(sql, new UserMapper(jdbcTemplate), userId).stream()
                 .findAny().orElse(null);
 
         if (user != null) {
@@ -91,7 +91,7 @@ public class UserJdbcTemplateRepository implements UserRepository {
                 "from `user`" +
                 "where username = ?;";
 
-        User user = jdbcTemplate.query(sql, new UserMapper(), username).stream()
+        User user = jdbcTemplate.query(sql, new UserMapper(jdbcTemplate), username).stream()
                 .findAny().orElse(null);
 
         if (user != null) {
