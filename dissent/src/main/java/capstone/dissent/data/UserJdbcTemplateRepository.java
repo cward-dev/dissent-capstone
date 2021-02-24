@@ -146,7 +146,8 @@ public class UserJdbcTemplateRepository implements UserRepository {
                 + "ft.feedback_tag_id, ft.feedback_tag_name, ft.color_hex, ft.is_active "
                 + "from post_feedback_tag pft "
                 + "inner join feedback_tag ft on pft.feedback_tag_id = ft.feedback_tag_id "
-                + "where pft.user_id = ?";
+                + "inner join post p on pft.post_id = p.post_id "
+                + "where p.user_id = ?";
 
         var feedbackTags = jdbcTemplate.query(sql, new PostFeedbackTagMapper(), userId);
 
