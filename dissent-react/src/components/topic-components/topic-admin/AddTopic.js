@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import Errors from '../../Errors.js';
 
-function AddTopic ( { user } ) {
+function AddTopic ( { update, setUpdate, user } ) {
 
   const [addTopic, setAddTopic] = useState(false);
 
@@ -39,6 +39,13 @@ function AddTopic ( { user } ) {
         const data = await response.json();
 
         if (data.topicId) {
+
+          if (update === true) {
+            setUpdate(false);
+          } else {
+            setUpdate(true);
+          }
+
           handleCancel();
           setErrors([]);
         } else {

@@ -1,6 +1,7 @@
 package capstone.dissent.data;
 
 import capstone.dissent.models.FeedbackTag;
+import capstone.dissent.models.FeedbackTagHelper;
 import capstone.dissent.models.User;
 
 import java.util.HashMap;
@@ -23,6 +24,8 @@ public interface UserRepository {
 
     // delete
     boolean deleteById(String userId);
+
+    List<FeedbackTagHelper> getAllUserFeedbackById(String userId);
 
 
 }

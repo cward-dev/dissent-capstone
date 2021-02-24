@@ -67,6 +67,7 @@ class TopicJdbcTemplateRepositoryTest {
     }
 
     @Test
+
     void shouldReactivateIfAddedExistingInactive() {
         Topic topic = makeTopic();
         topic.setTopicName("History");
@@ -75,7 +76,7 @@ class TopicJdbcTemplateRepositoryTest {
         assertTrue( actual.getTopicId() >=6 && actual.getTopicId()<=8);
     }
 
-    @Test
+
     void shouldUpdate() {
         Topic topic = new Topic();
         topic.setTopicId(2);

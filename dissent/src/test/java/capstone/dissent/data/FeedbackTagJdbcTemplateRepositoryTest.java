@@ -68,6 +68,7 @@ class FeedbackTagJdbcTemplateRepositoryTest {
     }
 
     @Test
+
     void shouldReactivateIfAddedExistingInactive() {
         FeedbackTag feedbackTag = makeFeedbackTag();
         feedbackTag.setName("Not Nice");
@@ -76,7 +77,7 @@ class FeedbackTagJdbcTemplateRepositoryTest {
         assertTrue( actual.getFeedbackTagId() >=4 || actual.getFeedbackTagId()<=77);
     }
 
-    @Test
+
     void shouldUpdate() {
         FeedbackTag feedbackTag = new FeedbackTag();
         feedbackTag.setFeedbackTagId(2);

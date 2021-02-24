@@ -82,7 +82,7 @@ public class ArticleJdbcTemplateRepository implements ArticleRepository {
                 " from article a" +
                 " left outer join `source` s on a.source_id = s.source_id" +
                 " inner join article_topic ar on a.article_id = ar.article_id" +
-                " where ar.topic_id = ?;";
+                " where ar.topic_id = ? and a.is_active = true;";
 
         var articles = jdbcTemplate.query(sql, new ArticleMapper(), topicId);
 
@@ -105,7 +105,7 @@ public class ArticleJdbcTemplateRepository implements ArticleRepository {
                 " s.source_id, s.source_name, s.website_url, s.`description`" +
                 " from article a" +
                 " left outer join `source` s on a.source_id = s.source_id" +
-                " where a.date_posted between ? AND ?;";
+                " where (a.date_posted between ? AND ?) and is_active = true;";
 
         List<Article> result = jdbcTemplate.query(sql, new ArticleMapper(), d1, d2);
 

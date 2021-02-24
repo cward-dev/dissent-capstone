@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import Errors from '../../Errors.js';
 
-function EditTopic ( { topic, setTopicToEdit, user } ) {
+function EditTopic ( { topic, setTopicToEdit, update, setUpdate, user } ) {
 
   const [editedTopic, setEditedTopic] = useState( {
     "topicId": topic.topicId,
@@ -32,6 +32,13 @@ function EditTopic ( { topic, setTopicToEdit, user } ) {
       const response = await fetch(`http://localhost:8080/api/topic/${topic.topicId}`, init);
 
       if (response.status === 204) {
+
+        if (update === true) {
+          setUpdate(false);
+        } else {
+          setUpdate(true);
+        }
+
         handleCancel();
       } else if (response.status === 400) {
         const data = await response.json();

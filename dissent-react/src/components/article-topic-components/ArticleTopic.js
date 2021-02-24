@@ -1,10 +1,11 @@
 import { useState } from "react";
 
-function ArticleTopic ( { topic, article, setErrors, topics, setTopics } ) {
+function ArticleTopic ( { topic, article, setErrors, topics, setTopics, update, setUpdate } ) {
 
   const [articleTopicExists, setArticleTopicExists] = useState(article.topics.some(t => t.topicId === topic.topicId));
 
   const addArticleTopic = async () => {
+    let mounted = true;
 
     const articleTopicToAdd = {
       "articleId": article.articleId,
@@ -21,19 +22,24 @@ function ArticleTopic ( { topic, article, setErrors, topics, setTopics } ) {
     };
 
     try {
+
       const response = await fetch("http://localhost:8080/api/article/topic", init);
 
-      if (response.status === 201) {
-        setArticleTopicExists(true);
-        const newTopics = [...topics, topic];
-        setTopics(newTopics);
-        setErrors([]);
-      } else {
-        throw new Error(["Something unexpected went wrong, sorry!"]);
+      if (mounted) {
+        if (response.status === 201) {
+          setArticleTopicExists(true);
+          const newTopics = [...topics, topic];
+          setTopics(newTopics);
+          setErrors([]);
+        } else {
+          throw new Error(["Something unexpected went wrong, sorry!"]);
+        }
       }
     } catch (error) {
       setErrors(["Something unexpected went wrong, sorry!"]);
     }
+
+    return () => mounted = false;
   }
 
   const deleteArticleTopic = async () => {
@@ -57,13 +63,14 @@ function ArticleTopic ( { topic, article, setErrors, topics, setTopics } ) {
   const handleClick = () => {
     if (articleTopicExists) {
       deleteArticleTopic();
+      update === true ? setUpdate(false) : setUpdate(true);
     } else {
       addArticleTopic();
     }
   };
 
   return (
-    <button key={topic.topicId} type="button" className={`btn btn-sm ${articleTopicExists ? "btn-dark" : "btn-light"} m-1`} onClick={handleClick}>{topic.topicName}</button>
+    <button key={topic.topicId} type="button" className={`btn btn-sm ${articleTopicExists ? "btn-light" : "btn-dark"} m-1`} onClick={handleClick}>{topic.topicName}</button>
   );
 }
 

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import Errors from '../../Errors.js';
 
-function ReactivateFeedbackTag ( { feedbackTag, setFeedbackTagToReactivate, user } ) {
+function ReactivateFeedbackTag ( { feedbackTag, setFeedbackTagToReactivate, update, setUpdate, user } ) {
 
   const [errors, setErrors] = useState([]);
 
@@ -12,6 +12,13 @@ function ReactivateFeedbackTag ( { feedbackTag, setFeedbackTagToReactivate, user
       const response = await fetch(`http://localhost:8080/api/feedback-tag/activate/${feedbackTag.feedbackTagId}`, { method: "PUT" } );
 
       if (response.status === 204) {
+        
+        if (update === true) {
+          setUpdate(false)
+        } else {
+          setUpdate(true);
+        }
+        
         handleCancel();
         setErrors([]);
       } else {
