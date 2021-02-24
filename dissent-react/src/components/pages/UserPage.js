@@ -14,7 +14,9 @@ import {
 import AuthContext from '../AuthContext';
 
 function UserPage () {
+  const [updated, setUpdated] = useState(false);
   const auth = useContext(AuthContext);
+
   const [user, setUser] = useState();
   const [currentOption, setCurrentOption] = useState(0);
 
@@ -42,6 +44,10 @@ function UserPage () {
     setCurrentOption(1);
   };
 
+  const handleUserEdited = () => {
+    setCurrentOption(0);
+  }
+
 
   return (
     <div>
@@ -50,7 +56,7 @@ function UserPage () {
             <div>
               <UserCard user={user}/>
               {auth.user != null && (user.userId === auth.user.userId) ? <button onClick={handleEditUser} className="btn btn-dark">Edit Profile</button> : null}
-              {currentOption === 1 ? <Edit originalUser={user} user={user} setCurrentOption={setCurrentOption} /> : null}
+              {currentOption === 1 ? <Edit updated={updated} originalUser={user} user={user} setCurrentOption={setCurrentOption} handleUserEdited={handleUserEdited} /> : null}
             </div>
           : null
         }

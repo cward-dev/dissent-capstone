@@ -98,11 +98,6 @@ public class UserService implements UserDetailsService {
             return result;
         }
 
-        result = validatePassword(user);
-        if (!result.isSuccess()) {
-            return result;
-        }
-
 
         if (!repository.edit(user)) {
             result.addMessage(String.format("User ID: %s, not found", user.getUserId()), ResultType.NOT_FOUND);

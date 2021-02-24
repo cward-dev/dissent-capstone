@@ -1,8 +1,11 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import Errors from '../Errors.js';
+import AuthContext from '../AuthContext';
+import  { Redirect } from 'react-router-dom';
 
-function Edit ( { originalUser, setCurrentOption, handleUserAdded} ) {
+function Edit ( { originalUser, setCurrentOption} ) {
+  const auth = useContext(AuthContext)
 
   const [user, setUser] = useState(originalUser);
 
@@ -14,7 +17,6 @@ function Edit ( { originalUser, setCurrentOption, handleUserAdded} ) {
     const updatedUser = {...user};
     updatedUser[event.target.name] = event.target.value;
     setUser(updatedUser);
-    console.log(updatedUser)
   };
 
   const handleCancel = () => {
@@ -37,8 +39,9 @@ function Edit ( { originalUser, setCurrentOption, handleUserAdded} ) {
       const response = await fetch(`http://localhost:8080/api/user/${originalUser.userId}`, init);
 
       if (response.status === 204) {
-        handleUserAdded();
         handleCancel();
+        auth.logout();
+        history.push('/login')
       } else if (response.status === 400) {
         const data = await response.json();
         setErrors(data);
@@ -57,27 +60,17 @@ function Edit ( { originalUser, setCurrentOption, handleUserAdded} ) {
         <div className="form-row">
           <div className="form-group col">
             <label htmlFor="photoUrl">Photo URL</label>
-            <input id="photoUrl" type="text" className="form-control" placeholder="photoUrl" onChange={handleChange} defaultValue={originalUser.photoUrl}/>
+            <input id="photoUrl" name="photoUrl" type="text" className="form-control" placeholder="photoUrl" onChange={handleChange} defaultValue={originalUser.photoUrl}/>
           </div>
         </div>  
         <div className="form-row">
           <div className="form-group col">
-            <label htmlFor="photoUrl">Email</label>
-            <input type="email" className="form-control" placeholder="photoUrl" onChange={handleChange} defaultValue={originalUser.email}/>
-          </div>
-          <div className="form-group col">
-            <label htmlFor="password">Password</label>
-            <input type="password" className="form-control" placeholder="Password" onChange={handleChange} />
-          </div>
-        </div>
-        <div className="form-row">
-          <div className="form-group col">
             <label htmlFor="username">Username</label>
-            <input type="username" className="form-control" placeholder="Username" onChange={handleChange} defaultValue = {originalUser.username}/>
+            <input id="username" name="username" type="username" className="form-control" placeholder="Username" onChange={handleChange} defaultValue = {originalUser.username}/>
           </div>
           <div className="form-group col">
             <label htmlFor="country">Country</label><span></span>      
-              <select id="country" name="country" className="form-control" onChange={handleChange} value={originalUser.country}>
+              <select id="country" name="country" className="form-control" onChange={handleChange} defaultValue={originalUser.country}>
                 <option value="Afghanistan">Afghanistan</option>
                 <option value="Åland Islands">Åland Islands</option>
                 <option value="Albania">Albania</option>
@@ -327,9 +320,9 @@ function Edit ( { originalUser, setCurrentOption, handleUserAdded} ) {
         </div>
         <div className="form-group">
           <label htmlFor="bio">Bio</label>
-          <textarea type="text" className="form-control" id="bio" rows="6" placeholder="Tell us about yourself..." onChange={handleChange} defaultValue={originalUser.bio}/>
+          <textarea id="bio" name="bio" type="text" className="form-control" rows="6" placeholder="Tell us about yourself..." onChange={handleChange} defaultValue={originalUser.bio}/>
         </div>
-        <button type="submit" className="btn btn-dark">Register</button>
+        <button type="submit" className="btn btn-dark">Update</button>
         <button type="submit" className="btn btn-dark my-3 mx-3" onClick={handleCancel}>Cancel</button>
       </form>
     </div>
