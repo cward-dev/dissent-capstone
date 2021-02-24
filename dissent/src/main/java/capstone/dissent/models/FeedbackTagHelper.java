@@ -12,6 +12,7 @@ public class FeedbackTagHelper {
         this.color = color;
     }
 
+
     public String getTitle() {
         return title;
     }

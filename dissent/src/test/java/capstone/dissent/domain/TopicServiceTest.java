@@ -35,6 +35,49 @@ class TopicServiceTest {
         assertEquals(expected, actual);
     }
 
+
+    @Test
+    void shouldFindById(){
+        Topic topicIn = makeTopic();
+
+        when(repository.findById(topicIn.getTopicId())).thenReturn(topicIn);
+
+        Topic actual = service.findById(topicIn.getTopicId());
+       assertEquals(actual.getTopicName(),topicIn.getTopicName());
+    }
+
+    @Test
+    void shouldNotFindByID(){
+        Topic topic = service.findById(9999);
+        assertNull(topic);
+    }
+
+    @Test
+    void shouldFindByTopicName(){
+        Topic topicIn = makeTopic();
+
+        when(repository.findByTopicName(topicIn.getTopicName())).thenReturn(topicIn);
+        Topic actual = service.findByTopicName(topicIn.getTopicName());
+
+        assertEquals(actual.getTopicId(),topicIn.getTopicId());
+    }
+
+    @Test
+    void shouldNotFindByTopicsName(){
+        Topic topic = service.findByTopicName("Bogus");
+        assertNull(topic);
+    }
+
+    @Test
+    void shouldAddNullTopic(){
+        Result<Topic> result = service.add(null);
+
+        assertFalse(result.isSuccess());
+        assertTrue(result.getMessages().contains("Topic cannot be null"));
+    }
+
+
+
     @Test
     void shouldFindALlInactive() {
         List<Topic> expected = List.of(new Topic(5, "Healthcare", false));
@@ -143,6 +186,35 @@ class TopicServiceTest {
 
         assertEquals(ResultType.INVALID, result.getType());
         assertEquals("Topic ID must be set for `add` operation", result.getMessages().get(0));
+    }
+
+    @Test
+    void shouldNotEditInvalidTopic(){
+        Topic topic = makeTopic();
+        topic.setTopicId(9999);
+
+        Result<Topic> result = service.edit(topic);
+
+        assertFalse(result.isSuccess());
+        assertTrue(result.getMessages().contains("Topic ID: 9999, not found"));
+    }
+
+    @Test
+    void shouldActivateById(){
+        when(repository.activateById(1)).thenReturn(true);
+
+        boolean success = service.activateById(1);
+
+        assertTrue(success);
+    }
+
+    @Test
+    void shouldNotActivateByInvalidId(){
+        when(repository.activateById(1)).thenReturn(false);
+
+        boolean success = service.activateById(999);
+
+        assertFalse(success);
     }
 
     @Test

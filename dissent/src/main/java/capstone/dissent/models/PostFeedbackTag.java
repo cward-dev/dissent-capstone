@@ -7,6 +7,15 @@ public class PostFeedbackTag {
 
     private FeedbackTag feedbackTag;
 
+    public PostFeedbackTag() {
+
+    }
+
+    public PostFeedbackTag(String postId, String userId) {
+        this.postId = postId;
+        this.userId = userId;
+    }
+
     public String getPostId() {
         return postId;
     }
