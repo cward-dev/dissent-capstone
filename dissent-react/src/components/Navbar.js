@@ -23,7 +23,7 @@ function Navbar ({user, handleLogout}) {
               </>
               : 
                 <li className="nav-item">
-                  <Link className="nav-link active" to="/user">{auth.user.username}</Link>
+                  <Link className="nav-link active" to={`/user/${auth.user.username}`}>{auth.user.username}</Link>
                 </li>
             }
             <li className="nav-item">
