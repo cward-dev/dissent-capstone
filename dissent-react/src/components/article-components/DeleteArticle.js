@@ -42,6 +42,7 @@ function DeleteArticle ( { article, setDeleteArticle, user } ) {
           <button type="submit" className="btn btn-danger btn-sm ml-2">Delete</button>
         </div>
       </div>
+      <hr></hr>
     </form>
   );
 }

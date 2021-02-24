@@ -54,21 +54,21 @@ function Register() {
       <form onSubmit={handleSubmit}>
         <div className="form-row">
           <div className="form-group col">
-            <label for="email">Email</label>
+            <label htmlFor="email">Email</label>
             <input type="email" className="form-control" placeholder="Email" onChange={(event) => setEmail(event.target.value)} />
           </div>
           <div className="form-group col">
-            <label for="password">Password</label>
+            <label htmlFor="password">Password</label>
             <input type="password" className="form-control" placeholder="Password" onChange={(event) => setPassword(event.target.value)} />
           </div>
         </div>
         <div className="form-row">
           <div className="form-group col">
-            <label for="username">Username</label>
+            <label htmlFor="username">Username</label>
             <input type="username" className="form-control" placeholder="Username" onChange={(event) => setUsername(event.target.value)} />
           </div>
           <div className="form-group col">
-            <label for="country">Country</label><span></span>      
+            <label htmlFor="country">Country</label><span></span>      
               <select id="country" name="country" className="form-control" onChange={(event) => setCountry(event.target.value)}>
                 <option value="Afghanistan">Afghanistan</option>
                 <option value="Åland Islands">Åland Islands</option>
@@ -318,11 +318,11 @@ function Register() {
           </div>
         </div>
         <div className="form-group">
-          <label for="bio">Bio</label>
+          <label htmlFor="bio">Bio</label>
           <textarea type="text" className="form-control" id="bio" rows="6" placeholder="Tell us about yourself..." onChange={(event) => setBio(event.target.value)} />
         </div>
         <button type="submit" className="btn btn-dark">Register</button>
-        <button type="submit" class="btn btn-dark my-3 mx-3"><Link to={from}>Cancel</Link></button>
+        <button type="submit" className="btn btn-dark my-3 mx-3"><Link to={from}>Cancel</Link></button>
       </form>
     </div>
   )

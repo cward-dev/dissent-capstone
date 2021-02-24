@@ -25,6 +25,9 @@ function PostFeedbackTagIcon( { setErrors, post, user } ) {
   }, [feedbackTags]);
 
   let handleClick = () => {
+    if (!user) {
+      return;
+    }
     if (feedbackTagMenuDisplayed) {
       setFeedbackTagMenuDisplayed(false);
     } else {

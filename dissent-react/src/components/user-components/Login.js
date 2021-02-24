@@ -31,17 +31,17 @@ function Login() {
       <h2 className="mb-3">Login</h2>
       <Errors errors={errors} />
       <form onSubmit={handleSubmit}>
-        <div class="form-group">
-          <label for="username">Username:</label>
-          <input type="text" class="form-control" onChange={(event) => setUsername(event.target.value)} />
+        <div className="form-group">
+          <label htmlFor="username">Username:</label>
+          <input type="text" className="form-control" onChange={(event) => setUsername(event.target.value)} />
         </div>
         <div>
-          <label for="password">Password:</label>
-          <input type="password" class="form-control" onChange={(event) => setPassword(event.target.value)} />
+          <label htmlFor="password">Password:</label>
+          <input type="password" className="form-control" onChange={(event) => setPassword(event.target.value)} />
         </div>
         <div>
-          <button type="submit" class="btn btn-dark my-3">Login</button>
-          <button type="submit" class="btn btn-dark my-3 mx-3"><Link to={from}>Cancel</Link></button>
+          <button type="submit" className="btn btn-dark my-3">Login</button>
+          <button type="submit" className="btn btn-dark my-3 mx-3"><Link to={from}>Cancel</Link></button>
         </div>
       </form>
     </div>

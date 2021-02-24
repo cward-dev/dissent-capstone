@@ -4,6 +4,7 @@ import ArticleFeedbackTagIcon from '../feedback-tag-components/article/ArticleFe
 import EditArticleTopics from '../article-topic-components/EditArticleTopics';
 import DeleteArticle from './DeleteArticle';
 import Errors from '../Errors.js';
+import placeholderImage from '../images/D-logo.png';
 import './ArticleCard.css';
 
 const PLACEHOLDER_ARTICLE = {
@@ -12,7 +13,7 @@ const PLACEHOLDER_ARTICLE = {
   "sourceId": "sourceid",
   "author": "Author",
   "articleUrl": "https://www.google.com",
-  "articleImageUrl": "https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png",
+  "articleImageUrl": placeholderImage,
   "datePublished": "2021-2-10",
   "datePosted": "2021-2-10",
   "source": {
@@ -77,7 +78,7 @@ function ArticleCard ( { articleId, articleOpen, setAddPost, user } ) {
       }
     };
     getData();
-  },[topics]);
+  },[editTopics]);
   
   const handleAddPost = () => {
     setAddPost(true);
@@ -132,7 +133,8 @@ function ArticleCard ( { articleId, articleOpen, setAddPost, user } ) {
                 <button onClick={handleEditTopics} className="btn btn-secondary mr-2 px-2 py-1">Edit Topics</button>
                 <button onClick={handleDelete} className="btn btn-secondary mr-2 px-2 py-1">Delete</button>
                   </> : null}
-              {articleOpen ? <button className="btn btn-secondary px-2 py-1" onClick={handleAddPost}>Add Post</button> : <Link className="btn btn-secondary px-2 py-1" to={`/article/${articleId}`}>Discussion ({article.discussionLength})</Link>}
+              {articleOpen && user ? <button className="btn btn-secondary px-2 py-1" onClick={handleAddPost}>Add Post</button> : null}
+              {!articleOpen ? <Link className="btn btn-secondary px-2 py-1" to={`/article/${articleId}`}>Discussion ({article.discussionLength})</Link> : null}
             </div>
           </div>
         </div>

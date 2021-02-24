@@ -77,15 +77,15 @@ function Post ( { post, postLevel, user, parentPost, startsCollapsed, handlePost
             {post.active ? <div>{post.content}</div> : <div className="alert alert-dark font-italic my-1 py-2">{post.content}</div>}
           </div>
           <div className="pr-3 mb-3">
-            <button onClick={handleAddReplyPost} className="btn btn-link btn-sm mr-2 p-0">Reply</button>
-            {user && post.active && (post.user.username === user.username || user.userRole === "admin") ? <>
-              <button onClick={handleEditPost} className="btn btn-link btn-sm mr-2 p-0">Edit</button>
+            {user ? <button onClick={handleAddReplyPost} className="btn btn-link btn-sm mr-2 p-0">Reply</button> : null}
+            {user && post.active && (post.user.userId === user.userId || user.hasRole("ROLE_ADMIN")) ? <>
+              {user.userId === post.user.userId ? <button onClick={handleEditPost} className="btn btn-link btn-sm mr-2 p-0">Edit</button> : null}
               <button onClick={handleDeletePost} className="btn btn-link btn-sm mr-2 p-0">Delete</button>
             </> : null}
-            <button onClick={handleCollapse} className="btn btn-link btn-sm p-0">{collapsed ? `Expand (${post.childPostCount})` : `Collapse (${post.childPostCount})`}</button>
+            <button onClick={handleCollapse} className="btn btn-link btn-sm p-0" disabled={post.childPostCount === 0 ? true : false}>{collapsed ? `Expand (${post.childPostCount})` : `Collapse (${post.childPostCount})`}</button>
           </div>
           {currentOption === 1 ? <EditPost originalPost={post} articleId={post.articleId} setCurrentOption={setCurrentOption} user={user} handlePostAdded={handlePostAdded} /> : null}
-          {currentOption === 2 ? <DeletePost originalPost={post} articleId={post.articleId} setCurrentOption={setCurrentOption} user={user} handlePostAdded={handlePostAdded} /> : null}
+          {currentOption === 2 && user.userId === post.user.userId ? <DeletePost originalPost={post} articleId={post.articleId} setCurrentOption={setCurrentOption} user={user} handlePostAdded={handlePostAdded} /> : null}
           {currentOption === 3 ? <AddReplyPost parentPost={post} articleId={post.articleId} setCurrentOption={setCurrentOption} user={user} handlePostAdded={handlePostAdded} /> : null}
           <hr></hr>
           {postLevel < 3 && !collapsed ? post.childPosts.sort((a, b) => (new Date(a.timestamp) < new Date(b.timestamp)) ? 1 : -1).map(
