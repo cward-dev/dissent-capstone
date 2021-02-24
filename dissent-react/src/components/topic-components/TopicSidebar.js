@@ -9,7 +9,7 @@ function TopicSidebar ( { topicsUpdated, user } ) {
 
   const getData = async () => {
     try {
-      const response = await fetch(`http://localhost:8080/api/topic`);
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/topic`);
       const data = await response.json();
       setTopics(data);
     } catch (error) {

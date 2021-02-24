@@ -29,7 +29,7 @@ function EditTopic ( { topic, setTopicToEdit, user } ) {
     };
 
     try {
-      const response = await fetch(`http://localhost:8080/api/topic/${topic.topicId}`, init);
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/topic/${topic.topicId}`, init);
 
       if (response.status === 204) {
         handleCancel();

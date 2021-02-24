@@ -20,7 +20,7 @@ function Register() {
     event.preventDefault();
 
     try{
-      const response = await fetch('http://localhost:8080/api/user/create-account', {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/user/create-account`, {
         method: 'POST',
         headers: {
           "Content-Type": "application/json"

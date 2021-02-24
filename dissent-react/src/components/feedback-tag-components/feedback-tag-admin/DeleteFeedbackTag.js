@@ -7,7 +7,7 @@ function DeleteFeedbackTag ( { feedbackTag, setFeedbackTagToDelete, user } ) {
 
   const handleDeleteSubmit = async (event) => {
     try {
-      const response = await fetch(`http://localhost:8080/api/feedback-tag/${feedbackTag.feedbackTagId}`, { method: "DELETE" } );
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/feedback-tag/${feedbackTag.feedbackTagId}`, { method: "DELETE" } );
 
       if (response.status === 204) {
         handleCancel();

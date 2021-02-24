@@ -17,7 +17,7 @@ function TopicsAdmin ( { handleTopicsUpdated, user } ) {
   useEffect(() => {
     const getData = async () => {
       try {
-        const response = await fetch(`http://localhost:8080/api/topic/with-inactive`);
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/api/topic/with-inactive`);
         const data = await response.json();
         setTopics(data);
         handleTopicsUpdated();
