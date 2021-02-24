@@ -8,6 +8,7 @@ import capstone.dissent.models.Topic;
 import capstone.dissent.models.User;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.ValidationException;
@@ -91,4 +92,17 @@ public class UserController {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
+    @GetMapping("/logged-in-user")
+    public ResponseEntity<User> loggedInUser(UsernamePasswordAuthenticationToken principal) {
+        System.out.println(principal);
+        if (principal == null) {
+            System.out.println("principal is null");
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        User user = service.findByUsername(principal.getName());
+        if (user == null){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return ResponseEntity.ok(user);
+    }
 }

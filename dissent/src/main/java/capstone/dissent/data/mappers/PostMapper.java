@@ -25,7 +25,7 @@ public class PostMapper implements RowMapper<Post> {
         post.setContent(resultSet.getString("content"));
         post.setActive(resultSet.getBoolean("is_active"));
 
-        UserMapper userMapper = new UserMapper();
+        UserMapper userMapper = new UserMapper(jdbcTemplate);
         post.setUser(userMapper.mapRow(resultSet, i));
 
         addChildPosts(post);

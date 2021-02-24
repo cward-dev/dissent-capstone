@@ -67,3 +67,8 @@ Content-Type: application/json
 
 ### should Delete 204 no content 
 DELETE {{url}}/0e4e4bcb-0477-41c1-9ff5-000a7d62b032  HTTP/1.1
+
+###
+
+GET {{url}}/logged-in-user HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJkaXNzZW50Iiwic3ViIjoiYWRtaW4iLCJhdXRob3JpdGllcyI6IlJPTEVfQURNSU4sUk9MRV9VU0VSIiwidXNlcklkIjoiZGZmZWMwODYtYjFlOS00NTVhLWFhYjQtZmY2YzY2MTFmZWYwIiwiZXhwIjoxNjE0MTg1Mzk5fQ.mDk_DCEnNAWYmpFKQ5oWp-j88Oq4QTCYuZtjMkAmuzw
