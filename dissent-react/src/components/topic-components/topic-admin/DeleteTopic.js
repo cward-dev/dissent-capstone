@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import Errors from '../../Errors.js';
 
-function DeleteTopic ( { topic, setTopicToDelete, user } ) {
+function DeleteTopic ( { topic, setTopicToDelete, update, setUpdate, user } ) {
 
   const [errors, setErrors] = useState([]);
 
@@ -10,6 +10,13 @@ function DeleteTopic ( { topic, setTopicToDelete, user } ) {
       const response = await fetch(`http://localhost:8080/api/topic/${topic.topicId}`, { method: "DELETE" } );
 
       if (response.status === 204) {
+
+        if (update === true) {
+          setUpdate(false);
+        } else {
+          setUpdate(true);
+        }
+
         handleCancel();
       } else {
         throw new Error(["Something unexpected went wrong, sorry!"]);

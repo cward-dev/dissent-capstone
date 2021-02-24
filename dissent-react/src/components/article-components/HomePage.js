@@ -3,6 +3,7 @@ import ArticleFeed from './ArticleFeed.js';
 
 function HomePage( { user } ) {
   const [articles, setArticles] = useState([]);
+  const [updateArticleDelete, setUpdateArticleDelete] = useState(false);
   const [errors, setErrors] = useState([]);
 
   useEffect(() => {
@@ -16,13 +17,13 @@ function HomePage( { user } ) {
       }
     };
     getData();
-  }, []);
+  }, [updateArticleDelete]);
 
   return (
     <div className="container">
       <h1 className="d-flex flex-row justify-content-center mb-4">Latest Articles</h1>
       <hr className="mb-4"></hr>
-      <ArticleFeed articles={articles} user={user} />
+      <ArticleFeed articles={articles} updateArticleDelete={updateArticleDelete} setUpdateArticleDelete={setUpdateArticleDelete} user={user} />
     </div>
   );
 }

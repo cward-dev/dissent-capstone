@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import Errors from '../../Errors.js';
 
-function DeleteFeedbackTag ( { feedbackTag, setFeedbackTagToDelete, user } ) {
+function DeleteFeedbackTag ( { feedbackTag, setFeedbackTagToDelete, update, setUpdate, user } ) {
 
   const [errors, setErrors] = useState([]);
 
@@ -10,6 +10,13 @@ function DeleteFeedbackTag ( { feedbackTag, setFeedbackTagToDelete, user } ) {
       const response = await fetch(`http://localhost:8080/api/feedback-tag/${feedbackTag.feedbackTagId}`, { method: "DELETE" } );
 
       if (response.status === 204) {
+
+        if (update === true) {
+          setUpdate(false)
+        } else {
+          setUpdate(true);
+        }
+
         handleCancel();
       } else {
         throw new Error(["Something unexpected went wrong, sorry!"]);

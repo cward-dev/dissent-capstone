@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import Errors from '../../Errors.js';
 
-function EditFeedbackTag ( { feedbackTag, setFeedbackTagToEdit, user } ) {
+function EditFeedbackTag ( { feedbackTag, setFeedbackTagToEdit, update, setUpdate, user } ) {
 
   const [editedFeedbackTag, setEditedFeedbackTag] = useState( {
     "feedbackTagId": feedbackTag.feedbackTagId,
@@ -34,6 +34,13 @@ function EditFeedbackTag ( { feedbackTag, setFeedbackTagToEdit, user } ) {
       const response = await fetch(`http://localhost:8080/api/feedback-tag/${feedbackTag.feedbackTagId}`, init);
 
       if (response.status === 204) {
+
+        if (update === true) {
+          setUpdate(false)
+        } else {
+          setUpdate(true);
+        }
+
         handleCancel();
       } else if (response.status === 400) {
         const data = await response.json();

@@ -23,8 +23,7 @@ function FeedbackTagAdminRow ( { feedbackTag, setFeedbackTagToEdit, setFeedbackT
 
   return (
     <tr>
-      <th scope="row">{feedbackTag.feedbackTagId}</th>
-      <td>{feedbackTag.name}</td>
+      <td scope="row">{feedbackTag.name}</td>
       <td><span className="col btn btn-sm" style={{
       backgroundColor: `${feedbackTag.colorHex}`
         }}>{"\u00a0"}</span></td>
