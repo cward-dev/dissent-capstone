@@ -12,7 +12,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 class TopicServiceTest {
 
     @Autowired
@@ -116,7 +116,7 @@ class TopicServiceTest {
         Topic actual = makeTopic();
         actual.setTopicId(0);
 
-        when(repository.findAll()).thenReturn(List.of(makeTopic()));
+        when(repository.findAllWithInactive()).thenReturn(List.of(makeTopic()));
 
         Result<Topic> result = service.add(actual);
 

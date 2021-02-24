@@ -7,6 +7,7 @@ function TopicPage ( { user } ) {
   const { topicName } = useParams();
   const [topic, setTopic] = useState({});
   const [articles, setArticles] = useState([]);
+  const [updateArticleDelete, setUpdateArticleDelete] = useState(false);
   const [errors, setErrors] = useState([]);
 
   useEffect(() => {
@@ -22,11 +23,11 @@ function TopicPage ( { user } ) {
       }
     };
     getData();
-  }, [topicName]);
+  }, [topicName, updateArticleDelete]);
 
   const makeArticle = (article) => {
     return (
-      <ArticleCard key={article.articleId} articleId={article.articleId} user={user} />
+      <ArticleCard key={article.articleId} articleId={article.articleId} updateArticleDelete={updateArticleDelete} setUpdateArticleDelete={setUpdateArticleDelete} user={user} />
     );
   };
 

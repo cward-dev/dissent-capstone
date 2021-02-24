@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
 import PostFeedbackTagIcon from "../feedback-tag-components/post/PostFeedbackTagIcon.js";
-import ArticleFeedbackTagForm from "../feedback-tag-components/article/ArticleFeedbackTagForm.js";
 import AddReplyPost from "./AddReplyPost.js";
 import EditPost from "./EditPost.js";
 import DeletePost from "./DeletePost.js";
+import Errors from "../Errors.js";
 import "./Post.css";
 
 function Post ( { post, postLevel, user, parentPost, startsCollapsed, handlePostAdded } ) {
@@ -11,6 +11,7 @@ function Post ( { post, postLevel, user, parentPost, startsCollapsed, handlePost
   const [feedbackTagMenuDisplayed, setFeedbackTagMenuDisplayed] = useState(false);
   const [currentOption, setCurrentOption] = useState(0);
   const [collapsed, setCollapsed] = useState(startsCollapsed);
+  const [errors, setErrors] = useState([]);
 
   const getTimePassed = (date) => {
     const timestampDate = new Date(date);
@@ -59,8 +60,9 @@ function Post ( { post, postLevel, user, parentPost, startsCollapsed, handlePost
 
   return (
     <div>
+      <Errors errors={errors} />
       <div className="media">
-        <PostFeedbackTagIcon post={post} feedbackTagMenuDisplayed={feedbackTagMenuDisplayed} setFeedbackTagMenuDisplayed={setFeedbackTagMenuDisplayed} user={user} />
+        <PostFeedbackTagIcon post={post} feedbackTagMenuDisplayed={feedbackTagMenuDisplayed} setFeedbackTagMenuDisplayed={setFeedbackTagMenuDisplayed} setErrors={setErrors} user={user} />
         <div className="media-body">
           <div className="pr-3">
               <div className="d-flex">
@@ -84,8 +86,8 @@ function Post ( { post, postLevel, user, parentPost, startsCollapsed, handlePost
             </> : null}
             <button onClick={handleCollapse} className="btn btn-link btn-sm p-0" disabled={post.childPostCount === 0 ? true : false}>{collapsed ? `Expand (${post.childPostCount})` : `Collapse (${post.childPostCount})`}</button>
           </div>
-          {currentOption === 1 ? <EditPost originalPost={post} articleId={post.articleId} setCurrentOption={setCurrentOption} user={user} handlePostAdded={handlePostAdded} /> : null}
-          {currentOption === 2 && user.userId === post.user.userId ? <DeletePost originalPost={post} articleId={post.articleId} setCurrentOption={setCurrentOption} user={user} handlePostAdded={handlePostAdded} /> : null}
+          {currentOption === 1 && user.userId === post.user.userId ? <EditPost originalPost={post} articleId={post.articleId} setCurrentOption={setCurrentOption} user={user} handlePostAdded={handlePostAdded} /> : null}
+          {currentOption === 2 ? <DeletePost originalPost={post} articleId={post.articleId} setCurrentOption={setCurrentOption} user={user} handlePostAdded={handlePostAdded} /> : null}
           {currentOption === 3 ? <AddReplyPost parentPost={post} articleId={post.articleId} setCurrentOption={setCurrentOption} user={user} handlePostAdded={handlePostAdded} /> : null}
           <hr></hr>
           {postLevel < 3 && !collapsed ? post.childPosts.sort((a, b) => (new Date(a.timestamp) < new Date(b.timestamp)) ? 1 : -1).map(

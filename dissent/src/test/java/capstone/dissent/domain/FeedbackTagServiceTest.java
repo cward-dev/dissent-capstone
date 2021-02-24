@@ -12,7 +12,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 class FeedbackTagServiceTest {
 
     @Autowired
@@ -115,7 +115,7 @@ class FeedbackTagServiceTest {
         FeedbackTag actual = makeFeedbackTag();
         actual.setFeedbackTagId(0);
 
-        when(repository.findAll()).thenReturn(List.of(makeFeedbackTag()));
+        when(repository.findAllWithInactive()).thenReturn(List.of(makeFeedbackTag()));
 
         Result<FeedbackTag> result = service.add(actual);
 
