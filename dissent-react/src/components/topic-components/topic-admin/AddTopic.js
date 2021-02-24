@@ -75,7 +75,7 @@ function AddTopic ( { update, setUpdate, user } ) {
           <div className="col-9">
             <label htmlFor="content" className="pl-2 pt-2">New Topic</label>
           </div>
-          <input type="text" className="form-control mb-3 mx-2" id="topicName" name="topicName" onChange={handleChange} />
+          <input type="text" className="form-control mb-3 mx-2" id="topicName" name="topicName" maxLength="255" required onChange={handleChange} />
           <div className="col text-right mr-2">
             <button type="button" className="btn btn-light btn-sm" onClick={handleCancel}>Cancel</button>
             <button type="submit" className="btn btn-dark btn-sm mx-2">Submit</button>

@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import PostFeedbackTagIcon from "../feedback-tag-components/post/PostFeedbackTagIcon.js";
 import AddReplyPost from "./AddReplyPost.js";
 import EditPost from "./EditPost.js";
@@ -66,7 +67,7 @@ function Post ( { post, postLevel, user, parentPost, startsCollapsed, handlePost
         <div className="media-body">
           <div className="pr-3">
               <div className="d-flex">
-                  <h5>{post.user.username}</h5>
+                  <h5><Link to={`/user/${post.user.username}`} className="usernameLink">{post.user.username}</Link></h5>
                   <div className="ml-2">
                     {post.dissenting ? <div className="badge badge-dark mr-2">Dissenting {parentPost ? `@${parentPost.user.username}` : null}</div> : <div className="badge badge-light mr-2">Accepting</div>}
                     <span className="timestamp">

@@ -38,6 +38,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter { // 2
         http.csrf().disable();
         http.cors();
         http.authorizeRequests()
+
                 .antMatchers("/api/user/create-account").permitAll() // allow anyone to create an account.
                 .antMatchers("/authenticate").permitAll()   // allow anyone to attempt authentication
 
@@ -59,7 +60,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter { // 2
 //                .antMatchers("/**").denyAll() // forces explicit security declaration of all http endpoints (no leaks!)
 
                 .antMatchers("/**").permitAll() // no security for development.
-
                 .and()
                 .addFilter(new JwtRequestFilter(authenticationManager(), jwtConverter))
                 .sessionManagement()

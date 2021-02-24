@@ -69,7 +69,7 @@ function AddFeedbackTag ( { user } ) {
           <div className="col-9">
             <label htmlFor="name" className="pl-2 pt-2">New Feedback Tag</label>
           </div>
-          <input type="text" className="form-control mb-3 mx-2" id="name" name="name" onChange={handleChange} />
+          <input type="text" className="form-control mb-3 mx-2" id="name" name="name" maxLength="255" required onChange={handleChange} />
           <label htmlFor="colorHex" className="pl-2 pt-2">Color</label>
           <input type="color" id="colorHex" name ="colorHex" className="col-2 form-control ml-2 p-1" required onChange={handleChange}></input>
           <div className="col text-right mr-2">

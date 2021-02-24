@@ -65,7 +65,7 @@ public class UserJdbcTemplateRepository implements UserRepository {
     @Override
     public List<User> findAll() {
         final String sql = "select * from `user` limit 1000;";
-        return jdbcTemplate.query(sql, new UserMapper());
+        return jdbcTemplate.query(sql, new UserMapper(jdbcTemplate));
     }
 
     @Override
@@ -74,7 +74,7 @@ public class UserJdbcTemplateRepository implements UserRepository {
                 "from `user`" +
                 "where user_id = ?;";
 
-        User user = jdbcTemplate.query(sql, new UserMapper(), userId).stream()
+        User user = jdbcTemplate.query(sql, new UserMapper(jdbcTemplate), userId).stream()
                 .findAny().orElse(null);
 
         if (user != null) {
@@ -91,7 +91,7 @@ public class UserJdbcTemplateRepository implements UserRepository {
                 "from `user`" +
                 "where username = ?;";
 
-        User user = jdbcTemplate.query(sql, new UserMapper(), username).stream()
+        User user = jdbcTemplate.query(sql, new UserMapper(jdbcTemplate), username).stream()
                 .findAny().orElse(null);
 
         if (user != null) {
@@ -146,7 +146,8 @@ public class UserJdbcTemplateRepository implements UserRepository {
                 + "ft.feedback_tag_id, ft.feedback_tag_name, ft.color_hex, ft.is_active "
                 + "from post_feedback_tag pft "
                 + "inner join feedback_tag ft on pft.feedback_tag_id = ft.feedback_tag_id "
-                + "where pft.user_id = ?";
+                + "inner join post p on pft.post_id = p.post_id "
+                + "where p.user_id = ?";
 
         var feedbackTags = jdbcTemplate.query(sql, new PostFeedbackTagMapper(), userId);
 

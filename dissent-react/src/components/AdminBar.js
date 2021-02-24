@@ -1,8 +1,24 @@
 import { useState, useEffect, React } from 'react';
 import { Route, BrowserRouter as Router, Switch, Link } from 'react-router-dom';
+import UserFeed from './user-components/UserFeed';
 
 function AdminBar ( { user } ) {
   const [adminBarSelection, setAdminBarSelection] = useState(0);
+  const [users, setUsers] = useState([]);
+
+  useEffect(() => {
+    getData();
+  }, []);
+
+  const getData = async () => {
+    try {
+      const response = await fetch(`http://localhost:8080/api/user/`);
+      const data = await response.json();
+      setUsers(data);
+    } catch (error) {
+      console.log("Something went wrong.")
+    }
+  };
 
   const onViewUsers = () => {
     if (adminBarSelection == 2) {
@@ -12,8 +28,6 @@ function AdminBar ( { user } ) {
     }
   }
 
-
-  
   return (
     <>
       {user.hasRole("ROLE_ADMIN") ?
@@ -27,7 +41,11 @@ function AdminBar ( { user } ) {
         </div>
         {adminBarSelection == 0 ? null:
         <div className="container alert alert-secondary">
-          {adminBarSelection == 2 ? <div>onViewUsers</div> : null}
+          {adminBarSelection == 2 
+          ? <div>
+            <UserFeed users={users} />
+            </div> 
+            : null}
         </div>
         }
       </>

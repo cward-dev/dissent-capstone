@@ -16,6 +16,7 @@ import Login from './components/user-components/Login';
 import Register from './components/user-components/Register';
 import jwt_decode from 'jwt-decode'; 
 import AuthContext from './components/AuthContext'
+import UserCard from './components/user-components/UserCard'
 import './App.css';
 
 const DEFAULT_USER = {
@@ -42,9 +43,11 @@ function App() {
     }
   }, []);
 
-  const login = (token) => {
+  const login = async (token) => {
     const { userId, sub: username, authorities } = jwt_decode(token);
     const roles = authorities.split(',');
+    const response = await fetch(`http://localhost:8080/api/user/username/${username}`);
+    const { email, photoUrl, country, bio } = await response.json();
     const user = {
       userId,
       username,
@@ -52,7 +55,11 @@ function App() {
       token,
       hasRole(role) {
         return this.roles.includes(role);
-      }
+      },
+      email,
+      photoUrl,
+      country,
+      bio
     }
     setUser(user);
     localStorage.setItem("token", token)
@@ -135,8 +142,7 @@ function App() {
                 <Route path='/topic' exact>
                   <TopicPage user={user} />
                 </Route>
-                <Route path='/user' exact>
-                  <UserPage user={user} />
+                <Route path={'/user/:username'} children={<UserPage />} exact>
                 </Route>
                 <Route path='/login'>
                   <Login />
