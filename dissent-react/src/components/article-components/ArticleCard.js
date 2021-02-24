@@ -26,12 +26,13 @@ const PLACEHOLDER_ARTICLE = {
   "topics": []
 };
 
-function ArticleCard ( { articleId, articleOpen, setAddPost, user } ) {
+function ArticleCard ( { articleId, articleOpen, setAddPost, updateArticleDelete, setUpdateArticleDelete, user } ) {
 
   const [article, setArticle] = useState(PLACEHOLDER_ARTICLE);
   const [topics, setTopics] = useState([]);
   const [timePassed, setTimePassed] = useState("");
 
+  const [update, setUpdate] = useState(false);
   const [editTopics, setEditTopics] = useState(false);
   const [deleteArticle, setDeleteArticle] = useState(false);
   const [errors, setErrors] = useState([]);
@@ -62,23 +63,29 @@ function ArticleCard ( { articleId, articleOpen, setAddPost, user } ) {
 
   useEffect(()=> {
     const getData = async () => {
+      let mount = true;
+
       try {
         const response = await fetch(`http://localhost:8080/api/article/${articleId}`);
 
-        if (response.status === 200) {
-          const data = await response.json();
-          setArticle(data);
-          setTopics(data.topics);
-          setTimePassed(getTimePassed(data.datePublished));
-        } else if (response.status === 404) {
-          setErrors(["Something went wrong with our database, sorry!"]);
+        if (mount) {
+          if (response.status === 200) {
+            const data = await response.json();
+            setArticle(data);
+            setTopics(data.topics);
+            setTimePassed(getTimePassed(data.datePublished));
+          } else if (response.status === 404) {
+            setErrors(["Something went wrong with our database, sorry!"]);
+          }
         }
       } catch (error) {
         setErrors(["Something went wrong with our database, sorry!"]);
       }
+
+      return () => mount = false;
     };
     getData();
-  }, [editTopics]);
+  }, [update]);
   
   const handleAddPost = () => {
     setAddPost(true);
@@ -88,6 +95,7 @@ function ArticleCard ( { articleId, articleOpen, setAddPost, user } ) {
   const handleEditTopics = () => {
     if (editTopics) {
       setEditTopics(false);
+      update === true ? setUpdate(false) : setUpdate(true);
     } else {
       setEditTopics(true);
       setDeleteArticle(false);
@@ -121,9 +129,17 @@ function ArticleCard ( { articleId, articleOpen, setAddPost, user } ) {
           </div>
         </div>
         <div className="card-footer w-100 text-muted px-1">
-          {!editTopics && topics.length > 0 ? <div className="d-flex flex-row badge badge-secondary p-1 px-2 mx-2 mb-3 text-left">-{topics.sort((a, b) => (a.topicName > b.topicName) ? 1 : -1).map(topic => <div key={topic.topicId}><span>{"\u00a0"}</span><Link to={`/t/${topic.topicName}`}>{topic.topicName}</Link><span>{"\u00a0"}-</span></div>)}</div> : null}
-          {editTopics ? <EditArticleTopics article={article} topics={topics} setTopics={setTopics} user={user} /> : null}
-          {deleteArticle ? <DeleteArticle article={article} setDeleteArticle={setDeleteArticle} user={user} /> : null}
+          {!editTopics && topics.length > 0 ? 
+            <div className="d-flex flex-row flex-wrap badge badge-secondary p-1 px-2 mx-2 mb-3 text-left">-
+              {topics.sort((a, b) => (a.topicName > b.topicName) ? 1 : -1).map(topic => 
+                <div key={topic.topicId}>
+                  <span>{"\u00a0"}</span>
+                  <Link to={`/t/${topic.topicName}`}>{topic.topicName}</Link>
+                  <span>{"\u00a0"}-</span>
+                </div>)}
+              </div> : null}
+          {editTopics ? <EditArticleTopics article={article} topics={topics} setTopics={setTopics} update={update} setUpdate={setUpdate} user={user} /> : null}
+          {deleteArticle ? <DeleteArticle article={article} setDeleteArticle={setDeleteArticle} updateArticleDelete={updateArticleDelete} setUpdateArticleDelete={setUpdateArticleDelete} user={user} /> : null}
           <div className="d-flex flex-row">
             <div className="align-self-start">
               <ArticleFeedbackTagIcon setErrors={setErrors} article={article} user={user} />

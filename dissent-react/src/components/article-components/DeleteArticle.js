@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import Errors from '../Errors.js';
 
-function DeleteArticle ( { article, setDeleteArticle, user } ) {
+function DeleteArticle ( { article, setDeleteArticle, updateArticleDelete, setUpdateArticleDelete, user } ) {
 
   const [errors, setErrors] = useState([]);
 
@@ -15,8 +15,10 @@ function DeleteArticle ( { article, setDeleteArticle, user } ) {
       const response = await fetch(`http://localhost:8080/api/article/${article.articleId}`, { method: "DELETE" });
 
       if (response.status === 204) {
-
-        history.push("/");
+        if (window.location.pathname === `/article/${article.articleId}`) {
+          history.push("/");
+        }
+        updateArticleDelete === true ? setUpdateArticleDelete(false) : setUpdateArticleDelete(true);
         handleCancel();
       } else if (response.status === 404) {
         throw new Error([`Post ID #${article.articleId} not found`]);
@@ -24,13 +26,13 @@ function DeleteArticle ( { article, setDeleteArticle, user } ) {
         throw new Error(["Something unexpected went wrong, sorry!"]);
       }
     } catch (error) {
-      setErrors(error);
+      setErrors([error]);
     }
-  }
+  };
 
   const handleCancel = () => {
     setDeleteArticle(false);
-  }
+  };
 
   return (
     <form onSubmit={handleDeleteSubmit}>
