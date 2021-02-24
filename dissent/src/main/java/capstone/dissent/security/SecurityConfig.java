@@ -99,10 +99,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter { // 2
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
-                        .allowedOrigins("http://localhost:3000")
-                        .allowedOrigins("http://localhost")
-                        .allowedOrigins("http://frontend")
-                        .allowedOrigins("https://dev10-capstone-team1.azurewebsites.net")
+                        .allowedOrigins(
+                                "http://localhost",
+                                "http://localhost:3000",
+                                "http://frontend",
+                                "https://dev10-capstone-team1.azurewebsites.net",
+                                "http://localhost:8080")
                         .allowedMethods("*");
             }
         };
