@@ -1,8 +1,8 @@
 package capstone.dissent.data;
 
+import capstone.dissent.data.mappers.PostFeedbackTagMapper;
 import capstone.dissent.data.mappers.UserMapper;
-import capstone.dissent.models.FeedbackTag;
-import capstone.dissent.models.User;
+import capstone.dissent.models.*;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -136,6 +137,44 @@ public class UserJdbcTemplateRepository implements UserRepository {
         deleteRoles(findById(userId));
 
         return jdbcTemplate.update(sql, userId) > 0;
+    }
+    
+    @Override
+    public List<FeedbackTagHelper> getAllUserFeedbackById(String userId) {
+
+        final String sql = "select pft.post_id, pft.user_id, pft.feedback_tag_id, "
+                + "ft.feedback_tag_id, ft.feedback_tag_name, ft.color_hex, ft.is_active "
+                + "from post_feedback_tag pft "
+                + "inner join feedback_tag ft on pft.feedback_tag_id = ft.feedback_tag_id "
+                + "where pft.user_id = ?";
+
+        var feedbackTags = jdbcTemplate.query(sql, new PostFeedbackTagMapper(), userId);
+
+        List<FeedbackTagHelper> list = new ArrayList<>();
+        if (feedbackTags.size() > 0) {
+            for (PostFeedbackTag i : feedbackTags) {
+                if (list.size() == 0) {
+                    list.add(new FeedbackTagHelper(i.getFeedbackTag().getName(), 1, i.getFeedbackTag().getColorHex()));
+                    continue;
+                }
+
+                boolean found = false;
+
+                for (FeedbackTagHelper feedbackTagHelper : list) {
+                    if (feedbackTagHelper.getTitle().equalsIgnoreCase(i.getFeedbackTag().getName())) {
+                        feedbackTagHelper.setValue(feedbackTagHelper.getValue() + 1);
+                        found = true;
+                        break;
+                    }
+                }
+
+                if (!found) {
+                    list.add(new FeedbackTagHelper(i.getFeedbackTag().getName(), 1, i.getFeedbackTag().getColorHex()));
+                }
+            }
+        }
+
+        return list;
     }
 
 

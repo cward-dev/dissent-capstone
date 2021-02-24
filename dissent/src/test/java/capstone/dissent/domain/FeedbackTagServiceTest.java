@@ -12,7 +12,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 class FeedbackTagServiceTest {
 
     @Autowired
@@ -22,7 +22,7 @@ class FeedbackTagServiceTest {
     FeedbackTagRepository repository;
 
     @Test
-    void shouldFindALl() {
+    void shouldFindAll() {
         List<FeedbackTag> expected = List.of(
                 new FeedbackTag(1, "Sound", "#000000", true),
                 new FeedbackTag(2, "Fallacious", "#000000", true),
@@ -32,6 +32,31 @@ class FeedbackTagServiceTest {
         List<FeedbackTag> actual = repository.findAll();
 
         assertEquals(expected, actual);
+        assertTrue(actual.size()==3);
+    }
+
+    @Test
+    void shouldFindById(){
+        FeedbackTag feedbackTagIn = new FeedbackTag(1, "Sound", "#000000", true);
+        when(repository.findById(1)).thenReturn(feedbackTagIn);
+
+        FeedbackTag feedbackTagOut = service.findById(1);
+        assertTrue(feedbackTagOut.getName().equalsIgnoreCase(feedbackTagIn.getName()));
+    }
+
+    @Test
+    void shouldNotFindById(){
+        FeedbackTag feedbackTag = service.findById(9999);
+        assertNull(feedbackTag);
+    }
+
+    @Test
+    void shouldNotEditInvalidFeedBackTag(){
+        Result<FeedbackTag> result = service.edit(null);
+
+        assertFalse(result.isSuccess());
+        System.out.println(result.getMessages());
+        assertTrue(result.getMessages().contains("Feedback Tag cannot be null"));
     }
 
     @Test
@@ -60,6 +85,40 @@ class FeedbackTagServiceTest {
         assertNull(actual);
     }
 
+    @Test
+    void shouldNotEditInvalidFeedbackTag(){
+        FeedbackTag tag = new FeedbackTag(1, "Sound", "#000000", true);
+
+        when(repository.edit(tag)).thenReturn(false);
+        Result<FeedbackTag> result = service.edit(tag);
+
+        assertFalse(result.isSuccess());
+        assertTrue(result.getMessages().contains("Feedback Tag ID: 1, not found"));
+    }
+
+    @Test
+    void shouldActivateById(){
+        when(repository.activateById(1)).thenReturn(true);
+        Boolean success = service.activateById(1);
+
+        assertTrue(success);
+    }
+    @Test
+    void shouldNotActivateByInvalidId(){
+        when(repository.activateById(1)).thenReturn(false);
+        Boolean success = service.activateById(99999);
+
+        assertFalse(success);
+    }
+
+
+    @Test
+    void shouldNotAddNullFeedbackTag(){
+        Result<FeedbackTag> result = service.add(null);
+
+        assertFalse(result.isSuccess());
+        assertTrue(result.getMessages().contains("Feedback Tag cannot be null"));
+    }
     @Test
     void shouldAddNewFeedbackTag() {
         FeedbackTag expected = makeFeedbackTag();
@@ -115,7 +174,7 @@ class FeedbackTagServiceTest {
         FeedbackTag actual = makeFeedbackTag();
         actual.setFeedbackTagId(0);
 
-        when(repository.findAll()).thenReturn(List.of(makeFeedbackTag()));
+        when(repository.findAllWithInactive()).thenReturn(List.of(makeFeedbackTag()));
 
         Result<FeedbackTag> result = service.add(actual);
 

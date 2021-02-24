@@ -9,6 +9,7 @@ import ReactivateTopic from './ReactivateTopic.js';
 
 function TopicsAdmin ( { handleTopicsUpdated, user } ) {
   const [topics, setTopics] = useState([]);
+  const [update, setUpdate] = useState(false);
   const [topicToEdit, setTopicToEdit] = useState(null);
   const [topicToDelete, setTopicToDelete] = useState(null);
   const [topicToReactivate, setTopicToReactivate] = useState(null);
@@ -26,7 +27,7 @@ function TopicsAdmin ( { handleTopicsUpdated, user } ) {
       }
     };
     getData();
-  }, [topics]);
+  }, [update]);
 
   const makeTopicAdminRow = (topic) => {
     return (
@@ -39,10 +40,10 @@ function TopicsAdmin ( { handleTopicsUpdated, user } ) {
       <Errors errors={errors} />
       <h1 className="d-flex flex-row justify-content-center mb-4">Topics Admin</h1>
       <hr className="mb-4"></hr>
-      {!topicToEdit && !topicToDelete && !topicToReactivate ? <AddTopic /> : null}
-      {topicToEdit ? <EditTopic topic={topicToEdit} setTopicToEdit={setTopicToEdit} user={user} /> : null}
-      {topicToDelete ? <DeleteTopic topic={topicToDelete} setTopicToDelete={setTopicToDelete} user={user} /> : null}
-      {topicToReactivate ? <ReactivateTopic topic={topicToReactivate} setTopicToReactivate={setTopicToReactivate} user={user} /> : null}
+      {!topicToEdit && !topicToDelete && !topicToReactivate ? <AddTopic update={update} setUpdate={setUpdate} /> : null}
+      {topicToEdit ? <EditTopic topic={topicToEdit} setTopicToEdit={setTopicToEdit} update={update} setUpdate={setUpdate} user={user} /> : null}
+      {topicToDelete ? <DeleteTopic topic={topicToDelete} setTopicToDelete={setTopicToDelete} update={update} setUpdate={setUpdate} user={user} /> : null}
+      {topicToReactivate ? <ReactivateTopic topic={topicToReactivate} setTopicToReactivate={setTopicToReactivate} update={update} setUpdate={setUpdate} user={user} /> : null}
       <hr className="mt-4"></hr>
       <h2>Active</h2>
       <table className="table table-light table-striped mt-3">
@@ -54,7 +55,7 @@ function TopicsAdmin ( { handleTopicsUpdated, user } ) {
           </tr>
         </thead>
         <tbody>
-          {topics.filter(t => t.active).sort((a, b) => (a.name < b.name) ? 1 : -1).map(t => makeTopicAdminRow(t))}
+          {topics.filter(t => t.active).sort((a, b) => (a.topicName > b.topicName) ? 1 : -1).map(t => makeTopicAdminRow(t))}
         </tbody>
       </table>
       <h2 className="mt-5">Inactive</h2>
@@ -67,7 +68,7 @@ function TopicsAdmin ( { handleTopicsUpdated, user } ) {
           </tr>
         </thead>
         <tbody>
-          {topics.filter(t => !t.active).sort((a, b) => (a.name < b.name) ? 1 : -1).map(t => makeTopicAdminRow(t))}
+          {topics.filter(t => !t.active).sort((a, b) => (a.topicName > b.topicName) ? 1 : -1).map(t => makeTopicAdminRow(t))}
         </tbody>
       </table>
     </div>

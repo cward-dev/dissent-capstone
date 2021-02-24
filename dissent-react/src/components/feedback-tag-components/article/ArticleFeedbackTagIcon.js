@@ -1,12 +1,12 @@
 import {useState , useEffect} from 'react';
 import { PieChart } from 'react-minimal-pie-chart';
-import Article from '../../article-components/ArticleCard';
 import ArticleFeedbackTagForm from './ArticleFeedbackTagForm';
 import '../FeedbackTagIcon.css';
  
 function ArticleFeedbackTagIcon( { setErrors, article, user } ) {
 
   const [feedbackTags, setFeedbackTags] = useState([]);
+  const [update, setUpdate] = useState(false);
   const [feedbackTagMenuDisplayed, setFeedbackTagMenuDisplayed] = useState(false);
 
   const getData = async () => {
@@ -22,7 +22,7 @@ function ArticleFeedbackTagIcon( { setErrors, article, user } ) {
 
   useEffect(() => {
     getData();
-  }, [feedbackTags]);
+  }, [article, update]);
 
   let handleClick = () => {
     if (!user) {
@@ -37,12 +37,11 @@ function ArticleFeedbackTagIcon( { setErrors, article, user } ) {
 
   const handleTagClick = () => {
     getData();
-    setFeedbackTagMenuDisplayed(false);
+    // setFeedbackTagMenuDisplayed(false);
   }
  
   return(
     <div className="d-flex flex-row align-items-start">
-      {feedbackTagMenuDisplayed ? <ArticleFeedbackTagForm object={article} user={user} handleTagClick={handleTagClick} /> : null}
       <div>
         <div className={`container feedbackTagIconArticle`}>
           {feedbackTags && feedbackTags.length > 0 ? 
@@ -70,6 +69,7 @@ function ArticleFeedbackTagIcon( { setErrors, article, user } ) {
           />}
         </div>
       </div>
+      {feedbackTagMenuDisplayed ? <ArticleFeedbackTagForm object={article} user={user} handleTagClick={handleTagClick} update={update} setUpdate={setUpdate} /> : null}
     </div>
   );
 

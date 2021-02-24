@@ -1,10 +1,8 @@
 import { useState, useEffect } from 'react';
 
-function ArticleFeedbackTagButton ( { feedbackTag, object, user, setErrors, handleButtonUpdate } ) {
+function ArticleFeedbackTagButton ( { feedbackTag, object, user, setErrors, handleButtonUpdate, update, setUpdate } ) {
 
-  const [thisFeedbackTag, setThisFeedbackTag] = useState(feedbackTag);
   const [tagToggled, setTagToggled] = useState(false);
-  const [tagExists, setTagExists] = useState(false);
 
   useEffect(()=> {
     const getData = async () => {
@@ -16,12 +14,18 @@ function ArticleFeedbackTagButton ( { feedbackTag, object, user, setErrors, hand
         } else if (response.status === 204) {
           setTagToggled(false);
         }
+
+        if (update === true) {
+          setUpdate(false);
+        } else {
+          setUpdate(true);
+        }
       } catch (error) {
         setErrors(["Something went wrong with our database, sorry!"]);
       }
     };
     getData();
-  },[]);
+  }, []);
 
   const addObjectFeedbackTag = async () => {
     const addedTag = {

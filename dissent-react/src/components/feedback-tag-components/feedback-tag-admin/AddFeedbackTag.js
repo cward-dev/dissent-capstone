@@ -21,7 +21,7 @@ function AddFeedbackTag ( { user } ) {
     setFeedbackTag(updatedFeedbackTag);
   };
 
-  const handleAddSubmit = async (event) => { // TODO WHY AREN'T COMPONENTS UPDATING WITH ROUTE?
+  const handleAddSubmit = async (event) => {
     event.preventDefault();
 
     const init = {

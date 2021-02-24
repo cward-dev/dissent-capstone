@@ -2,6 +2,7 @@ package capstone.dissent.controllers;
 
 import capstone.dissent.domain.Result;
 import capstone.dissent.domain.UserService;
+import capstone.dissent.models.FeedbackTagHelper;
 import capstone.dissent.models.Source;
 import capstone.dissent.models.Topic;
 import capstone.dissent.models.User;
@@ -35,6 +36,11 @@ public class UserController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return ResponseEntity.ok(user);
+    }
+
+    @GetMapping("/{userId}/feedback-tag")
+    public List<FeedbackTagHelper> getAllUserFeedbackById(@PathVariable String userId) {
+        return service.getAllUserFeedbackById(userId);
     }
 
     @GetMapping("/username/{username}")

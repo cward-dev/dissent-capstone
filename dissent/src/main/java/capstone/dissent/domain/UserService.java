@@ -1,6 +1,7 @@
 package capstone.dissent.domain;
 
 import capstone.dissent.data.UserRepository;
+import capstone.dissent.models.FeedbackTagHelper;
 import capstone.dissent.models.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -136,6 +137,10 @@ public class UserService implements UserDetailsService {
         }
 
         return result;
+    }
+
+    public List<FeedbackTagHelper> getAllUserFeedbackById(String userId) {
+        return repository.getAllUserFeedbackById(userId);
     }
 
     private Result<User> validatePassword(User user) {

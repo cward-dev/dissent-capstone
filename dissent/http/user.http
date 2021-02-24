@@ -3,6 +3,9 @@
 ### return All -
 GET {{url}} HTTP/1.1
 
+### return Feedback -
+GET {{url}}/dffec086-b1e9-455a-aab4-ff6c6611fef0/feedback-tag HTTP/1.1
+
 ###
 GET {{url}}/username/accepter101 HTTP/1.1
 

@@ -41,6 +41,9 @@ function Register() {
         } catch(err) {
           throw new Error('Issue with server')
         }
+      } else if (response.status === 400) {
+          const data = await response.json();
+          setErrors(data)
       }
     } catch (err) {
       setErrors([err.message]);

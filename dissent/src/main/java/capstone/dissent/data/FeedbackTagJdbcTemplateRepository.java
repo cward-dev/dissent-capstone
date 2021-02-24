@@ -2,7 +2,6 @@ package capstone.dissent.data;
 
 import capstone.dissent.data.mappers.FeedbackTagMapper;
 import capstone.dissent.models.FeedbackTag;
-import capstone.dissent.models.Topic;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
