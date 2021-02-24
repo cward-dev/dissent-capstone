@@ -40,7 +40,7 @@ function PostFeedbackTagForm({ object, user, handleTagClick }) {
   return (
     <> 
       <Errors errors={errors} />
-      <div className="btn-group-vertical">
+      <div className="btn-group-vertical mr-3">
         {feedbackTags.map(feedbackTag => makeFeedbackTag(feedbackTag))}
       </div>
     </>

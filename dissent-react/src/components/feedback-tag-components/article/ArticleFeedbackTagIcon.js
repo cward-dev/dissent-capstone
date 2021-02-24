@@ -42,7 +42,6 @@ function ArticleFeedbackTagIcon( { setErrors, article, user } ) {
  
   return(
     <div className="d-flex flex-row align-items-start">
-      {feedbackTagMenuDisplayed ? <ArticleFeedbackTagForm object={article} user={user} handleTagClick={handleTagClick} /> : null}
       <div>
         <div className={`container feedbackTagIconArticle`}>
           {feedbackTags && feedbackTags.length > 0 ? 
@@ -70,6 +69,7 @@ function ArticleFeedbackTagIcon( { setErrors, article, user } ) {
           />}
         </div>
       </div>
+      {feedbackTagMenuDisplayed ? <ArticleFeedbackTagForm object={article} user={user} handleTagClick={handleTagClick} /> : null}
     </div>
   );
 
