@@ -68,6 +68,16 @@ class FeedbackTagJdbcTemplateRepositoryTest {
     }
 
     @Test
+
+    void shouldReactivateIfAddedExistingInactive() {
+        FeedbackTag feedbackTag = makeFeedbackTag();
+        feedbackTag.setName("Not Nice");
+        FeedbackTag actual = repository.add(feedbackTag);
+        assertNotNull(actual);
+        assertTrue( actual.getFeedbackTagId() >=4 || actual.getFeedbackTagId()<=77);
+    }
+
+
     void shouldUpdate() {
         FeedbackTag feedbackTag = new FeedbackTag();
         feedbackTag.setFeedbackTagId(2);
@@ -82,6 +92,23 @@ class FeedbackTagJdbcTemplateRepositoryTest {
     void shouldDelete() {
         assertTrue(repository.deleteById(3));
         assertFalse(repository.deleteById(45));
+    }
+
+    @Test
+    void shouldFindAllWithInactive(){
+        assertTrue(repository.findAllWithInactive().size()>=5 && repository.findAllWithInactive().size()<=7);
+    }
+
+    @Test
+    void shouldActivateById(){
+        boolean success = repository.activateById(4);
+        assertTrue(success);
+        assertTrue(repository.findById(4).isActive());
+    }
+    @Test
+    void shouldNotActiveById(){
+        boolean success = repository.activateById(999);
+        assertFalse(success);
     }
 
 

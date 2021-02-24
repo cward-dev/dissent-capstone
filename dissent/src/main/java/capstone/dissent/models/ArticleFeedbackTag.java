@@ -12,6 +12,13 @@ public class ArticleFeedbackTag {
 
     private FeedbackTag feedbackTag;
 
+    public ArticleFeedbackTag(String articleId, String userId) {
+        this.articleId = articleId;
+        this.userId = userId;
+    }
+
+    public ArticleFeedbackTag(){}
+
     public String getArticleId() {
         return articleId;
     }
