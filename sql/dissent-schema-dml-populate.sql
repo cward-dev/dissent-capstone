@@ -12,8 +12,8 @@ values
 	(
 		'dffec086-b1e9-455a-aab4-ff6c6611fef0', 
         'admin@dissent.com',
-        'd1ssent',
-		'dissenter101', 
+        '$2y$12$oIbcF6nwDEYjwTx6Mnk6Uurksu9rVPsTtcrB2dAufrOWATwAxLWsW',
+		'admin', 
 		'https://www.birdnote.org/sites/default/files/Daffy_Duck-2-warner-bros-625.jpg', 
 		'United States', 
 		'The truth is out there.'
@@ -48,12 +48,13 @@ values
 insert into topic 
 	(topic_id, topic_name, is_active) 
 values
-	(1, 'Science', 1),
-	(2, 'Philosophy', 1),
-	(3, 'Economics', 1),
-	(4, 'Politics', 1),
-	(5, 'Healthcare', 0),
-	(6, 'History', 0);
+	(1, 'Business', 1),
+	(2, 'Entertainment', 1),
+	(3, 'General', 1),
+	(4, 'Health', 1),
+	(5, 'Science', 1),
+	(6, 'Sports', 1),
+	(7, 'Technology', 1);
 
 insert into `source`
 	(source_id, source_name, website_url, `description`) 
@@ -132,15 +133,23 @@ insert into article_topic
 values
 	(
 		'c32bec11-b9a0-434b-bda7-08b9cf2007e2',
-		1
+		5
 	),
 	(
 		'dfash1l1-fsnm-7xkl-s72j-pdismqn2ud71',
-		1
+		5
+	),
+    (
+		'dfash1l1-fsnm-7xkl-s72j-pdismqn2ud71',
+		7
 	),
 	(
 		's7d98a02-sm21-s82k-dm2k-dn2ja82ks0sj',
 		3
+	),
+    (
+		's7d98a02-sm21-s82k-dm2k-dn2ja82ks0sj',
+		4
 	);
 	
 insert into post
@@ -191,3 +200,4 @@ insert into article_feedback_tag
 	(article_id, user_id, feedback_tag_id)
 values
 	('c32bec11-b9a0-434b-bda7-08b9cf2007e2', 'dffec086-b1e9-455a-aab4-ff6c6611fef0', 1); # Sound
+    

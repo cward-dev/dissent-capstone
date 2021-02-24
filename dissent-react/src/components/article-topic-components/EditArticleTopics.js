@@ -36,7 +36,7 @@ function EditArticleTopics ( { article, topics, setTopics, user } ) {
   return (
     <>
       <Errors errors={errors} />
-      <div className="d-flex flex-row justify-content-center alert alert-dark mt-1 mb-3 mx-2 p-1">
+      <div className="d-flex flex-row justify-content-center badge badge-secondary mt-1 mb-3 mx-2 p-1">
         {allTopics.sort((a, b) => (a.topicName > b.topicName) ? 1 : -1).map(topic => makeArticleTopic(topic))}
       </div>
       <hr></hr>

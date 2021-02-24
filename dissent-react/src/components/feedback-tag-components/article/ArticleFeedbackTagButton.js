@@ -92,7 +92,7 @@ function ArticleFeedbackTagButton ( { feedbackTag, object, user, setErrors, hand
   }
 
   return (
-    <button className="btn btn-link btn-sm mr-2" onClick={handleButtonClick} style={{
+    <button className="btn btn-sm mr-1" onClick={handleButtonClick} style={{
       fontWeight: "bold",
       color: "white",
       textShadow: "0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black",

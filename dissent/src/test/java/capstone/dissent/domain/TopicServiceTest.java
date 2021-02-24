@@ -38,8 +38,8 @@ class TopicServiceTest {
     @Test
     void shouldFindALlInactive() {
         List<Topic> expected = List.of(new Topic(5, "Healthcare", false));
-        when(repository.findAllInactive()).thenReturn(expected);
-        List<Topic> actual = repository.findAllInactive();
+        when(repository.findAllWithInactive()).thenReturn(expected);
+        List<Topic> actual = repository.findAllWithInactive();
 
         assertEquals(expected, actual);
     }

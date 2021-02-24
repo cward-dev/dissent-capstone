@@ -4,6 +4,7 @@ import ArticleFeedbackTagIcon from '../feedback-tag-components/article/ArticleFe
 import EditArticleTopics from '../article-topic-components/EditArticleTopics';
 import DeleteArticle from './DeleteArticle';
 import Errors from '../Errors.js';
+import placeholderImage from '../images/D-logo.png';
 import './ArticleCard.css';
 
 const PLACEHOLDER_ARTICLE = {
@@ -12,7 +13,7 @@ const PLACEHOLDER_ARTICLE = {
   "sourceId": "sourceid",
   "author": "Author",
   "articleUrl": "https://www.google.com",
-  "articleImageUrl": "https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png",
+  "articleImageUrl": placeholderImage,
   "datePublished": "2021-2-10",
   "datePosted": "2021-2-10",
   "source": {
@@ -77,7 +78,7 @@ function ArticleCard ( { articleId, articleOpen, setAddPost, user } ) {
       }
     };
     getData();
-  },[topics]);
+  },[editTopics]);
   
   const handleAddPost = () => {
     setAddPost(true);
@@ -120,7 +121,7 @@ function ArticleCard ( { articleId, articleOpen, setAddPost, user } ) {
           </div>
         </div>
         <div className="card-footer w-100 text-muted px-1">
-          {!editTopics && topics.length > 0 ? <div className="alert alert-dark p-1 px-2 mx-2 text-left">| {topics.sort((a, b) => (a.topicName > b.topicName) ? 1 : -1).map(topic => `${topic.topicName} | `)}</div> : null}
+          {!editTopics && topics.length > 0 ? <div className="d-flex flex-row badge badge-secondary p-1 px-2 mx-2 mb-3 text-left">-{topics.sort((a, b) => (a.topicName > b.topicName) ? 1 : -1).map(topic => <div key={topic.topicId}><span>{"\u00a0"}</span><Link to={`/t/${topic.topicName}`}>{topic.topicName}</Link><span>{"\u00a0"}-</span></div>)}</div> : null}
           {editTopics ? <EditArticleTopics article={article} topics={topics} setTopics={setTopics} user={user} /> : null}
           {deleteArticle ? <DeleteArticle article={article} setDeleteArticle={setDeleteArticle} user={user} /> : null}
           <div className="d-flex flex-row">
@@ -128,11 +129,12 @@ function ArticleCard ( { articleId, articleOpen, setAddPost, user } ) {
               <ArticleFeedbackTagIcon setErrors={setErrors} article={article} user={user} />
             </div>
             <div className="col text-right">
-              {user.userRole === "admin" ? <>
+              {(user != null && user.hasRole("ROLE_ADMIN")) ? <>
                 <button onClick={handleEditTopics} className="btn btn-secondary mr-2 px-2 py-1">Edit Topics</button>
                 <button onClick={handleDelete} className="btn btn-secondary mr-2 px-2 py-1">Delete</button>
                   </> : null}
-              {articleOpen ? <button className="btn btn-secondary px-2 py-1" onClick={handleAddPost}>Add Post</button> : <Link className="btn btn-secondary px-2 py-1" to={`/article/${articleId}`}>Discussion ({article.discussionLength})</Link>}
+              {articleOpen && user ? <button className="btn btn-secondary px-2 py-1" onClick={handleAddPost}>Add Post</button> : null}
+              {!articleOpen ? <Link className="btn btn-secondary px-2 py-1" to={`/article/${articleId}`}>Discussion ({article.discussionLength})</Link> : null}
             </div>
           </div>
         </div>

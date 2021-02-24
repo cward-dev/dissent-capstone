@@ -33,9 +33,8 @@ function TopicPage ( { user } ) {
   return (
     <div>
       <Errors errors={errors} />
-      <div className="alert alert-dark mb-4 text-center">
-        <h2>{topic.topicName} Articles</h2>
-      </div>
+      <h1 className="d-flex flex-row justify-content-center mb-4">{topic.topicName} Articles</h1>
+      <hr className="mb-4"></hr>
       {articles.sort((a, b) => (new Date(a.datePosted) < new Date(b.datePosted)) ? 1 : -1).map(article => makeArticle(article))}
     </div>
   );

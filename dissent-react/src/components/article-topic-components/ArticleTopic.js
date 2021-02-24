@@ -63,7 +63,7 @@ function ArticleTopic ( { topic, article, setErrors, topics, setTopics } ) {
   };
 
   return (
-    <button key={topic.topicId} type="button" className={`btn btn-sm ${articleTopicExists ? "btn-secondary" : "btn-light"} m-1`} onClick={handleClick}>{topic.topicName}</button>
+    <button key={topic.topicId} type="button" className={`btn btn-sm ${articleTopicExists ? "btn-dark" : "btn-light"} m-1`} onClick={handleClick}>{topic.topicName}</button>
   );
 }
 

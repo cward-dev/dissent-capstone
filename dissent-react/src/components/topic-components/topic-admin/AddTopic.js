@@ -1,11 +1,13 @@
 import { useState, useEffect } from 'react';
 import { Link, useHistory } from 'react-router-dom';
-import Errors from '../Errors.js';
+import Errors from '../../Errors.js';
 
-function AddTopic ( { setAdminBarSelection, user } ) {
+function AddTopic ( { user } ) {
+
+  const [addTopic, setAddTopic] = useState(false);
 
   const [topic, setTopic] = useState( {
-    "topicName": ''
+    "topicName": ""
   } );
 
   const [errors, setErrors] = useState([]);
@@ -37,10 +39,8 @@ function AddTopic ( { setAdminBarSelection, user } ) {
         const data = await response.json();
 
         if (data.topicId) {
-          // TODO kinda hokey
-          history.push(`/`);
-          history.push(`/t/${topic.topicName}`);
           handleCancel();
+          setErrors([]);
         } else {
           setErrors(data);
         }
@@ -52,23 +52,29 @@ function AddTopic ( { setAdminBarSelection, user } ) {
     }
   }
 
+  const handleAddClick = () => {
+    setAddTopic(true);
+  }
+
   const handleCancel = () => {
-    setAdminBarSelection(0);
+    setAddTopic(false);
   }
 
   return (
     <form onSubmit={handleAddSubmit}>
       <Errors errors={errors} />
-      <div className="form-row mb-4">
-        <div className="col-9">
-          <label htmlFor="content" className="pl-2 pt-2">New Topic</label>
+      {addTopic ?
+        <div className="form-row mb-4 mx-1">
+          <div className="col-9">
+            <label htmlFor="content" className="pl-2 pt-2">New Topic</label>
+          </div>
+          <input type="text" className="form-control mb-3 mx-2" id="topicName" name="topicName" onChange={handleChange} />
+          <div className="col text-right mr-2">
+            <button type="button" className="btn btn-light btn-sm" onClick={handleCancel}>Cancel</button>
+            <button type="submit" className="btn btn-dark btn-sm mx-2">Submit</button>
+          </div>
         </div>
-        <input type="text" className="form-control mb-3 mx-3" id="topicName" name="topicName" onChange={handleChange} />
-        <div className="col text-right">
-          <button type="button" className="btn btn-light btn-sm" onClick={handleCancel}>Cancel</button>
-          <button type="submit" className="btn btn-dark ml-2 mr-3 btn-sm">Submit</button>
-        </div>
-      </div>
+      : <div className="d-flex flex-row justify-content-center"><button className="btn btn-secondary btn-sm col" onClick={handleAddClick}>Add Topic</button></div>}
     </form>
   );
 }

@@ -2,26 +2,31 @@ import { useState, useEffect } from 'react';
 import Topic from './Topic.js';
 import Errors from '../Errors.js';
 
-function TopicSidebar ( { user } ) {
+function TopicSidebar ( { topicsUpdated, user } ) {
 
   const [topics, setTopics] = useState([]);
   const [errors, setErrors] = useState([]);
 
+  const getData = async () => {
+    try {
+      const response = await fetch(`http://localhost:8080/api/topic`);
+      const data = await response.json();
+      setTopics(data);
+    } catch (error) {
+      setErrors(["Something went wrong with our database, sorry!"]);
+    }
+  };
+
   useEffect(() => {
-    const getData = async () => {
-      try {
-        const response = await fetch(`${process.env.REACT_APP_API_URL}/api/topic`);
-        const data = await response.json();
-        setTopics(data);
-      } catch (error) {
-        setErrors(["Something went wrong with our database, sorry!"]);
-      }
-    };
     getData();
-  }, []);
+  }, [topicsUpdated]);
+
+  const handleUpdate = () => {
+    getData();
+  };
 
   const makeTopic = (topic) => {
-    return <Topic key={topic.topicId} topic={topic} user={user} />;
+    return <Topic key={topic.topicId} topic={topic} handleUpdate={handleUpdate} user={user} />;
   };
 
   return (
