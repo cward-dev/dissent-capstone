@@ -5,8 +5,8 @@ WORKDIR /workspace/app
 COPY mvnw .
 COPY .mvn .mvn
 
-# Copy the pom.xml file
-COPY pom.xml .
+# Copy the docker file and change its name pom.xml file
+COPY docker pom.xml
 
 # Copy the source files
 COPY src src

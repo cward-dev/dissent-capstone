@@ -1,0 +1,31 @@
+version: "3.9"
+services:
+  frontend:
+    build: 
+      # update this path to the root of your React project
+      context: ./dissent-react
+      args:
+        API_URL: http://localhost
+    # update this to the name of your react image
+    # but leave the `:dev` suffix
+    image: capstone-client:dev
+    ports:
+      - "80:80"
+    depends_on:
+      - api
+      - db
+  api:
+    # update this path to the root of your Spring Boot project
+    build: ./dissent
+    # update this to the name of your Spring Boot image
+    image: capstone-server
+    environment:
+      DB_URL: jdbc:mysql://db:3306/dissent
+      USER: root
+      PASS: password
+    depends_on:
+      - db
+  db:
+    build: ./database
+    # update this to the name of your database image
+    image: capstone-db
