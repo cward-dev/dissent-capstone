@@ -6,22 +6,20 @@ function ArticleFeedbackTagForm ( { object, user, handleTagClick, update, setUpd
   const [feedbackTags, setFeedbackTags] = useState([]);
   const [errors, setErrors] = useState([]);
 
- 
-
-  constgetData = async () => {​​​​​​​​
-  try {​​​​​​​​
-  constresponse = awaitfetch(`${process.env.REACT_APP_API_URL}/api/feedback-tag`);
-  constdata = awaitresponse.json();
-  setFeedbackTags(data);
-  handleTagClick();
-      }​​​​​​​​ catch (error) {​​​​​​​​
-  setErrors(["Something went wrong with our database, sorry!"]);
-      }​​​​​​​​
-    }​​​​​​​​;
+  const getData = async () => {
+    try {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/feedback-tag`);
+      const data = await response.json();
+      setFeedbackTags(data);
+      handleTagClick();
+    } catch (error) {
+      setErrors(["Something went wrong with our database, sorry!"]);
+    }
+  };
    
-  useEffect(() => {​​​​​​​​
-  getData();
-    }​​​​​​​​, []);
+  useEffect(() => {
+    getData();
+  }, []);
   
   
   const handleButtonUpdate = () => {
