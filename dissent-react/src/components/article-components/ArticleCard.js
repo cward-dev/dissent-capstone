@@ -63,12 +63,12 @@ function ArticleCard ( { articleId, articleOpen, setAddPost, updateArticleDelete
 
   useEffect(()=> {
     const getData = async () => {
-      let mount = true;
+      let mounted = true;
 
       try {
         const response = await fetch(`http://localhost:8080/api/article/${articleId}`);
 
-        if (mount) {
+        if (mounted) {
           if (response.status === 200) {
             const data = await response.json();
             setArticle(data);
@@ -82,7 +82,7 @@ function ArticleCard ( { articleId, articleOpen, setAddPost, updateArticleDelete
         setErrors(["Something went wrong with our database, sorry!"]);
       }
 
-      return () => mount = false;
+      return () => mounted = false;
     };
     getData();
   }, [update]);

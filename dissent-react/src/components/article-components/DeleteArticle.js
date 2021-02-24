@@ -10,24 +10,29 @@ function DeleteArticle ( { article, setDeleteArticle, updateArticleDelete, setUp
 
   const handleDeleteSubmit = async (event) => {
     event.preventDefault();
+    let mounted = true;
 
     try {
       const response = await fetch(`http://localhost:8080/api/article/${article.articleId}`, { method: "DELETE" });
 
-      if (response.status === 204) {
-        if (window.location.pathname === `/article/${article.articleId}`) {
-          history.push("/");
+      if (mounted) {
+        if (response.status === 204) {
+          if (window.location.pathname === `/article/${article.articleId}`) {
+            history.push("/");
+          }
+          updateArticleDelete === true ? setUpdateArticleDelete(false) : setUpdateArticleDelete(true);
+          handleCancel();
+        } else if (response.status === 404) {
+          throw new Error([`Post ID #${article.articleId} not found`]);
+        } else {
+          throw new Error(["Something unexpected went wrong, sorry!"]);
         }
-        updateArticleDelete === true ? setUpdateArticleDelete(false) : setUpdateArticleDelete(true);
-        handleCancel();
-      } else if (response.status === 404) {
-        throw new Error([`Post ID #${article.articleId} not found`]);
-      } else {
-        throw new Error(["Something unexpected went wrong, sorry!"]);
       }
     } catch (error) {
       setErrors([error]);
     }
+
+    return () => mounted = false;
   };
 
   const handleCancel = () => {
