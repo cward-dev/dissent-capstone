@@ -69,7 +69,7 @@ function Register() {
           </div>
           <div className="form-group col">
             <label htmlFor="country">Country</label><span></span>      
-              <select id="country" name="country" className="form-control" onChange={(event) => setCountry(event.target.value)}>
+              <select id="country" name="country" className="form-control" onChange={(event) => setCountry(event.target.value)} value="United States">
                 <option value="Afghanistan">Afghanistan</option>
                 <option value="Åland Islands">Åland Islands</option>
                 <option value="Albania">Albania</option>
@@ -300,7 +300,7 @@ function Register() {
                 <option value="Ukraine">Ukraine</option>
                 <option value="United Arab Emirates">United Arab Emirates</option>
                 <option value="United Kingdom">United Kingdom</option>
-                <option value="United States" selected>United States</option>
+                <option value="United States">United States</option>
                 <option value="United States Minor Outlying Islands">United States Minor Outlying Islands</option>
                 <option value="Uruguay">Uruguay</option>
                 <option value="Uzbekistan">Uzbekistan</option>
