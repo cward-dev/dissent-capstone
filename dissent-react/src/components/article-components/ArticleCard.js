@@ -78,7 +78,7 @@ function ArticleCard ( { articleId, articleOpen, setAddPost, user } ) {
       }
     };
     getData();
-  },[editTopics]);
+  }, [editTopics]);
   
   const handleAddPost = () => {
     setAddPost(true);

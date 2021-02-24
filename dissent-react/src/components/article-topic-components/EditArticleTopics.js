@@ -25,7 +25,7 @@ function EditArticleTopics ( { article, topics, setTopics, user } ) {
       }
     };
     getData();
-  },[]);
+  }, []);
 
   const makeArticleTopic = (topic) => {
     return (

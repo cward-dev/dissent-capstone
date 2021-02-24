@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import Errors from '../../Errors.js';
 
-function ReactivateTopic ( { topic, setTopicToReactivate, user } ) {
+function ReactivateTopic ( { topic, setTopicToReactivate, update, setUpdate, user } ) {
 
   const [errors, setErrors] = useState([]);
 
@@ -12,6 +12,13 @@ function ReactivateTopic ( { topic, setTopicToReactivate, user } ) {
       const response = await fetch(`http://localhost:8080/api/topic/activate/${topic.topicId}`, { method: "PUT" } );
 
       if (response.status === 204) {
+
+        if (update === true) {
+          setUpdate(false);
+        } else {
+          setUpdate(true);
+        }
+
         handleCancel();
         setErrors([]);
       } else {
