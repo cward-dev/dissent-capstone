@@ -64,7 +64,7 @@ function EditFeedbackTag ( { feedbackTag, setFeedbackTagToEdit, update, setUpdat
         <div className="col">
           <label htmlFor="content" className="pl-2 pt-2">Edit Feedback Tag - {feedbackTag.name}</label>
         </div>
-        <input type="text" className="form-control mb-3 mx-2" id="name" name="name" value={feedbackTag.name} onChange={handleChange} />
+        <input type="text" className="form-control mb-3 mx-2" id="name" name="name" value={feedbackTag.name} maxLength="255" required onChange={handleChange} />
         <label htmlFor="colorHex" className="pl-2 pt-2">Color</label>
         <input type="color" id="colorHex" name ="colorHex" className="col-2 form-control ml-2 p-1" defaultValue={feedbackTag.colorHex} required onChange={handleChange}></input>
         <div className="col text-right mr-2">
