@@ -86,6 +86,40 @@ class FeedbackTagServiceTest {
     }
 
     @Test
+    void shouldNotEditInvalidFeedbackTag(){
+        FeedbackTag tag = new FeedbackTag(1, "Sound", "#000000", true);
+
+        when(repository.edit(tag)).thenReturn(false);
+        Result<FeedbackTag> result = service.edit(tag);
+
+        assertFalse(result.isSuccess());
+        assertTrue(result.getMessages().contains("Feedback Tag ID: 1, not found"));
+    }
+
+    @Test
+    void shouldActivateById(){
+        when(repository.activateById(1)).thenReturn(true);
+        Boolean success = service.activateById(1);
+
+        assertTrue(success);
+    }
+    @Test
+    void shouldNotActivateByInvalidId(){
+        when(repository.activateById(1)).thenReturn(false);
+        Boolean success = service.activateById(99999);
+
+        assertFalse(success);
+    }
+
+
+    @Test
+    void shouldNotAddNullFeedbackTag(){
+        Result<FeedbackTag> result = service.add(null);
+
+        assertFalse(result.isSuccess());
+        assertTrue(result.getMessages().contains("Feedback Tag cannot be null"));
+    }
+    @Test
     void shouldAddNewFeedbackTag() {
         FeedbackTag expected = makeFeedbackTag();
         FeedbackTag actual = makeFeedbackTag();

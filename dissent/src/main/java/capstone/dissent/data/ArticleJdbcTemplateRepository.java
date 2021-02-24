@@ -238,14 +238,6 @@ public class ArticleJdbcTemplateRepository implements ArticleRepository {
         article.setPosts(posts);
     }
 
-    private void addSource(Article article) {
-
-        final String sql = "select s.source_id, s.source_name, s.website_url, s.`description`"
-                + " from `source` s inner join article a on s.source_id = a.source_id where a.article_id = ?;";
-
-        var source = jdbcTemplate.query(sql, new SourceMapper(), article.getArticleId()).stream().findAny().orElse(null);
-        article.setSource(source);
-    }
 
     private void getArticleDiscussionLength(Article article) {
         final String sql = "select p.post_id, p.parent_post_id, p.article_id, p.user_id, p.is_dissenting, p.date_posted, p.content, p.is_active, "

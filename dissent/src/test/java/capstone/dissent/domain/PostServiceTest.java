@@ -1,14 +1,17 @@
 package capstone.dissent.domain;
 
+import capstone.dissent.data.PostFeedbackTagRepository;
 import capstone.dissent.data.PostRepository;
-import capstone.dissent.models.Post;
-import capstone.dissent.models.User;
+import capstone.dissent.models.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.core.parameters.P;
 
+import java.security.Provider;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -22,6 +25,9 @@ class PostServiceTest {
 
     @MockBean
     PostRepository repository;
+
+    @MockBean
+    PostFeedbackTagRepository postFeedbackTagRepository;
 
     @Test
     void shouldFindAll() {
@@ -290,7 +296,7 @@ class PostServiceTest {
     @Test
     void shouldDeleteById() {
         when(repository.deleteById("fd788ds8-fsdf-4ghd-438a-d6ds8a7sdf91")).thenReturn(true);
-        assertTrue(repository.deleteById("fd788ds8-fsdf-4ghd-438a-d6ds8a7sdf91"));
+        assertTrue(service.deleteById("fd788ds8-fsdf-4ghd-438a-d6ds8a7sdf91"));
     }
 
     @Test
@@ -298,6 +304,167 @@ class PostServiceTest {
         when(repository.deleteById("this-leads-to-nothing")).thenReturn(false);
         assertFalse(repository.deleteById("this-leads-to-nothing"));
     }
+
+    @Test
+    void  shouldFindByTime(){
+        LocalDateTime day1 = LocalDateTime.of(2021, 2, 15, 12, 0, 0);
+        LocalDateTime now = LocalDateTime.now();
+
+        when(repository.findByTimestampRange(day1,now)).thenReturn(List.of(makePost()));
+        List<Post> post = service.findByTimestampRange(day1,now);
+
+        assertEquals(post.size(),1);
+    }
+
+    @Test
+    void shouldNotFindByTime(){
+        LocalDateTime day1 = LocalDateTime.of(2021, 2, 15, 12, 0, 0);
+        LocalDateTime now = LocalDateTime.now();
+
+        when(repository.findByTimestampRange(day1,now)).thenReturn(null);
+        List<Post> posts = service.findByTimestampRange(day1,now);
+
+       assertNull(posts);
+    }
+
+    @Test
+    void shouldFindPostFeedbackByKey(){
+        PostFeedbackTag tag = new PostFeedbackTag("1","1");
+
+        when(postFeedbackTagRepository.findByKey("1","1", 1)).thenReturn(tag);
+        PostFeedbackTag actual = service.findPostFeedbackTagByKey("1","1",1);
+
+        assertEquals(tag, actual);
+
+    }
+    @Test
+    void shouldNotFindPostFeedbackByKey(){
+        PostFeedbackTag actual = service.findPostFeedbackTagByKey("999","999",3);
+        assertNull(actual);
+    }
+
+    @Test
+    void shouldFindFeedBackTagHelperByPostId(){
+        List<FeedbackTagHelper> feedbackTagHelpers = List.of(new FeedbackTagHelper("A",1,"111d"));
+
+        when(postFeedbackTagRepository.findByPostId("1")).thenReturn(feedbackTagHelpers);
+        List<FeedbackTagHelper> tags = service.findPostFeedbackTagByPostId("1");
+
+        assertEquals(1, tags.size());
+        assertEquals("A", tags.get(0).getTitle());
+    }
+
+    @Test
+    void shouldNotFindFeedBackTagHelperByPostId(){
+        List<FeedbackTagHelper> tags = service.findPostFeedbackTagByPostId("1");
+
+        assertEquals(0, tags.size());
+    }
+
+    @Test
+    void shouldFindFeedbackTagHelperByUserId(){
+        List<FeedbackTagHelper> feedbackTagHelpers = List.of(new FeedbackTagHelper("A",1,"111d"));
+
+        when(postFeedbackTagRepository.findByUserId("1")).thenReturn(feedbackTagHelpers);
+        List<FeedbackTagHelper> tags = service.findPostFeedbackTagByUserId("1");
+
+        assertEquals(1, tags.size());
+        assertEquals("A", tags.get(0).getTitle());
+    }
+
+    @Test
+    void shouldNotFindFeedBackTagHelperByUserId(){
+        List<FeedbackTagHelper> tags = service.findPostFeedbackTagByPostId("1");
+
+        assertEquals(0, tags.size());
+    }
+
+    @Test
+    void shouldNotEditByNullPost(){
+        Result<Post> result = service.edit(null);
+
+        assertFalse(result.isSuccess());
+        assertTrue(result.getMessages().contains("Post cannot be null"));
+    }
+
+    @Test
+    void shouldNotEditInvalidPost(){
+        Post post = makePost();
+        Result<Post> result = service.edit(post);
+
+        assertFalse(result.isSuccess());
+        assertTrue(result.getMessages().contains("Post ID: fd788ds8-fsdf-4ghd-438a-d6ds8a7sdf91, not found"));
+    }
+
+    @Test
+    void shouldAddFeedBackTag(){
+        PostFeedbackTag postFeedbackTag = new PostFeedbackTag("1","1");
+        postFeedbackTag.setFeedbackTag(new FeedbackTag(1,"12212","1", true));
+
+        when(postFeedbackTagRepository.add(postFeedbackTag)).thenReturn(true);
+        Result<Void> result = service.addFeedbackTag(postFeedbackTag);
+
+        assertTrue(result.isSuccess());
+    }
+    @Test
+    void shouldNotAddNullFeedBackTag(){
+        Result<Void> result = service.addFeedbackTag(null);
+
+        assertFalse(result.isSuccess());
+        assertTrue(result.getMessages().contains("Post Feedback Tag cannot be null"));
+    }
+
+    @Test
+    void shouldNotAddWithNullFeedbackTag(){
+        PostFeedbackTag postFeedbackTag = new PostFeedbackTag("1","1");
+
+        Result<Void> result = service.addFeedbackTag(postFeedbackTag);
+
+        assertFalse(result.isSuccess());
+        System.out.println(result.getMessages());
+        assertTrue(result.getMessages().contains("Feedback Tag cannot be null"));
+    }
+
+    @Test
+    void shouldAddNotFeedBackTagWithErrorFromRepo(){
+        PostFeedbackTag postFeedbackTag = new PostFeedbackTag("1","1");
+        postFeedbackTag.setFeedbackTag(new FeedbackTag(1,"12212","1", true));
+
+        when(postFeedbackTagRepository.add(postFeedbackTag)).thenReturn(false);
+        Result<Void> result = service.addFeedbackTag(postFeedbackTag);
+
+        assertFalse(result.isSuccess());
+        assertTrue(result.getMessages().contains("Post feedback tag not added"));
+    }
+
+    @Test
+    void shouldDeleteByKey(){
+        when(postFeedbackTagRepository.deleteByKey("a","a",1)).thenReturn(true);
+        boolean success = service.deleteFeedbackTagByKey("a","a",1);
+
+        assertTrue(success);
+
+    }
+
+    @Test
+    void shouldNotDeleteByKey(){
+        when(postFeedbackTagRepository.deleteByKey("a","a",1)).thenReturn(false);
+        boolean success = service.deleteFeedbackTagByKey("a","a",1);
+
+        assertFalse(success);
+
+    }
+
+
+
+
+
+
+
+
+
+
+
 
     private Post makePost() {
         Post post = new Post();
