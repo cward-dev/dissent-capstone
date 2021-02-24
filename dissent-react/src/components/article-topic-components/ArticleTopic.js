@@ -22,12 +22,8 @@ function ArticleTopic ( { topic, article, setErrors, topics, setTopics, update, 
     };
 
     try {
-<<<<<<< HEAD
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/article/topic`, init);
-=======
 
-      const response = await fetch("http://localhost:8080/api/article/topic", init);
->>>>>>> main
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/article/topic`, init);
 
       if (mounted) {
         if (response.status === 201) {
