@@ -7,6 +7,10 @@ a {
   color: whitesmoke;
 }
 
+a.usernameLink {
+  color: black;
+}
+
 a:hover {
   color: whitesmoke;
   
