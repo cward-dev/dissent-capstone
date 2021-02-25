@@ -132,7 +132,8 @@ public class UserJdbcTemplateRepository implements UserRepository {
                 + "password_hash = 'deleted', "
                 + "photo_url = null, "
                 + "country = null, "
-                + "bio = null "
+                + "bio = null, "
+                + "is_active = false "
                 + "where user_id = ?";
 
         // remove role relationships

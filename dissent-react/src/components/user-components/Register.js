@@ -57,7 +57,6 @@ function Register() {
     if (password !== confirmPassword) {
       setErrors(["passwords don't match"]);
       setPassword('')
-      alert('passwords don\'t match')
       setConfirmPassword('')
       return false;
     }
