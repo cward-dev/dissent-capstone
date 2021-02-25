@@ -10,7 +10,7 @@ function AddArticlesPage( { user } ) {
     let rawArticles;
 
     try {
-      const response = await fetch("http://newsapi.org/v2/top-headlines?country=us&apiKey=46f374bc4801471fa5acc0956d739b7c");
+      const response = await fetch("https://newsapi.org/v2/top-headlines?country=us&apiKey=46f374bc4801471fa5acc0956d739b7c");
       const data = await response.json();
       rawArticles = data.articles;
     } catch (error) {
