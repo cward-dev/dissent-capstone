@@ -66,7 +66,7 @@ function App() {
   }
 
   const authenticate = async (username, password) => {
-    const response = await fetch(`${process.env.REACT_APP_API_URL}/api/authenticate`, {
+    const response = await fetch(`${process.env.REACT_APP_API_URL}/authenticate`, {
       method: 'POST',
       headers: {
         "Content-Type": "application/json"
