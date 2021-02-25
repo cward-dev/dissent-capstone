@@ -8,6 +8,7 @@ function Register() {
   const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
   const [country, setCountry] = useState('United States')
   const [bio, setBio] = useState('')
 
@@ -19,36 +20,49 @@ function Register() {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    try{
-      const response = await fetch('http://localhost:8080/api/user/create-account', {
-        method: 'POST',
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          email,
-          password,
-          username,
-          country,
-          bio
-        })
-      });
+    if (validate()) {
+      try{
+        const response = await fetch('http://localhost:8080/api/user/create-account', {
+          method: 'POST',
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            email,
+            password,
+            username,
+            country,
+            bio
+          })
+        });
 
-      if (response.status === 201) {
-        try {
-          await auth.authenticate(username, password);
-          history.push(from);
-        } catch(err) {
-          throw new Error('Issue with server')
+        if (response.status === 201) {
+          try {
+            await auth.authenticate(username, password);
+            history.push(from);
+          } catch(err) {
+            throw new Error('Issue with server')
+          }
+        } else if (response.status === 400) {
+            const data = await response.json();
+            setErrors(data)
         }
-      } else if (response.status === 400) {
-          const data = await response.json();
-          setErrors(data)
+      } catch (err) {
+        setErrors([err.message]);
       }
-    } catch (err) {
-      setErrors([err.message]);
     }
   }
+
+  const validate = () => {
+    if (password !== confirmPassword) {
+      setErrors(["passwords don't match"]);
+      setPassword('')
+      setConfirmPassword('')
+      return false;
+    }
+    return true;
+  } 
+  
 
   return (
     <div>
@@ -61,18 +75,22 @@ function Register() {
             <input type="email" className="form-control" placeholder="Email" onChange={(event) => setEmail(event.target.value)} />
           </div>
           <div className="form-group col">
-            <label htmlFor="password">Password</label>
-            <input type="password" className="form-control" placeholder="Password" onChange={(event) => setPassword(event.target.value)} />
+            <label htmlFor="username">Username</label>
+            <input type="username" className="form-control" placeholder="Username" onChange={(event) => setUsername(event.target.value)} />
           </div>
         </div>
         <div className="form-row">
           <div className="form-group col">
-            <label htmlFor="username">Username</label>
-            <input type="username" className="form-control" placeholder="Username" onChange={(event) => setUsername(event.target.value)} />
+            <label htmlFor="password">Password</label>
+            <input type="password" className="form-control" placeholder="Password" value={password} onChange={(event) => setPassword(event.target.value)} />
+          </div>
+          <div className="form-group col">
+            <label htmlFor="password">Confirm Password</label>
+            <input type="password" className="form-control" placeholder="Confirm Password" value={confirmPassword} onChange={(event) => setConfirmPassword(event.target.value)} />
           </div>
           <div className="form-group col">
             <label htmlFor="country">Country</label><span></span>      
-              <select id="country" name="country" className="form-control" onChange={(event) => setCountry(event.target.value)} value="United States">
+              <select id="country" name="country" className="form-control" onChange={(event) => setCountry(event.target.value)} >
                 <option value="Afghanistan">Afghanistan</option>
                 <option value="Åland Islands">Åland Islands</option>
                 <option value="Albania">Albania</option>

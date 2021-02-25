@@ -5,50 +5,66 @@ import AuthContext from '../AuthContext';
 
 function Edit ( { originalUser, setCurrentOption} ) {
   const auth = useContext(AuthContext)
-
-  const [user, setUser] = useState(originalUser);
+  const [email, setEmail] = useState(originalUser.email);
+  const [username, setUsername] = useState(originalUser.username);
+  const [password, setPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
+  const [country, setCountry] = useState(originalUser.country)
+  const [bio, setBio] = useState(originalUser.bio)
+  const [photoUrl, setPhotoUrl] = useState(originalUser.bio)
+  const [userId, setUserId] = useState(originalUser.userId)
 
   const [errors, setErrors] = useState([]);
-
   const history = useHistory();
-
-  const handleChange = (event) => {
-    const updatedUser = {...user};
-    updatedUser[event.target.name] = event.target.value;
-    setUser(updatedUser);
-  };
 
   const handleCancel = () => {
     setCurrentOption(0);
   }
 
+  const validate = () => {
+    if (password !== confirmPassword) {
+      setErrors(["passwords don't match"]);
+      alert('passwords don\'t match')
+      setConfirmPassword('')
+      return false;
+    }
+    return true;
+  } 
+
   const handleEditSubmit = async (event) => {
     event.preventDefault();
+    if(validate) {
+      const init = {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json"
+        },
+        body: JSON.stringify({
+          userId,
+          email,
+          password,
+          username,
+          photoUrl,
+          country,
+          bio
+        })
+      };
 
-    const init = {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        "Accept": "application/json"
-      },
-      body: JSON.stringify(user)
-    };
-
-    try {
-      const response = await fetch(`http://localhost:8080/api/user/${originalUser.userId}`, init);
-
-      if (response.status === 204) {
-        handleCancel();
-        auth.logout();
-        history.push('/login')
-      } else if (response.status === 400) {
-        const data = await response.json();
-        setErrors(data);
-      } else {
-        throw new Error(["Something unexpected went wrong, sorry!"]);
+      try {
+        const response = await fetch(`http://localhost:8080/api/user/${originalUser.userId}`, init);
+        if (response.status === 204) {
+          auth.logout();
+          history.push('/login')
+        } else if (response.status === 400) {
+          const data = await response.json();
+          setErrors(data);
+        } else {
+          throw new Error(["Something unexpected went wrong, sorry!"]);
+        }
+      } catch (error) {
+        setErrors(["Something unexpected went wrong, sorry!"]);
       }
-    } catch (error) {
-      setErrors(["Something unexpected went wrong, sorry!"]);
     }
   }
 
@@ -59,17 +75,31 @@ function Edit ( { originalUser, setCurrentOption} ) {
         <div className="form-row">
           <div className="form-group col">
             <label htmlFor="photoUrl">Photo URL</label>
-            <input id="photoUrl" name="photoUrl" type="text" className="form-control" placeholder="photoUrl" onChange={handleChange} defaultValue={originalUser.photoUrl}/>
+            <input id="photoUrl" name="photoUrl" type="text" className="form-control" placeholder="photoUrl" onChange={(event) => setPhotoUrl(event.target.value)} defaultValue={originalUser.photoUrl}/>
           </div>
         </div>  
         <div className="form-row">
           <div className="form-group col">
             <label htmlFor="username">Username</label>
-            <input id="username" name="username" type="username" className="form-control" placeholder="Username" onChange={handleChange} defaultValue = {originalUser.username}/>
+            <input id="username" name="username" type="username" className="form-control" placeholder="Username" onChange={(event) => setUsername(event.target.value)} defaultValue = {originalUser.username}/>
+          </div>
+          <div className="form-group col">
+            <label htmlFor="email">Email</label>
+            <input id="email" name="email" type="email" className="form-control" placeholder="Email" onChange={(event) => setEmail(event.target.value)} defaultValue = {originalUser.email}/>
+          </div>
+        </div>
+        <div className="form-row">
+          <div className="form-group col">
+            <label htmlFor="password">Password</label>
+            <input type="password" className="form-control" placeholder="Password" onChange={(event) => setPassword(event.target.value)} />
+          </div>
+          <div className="form-group col">
+            <label htmlFor="password">Password</label>
+            <input type="password" className="form-control" placeholder="Confirm Password" onChange={(event) => setConfirmPassword(event.target.value)} />
           </div>
           <div className="form-group col">
             <label htmlFor="country">Country</label><span></span>      
-              <select id="country" name="country" className="form-control" onChange={handleChange} defaultValue={originalUser.country}>
+              <select id="country" name="country" className="form-control" onChange={(event) => setCountry(event.target.value)}>
                 <option value="Afghanistan">Afghanistan</option>
                 <option value="Åland Islands">Åland Islands</option>
                 <option value="Albania">Albania</option>
@@ -319,7 +349,7 @@ function Edit ( { originalUser, setCurrentOption} ) {
         </div>
         <div className="form-group">
           <label htmlFor="bio">Bio</label>
-          <textarea id="bio" name="bio" type="text" className="form-control" rows="6" placeholder="Tell us about yourself..." onChange={handleChange} defaultValue={originalUser.bio}/>
+          <textarea id="bio" name="bio" type="text" className="form-control" rows="6" placeholder="Tell us about yourself..." onChange={(event) => setBio(event.target.value)} defaultValue={originalUser.bio}/>
         </div>
         <button type="submit" className="btn btn-dark">Update</button>
         <button type="submit" className="btn btn-dark my-3 mx-3" onClick={handleCancel}>Cancel</button>

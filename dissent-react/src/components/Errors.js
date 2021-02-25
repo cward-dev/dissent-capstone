@@ -4,7 +4,7 @@ function Errors( { errors } ) {
   }
 
   return (
-    <div className="alert alert-danger p-2">
+    <div className="alert alert-danger">
       {errors ? <ul>
         {errors.map(error => (
           <li key={error}>{error}</li>
