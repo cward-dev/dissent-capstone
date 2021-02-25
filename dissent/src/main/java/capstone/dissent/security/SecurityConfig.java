@@ -103,8 +103,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter { // 2
                                 "http://localhost",
                                 "http://localhost:3000",
                                 "http://frontend",
-                                "https://dev10-capstone-team1.azurewebsites.net",
-                                "http://localhost:8080")
+                                "https://dev10-capstone-team1.azurewebsites.net")
                         .allowedMethods("*");
             }
         };

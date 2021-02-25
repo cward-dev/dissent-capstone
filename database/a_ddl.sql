@@ -1,8 +1,4 @@
-DROP DATABASE IF EXISTS dissent;
-CREATE DATABASE dissent;
-USE dissent;
 
-# USER MANAGEMENT TABLES
 CREATE TABLE `role` (
     role_id INT PRIMARY KEY AUTO_INCREMENT,
     `name` VARCHAR(255) NOT NULL UNIQUE
@@ -29,7 +25,7 @@ CREATE TABLE user_role (
         REFERENCES `role` (role_id)
 );
 
-# ARTICLE TABLES
+
 CREATE TABLE topic (
     topic_id int PRIMARY KEY AUTO_INCREMENT,
     topic_name VARCHAR(255) NOT NULL,
@@ -58,7 +54,6 @@ CREATE TABLE article (
         REFERENCES `source` (source_id)
 );
 
-# ARTICLE-TOPIC BRIDGE TABLE
 CREATE TABLE article_topic (
     article_id VARCHAR(255) NOT NULL,
     topic_id INT NOT NULL,
@@ -69,7 +64,7 @@ CREATE TABLE article_topic (
         REFERENCES topic (topic_id)
 );
 
-# POST TABLES
+
 CREATE TABLE feedback_tag (
     feedback_tag_id INT PRIMARY KEY AUTO_INCREMENT,
     feedback_tag_name VARCHAR(255) NOT NULL,
@@ -77,7 +72,7 @@ CREATE TABLE feedback_tag (
     is_active BOOL NOT NULL DEFAULT true
 );
 
-# POST TABLE
+
 CREATE TABLE post (
     post_id VARCHAR(255) PRIMARY KEY,
     parent_post_id VARCHAR(255),
@@ -95,7 +90,7 @@ CREATE TABLE post (
         REFERENCES `user` (user_id)
 );
 
-# POST-FEEDBACK_TAG BRIDGE TABLE
+
 CREATE TABLE post_feedback_tag (
     post_id VARCHAR(255) NOT NULL,
     user_id VARCHAR(255) NOT NULL,
@@ -109,7 +104,7 @@ CREATE TABLE post_feedback_tag (
         REFERENCES feedback_tag (feedback_tag_id)
 );
 
-# ARTICLE-FEEDBACK_TAG BRIDGE TABLE
+
 CREATE TABLE article_feedback_tag (
     article_id VARCHAR(255) NOT NULL,
     user_id VARCHAR(255) NOT NULL,
