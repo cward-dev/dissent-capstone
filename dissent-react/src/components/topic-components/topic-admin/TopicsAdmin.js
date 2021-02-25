@@ -68,7 +68,7 @@ function TopicsAdmin ( { handleTopicsUpdated, user } ) {
           </tr>
         </thead>
         <tbody>
-          {topics.filter(t => !t.active).sort((a, b) => (a.topicName > b.topicName) ? 1 : -1).map(t => makeTopicAdminRow(t))}
+          {topics.filter(t => !t.active).sort((a, b) => (a.topicName.toLowerCase() > b.topicName.toLowerCase()) ? 1 : -1).map(t => makeTopicAdminRow(t))}
         </tbody>
       </table>
     </div>

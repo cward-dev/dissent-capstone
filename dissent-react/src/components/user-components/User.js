@@ -47,7 +47,7 @@ function User ( { user, setUserToDelete } ) {
       <td className="align-left"><TableFeedbackTagIcon user={auth.user} thisUser={user}/></td>
       {user.username == "admin" 
       ? <td></td>
-      : <button className="btn btn-danger btn-sm " onClick={handleDeleteClick}>Delete</button>
+      : <td className="text-right"><button className="btn btn-danger btn-sm " onClick={handleDeleteClick}>Delete</button></td>
       }
     </tr>
   );

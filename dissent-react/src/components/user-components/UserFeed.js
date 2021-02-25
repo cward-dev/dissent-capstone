@@ -36,7 +36,6 @@ function UserFeed() {
   return (
     <div>
       <Errors errors={errors} />
-      <hr className="mt-4"></hr>
       <h1 className="d-flex flex-row justify-content-center mb-4">User Admin</h1>
       {userToDelete ? <DeleteUser user={userToDelete} setUserToDelete={setUserToDelete} update={update} setUpdate={setUpdate} /> : null}
       <hr className="mb-4"></hr>
@@ -51,7 +50,7 @@ function UserFeed() {
           </tr>
         </thead>
         <tbody>
-          {users.filter(u => u.active).sort((a, b) => (a.username > b.username) ? 1 : -1).map(u => makeUser(u))}
+          {users.filter(u => u.active).sort((a, b) => (a.username.toLowerCase() > b.username.toLowerCase()) ? 1 : -1).map(u => makeUser(u))}
         </tbody>
       </table>
     </div>

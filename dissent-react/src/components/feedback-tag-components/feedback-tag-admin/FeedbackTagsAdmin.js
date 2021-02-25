@@ -68,7 +68,7 @@ function FeedbackTagsAdmin ( { user } ) {
           </tr>
         </thead>
         <tbody>
-          {feedbackTags.filter(ft => !ft.active).sort((a, b) => (a.name > b.name) ? 1 : -1).map(ft => makeFeedbackTagAdminRow(ft))}
+          {feedbackTags.filter(ft => !ft.active).sort((a, b) => (a.name.toLowerCase() > b.name.toLowerCase()) ? 1 : -1).map(ft => makeFeedbackTagAdminRow(ft))}
         </tbody>
       </table>
     </div>
