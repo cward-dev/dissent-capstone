@@ -1,16 +1,13 @@
 import { useContext, useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import UserFeedbackTagIcon from '../feedback-tag-components/user/UserFeedbackTagIcon'
 import AuthContext from '../AuthContext';
 
-function UserCard ({user}) {
+function UserCard ( { user } ) {
 
   const auth = useContext(AuthContext);
 
   const [posts, setPosts] = useState([])
-
-  useEffect(() => {
-    getData();
-  }, []);
 
   const getData = async () => {
     try {
@@ -22,19 +19,22 @@ function UserCard ({user}) {
     }
   };
 
+  useEffect(() => {
+    getData();
+  }, []);
 
   return (
     <div key={user.userId} className="card flex-row flex-wrap text-white bg-dark mb-4">
       <div className="border-0">
-        <img src={user.photoUrl} className="user-page-img" />
+        <Link to={`/user/${user.username}`}><img src={user.photoUrl} className="user-page-img" /></Link>
       </div>
       <div className="col-7 p-3">
-        <h4 className="card-title">{user.username}</h4>
+        <h4 className="card-title"><Link to={`/user/${user.username}`}>{user.username}</Link></h4>
         <p className="card-text">{user.country}</p>
         <p className="card-text">{user.bio}</p>
         <p className="card-text">Roles: {Object.values(user.roles).toString()}</p>
       </div>
-      <div className="col text-center p-2">
+      <div className="col text-center p-2 pt-3">
         <UserFeedbackTagIcon user={auth.user} thisUser={user} />
       </div>
       <div className="card-footer w-100 text-white p-2 border-white">Total Posts: {posts.length} </div>

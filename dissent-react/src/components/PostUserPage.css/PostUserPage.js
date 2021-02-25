@@ -7,7 +7,7 @@ import DeletePost from "./DeletePost.js";
 import Errors from "../Errors.js";
 import "./Post.css";
 
-function PostUserPage ( { post, user } ) {
+function Post ( { post, user } ) {
 
   const [feedbackTagMenuDisplayed, setFeedbackTagMenuDisplayed] = useState(false);
   const [currentOption, setCurrentOption] = useState(0);
@@ -39,14 +39,14 @@ function PostUserPage ( { post, user } ) {
   const timePassed = getTimePassed(post.timestamp);
 
   return (
-    <div>
+    <Link className="postUserPage">
       <Errors errors={errors} />
       <div className="media">
         <PostFeedbackTagIcon post={post} feedbackTagMenuDisplayed={feedbackTagMenuDisplayed} setFeedbackTagMenuDisplayed={setFeedbackTagMenuDisplayed} setErrors={setErrors} user={user} />
         <div className="media-body">
           <div className="pr-3">
               <div className="d-flex">
-                  <h5>{post.user.username}</h5>
+                  <h5><Link to={`/user/${post.user.username}`} className="usernameLink">{post.user.username}</Link></h5>
                   <div className="ml-2">
                     {post.dissenting ? <div className="badge badge-dark mr-2">Dissenting</div> : <div className="badge badge-light mr-2">Accepting</div>}
                     <span className="timestamp">
@@ -56,9 +56,7 @@ function PostUserPage ( { post, user } ) {
               </div>
           </div>
           <div className="mb-2 pr-3">
-            <Link  className="postUserPage" to={`/article/${post.articleId}`}>
-              {post.active ? <div>{post.content}</div> : <div className="alert alert-dark font-italic my-1 py-2">{post.content}</div>}
-            </Link>
+            {post.active ? <div>{post.content}</div> : <div className="alert alert-dark font-italic my-1 py-2">{post.content}</div>}
           </div>
           <div className="pr-3 mb-3">
             <button className="btn btn-link btn-sm p-0" disabled>{`Discussion (${post.childPostCount})`}</button>
@@ -66,8 +64,8 @@ function PostUserPage ( { post, user } ) {
           <hr></hr>
         </div>
       </div>
-    </div>
+    </Link>
   );
 }
 
-export default PostUserPage;
+export default Post;
