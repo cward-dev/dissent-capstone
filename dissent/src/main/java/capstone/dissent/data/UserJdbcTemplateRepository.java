@@ -108,13 +108,15 @@ public class UserJdbcTemplateRepository implements UserRepository {
     public boolean edit(User user) {
 
         final String sql = "update user set " +
+                "email = ?, " +
+                "password_hash= ?, "+
                 "username = ?, " +
                 "photo_url = ?, " +
                 "country = ?, " +
                 "bio = ? " +
                 "where user_id = ?;";
 
-        return jdbcTemplate.update(sql, user.getUsername(), user.getPhotoUrl(), user.getCountry(), user.getBio(), user.getUserId()) > 0;
+        return jdbcTemplate.update(sql, user.getEmail(), user.getPassword(), user.getUsername(), user.getPhotoUrl(), user.getCountry(), user.getBio(), user.getUserId()) > 0;
 
     }
 

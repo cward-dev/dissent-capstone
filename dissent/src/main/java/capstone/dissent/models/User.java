@@ -20,7 +20,6 @@ public class User {
     @Email
     private String email;
 
-    @NotBlank(message = "Password cannot be null")
     private String password;
 
     @NotBlank(message = "Username cannot be null")
