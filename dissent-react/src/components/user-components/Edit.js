@@ -1,8 +1,7 @@
 import { useState, useEffect, useContext } from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import { Link, useHistory, Redirect } from 'react-router-dom';
 import Errors from '../Errors.js';
 import AuthContext from '../AuthContext';
-import  { Redirect } from 'react-router-dom';
 
 function Edit ( { originalUser, setCurrentOption} ) {
   const auth = useContext(AuthContext)

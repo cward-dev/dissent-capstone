@@ -1,8 +1,8 @@
 import { useState , useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import Errors from '../Errors';
+import Errors from '../../Errors';
 import './RawArticleCard.css';
-import placeholderImage from '../images/D-logo.png';
+import placeholderImage from '../../images/D-logo.png';
 
 function RawArticleCard ( { rawArticle, user, handleSetArticles } ) {
 

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import NewsAPIFeed from './NewsAPIFeed.js';
-import Errors from '../Errors.js';
+import Errors from '../../Errors.js';
 
 function AddArticlesPage( { user } ) {
   const [articles, setArticles] = useState([]);

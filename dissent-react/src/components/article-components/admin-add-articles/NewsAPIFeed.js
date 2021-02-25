@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import RawArticleCard from './RawArticleCard.js';
-import './ArticleFeed.css';
+import '../ArticleFeed.css';
 
 function NewsAPIFeed ( { articles, user, setArticles } ) {
 

@@ -7,7 +7,7 @@ import FeedbackTagsAdmin from './components/feedback-tag-components/feedback-tag
 import About from './components/pages/About.js';
 import UserPage from './components/pages/UserPage.js';
 import ArticlePage from './components/article-components/ArticlePage.js';
-import AddArticlesPage from './components/article-components/AddArticlesPage.js';
+import AddArticlesPage from './components/article-components/admin-add-articles/AddArticlesPage.js';
 import TopicSidebar from './components/topic-components/TopicSidebar.js';
 import NotFound from './components/pages/NotFound.js';
 import Navbar from './components/Navbar.js';
