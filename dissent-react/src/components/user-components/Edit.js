@@ -99,7 +99,7 @@ function Edit ( { originalUser, setCurrentOption} ) {
           </div>
           <div className="form-group col">
             <label htmlFor="country">Country</label><span></span>      
-              <select id="country" name="country" className="form-control" onChange={(event) => setCountry(event.target.value)}>
+              <select id="country" name="country" className="form-control" onChange={(event) => setCountry(event.target.value)} defaultValue = {originalUser.country}>
                 <option value="Afghanistan">Afghanistan</option>
                 <option value="Åland Islands">Åland Islands</option>
                 <option value="Albania">Albania</option>
