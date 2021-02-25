@@ -1,0 +1,21 @@
+version: "3.9"
+services:
+  frontend:
+    image: dev10capstoneteam1images.azurecr.io/capstone-client:v1
+    ports:
+      - "80:80"
+    depends_on:
+      - api
+      - db
+    # this needs to be your web app name
+    domainname: "dev10-capstone-team1"
+  api:
+    image: dev10capstoneteam1images.azurecr.io/capstone-server:v1
+    environment:
+      DB_URL: jdbc:mysql://db:3306/dissent
+      DB_USERNAME: root
+      DB_PASSWORD: password
+    depends_on:
+      - db
+  db:
+    image: dev10capstoneteam1images.azurecr.io/capstone-db:v2

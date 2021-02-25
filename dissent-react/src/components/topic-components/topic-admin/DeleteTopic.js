@@ -7,7 +7,7 @@ function DeleteTopic ( { topic, setTopicToDelete, update, setUpdate, user } ) {
 
   const handleDeleteSubmit = async (event) => {
     try {
-      const response = await fetch(`http://localhost:8080/api/topic/${topic.topicId}`, { method: "DELETE" } );
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/topic/${topic.topicId}`, { method: "DELETE" } );
 
       if (response.status === 204) {
 

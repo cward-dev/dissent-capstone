@@ -14,7 +14,7 @@ function UserCard ({user}) {
 
   const getData = async () => {
     try {
-      const response = await fetch(`http://localhost:8080/api/post/user/${user.userId}`);
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/post/user/${user.userId}`);
       const data = await response.json();
       setPosts(data);
     } catch (error) {

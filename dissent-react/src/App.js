@@ -46,7 +46,7 @@ function App() {
   const login = async (token) => {
     const { userId, sub: username, authorities } = jwt_decode(token);
     const roles = authorities.split(',');
-    const response = await fetch(`http://localhost:8080/api/user/username/${username}`);
+    const response = await fetch(`${process.env.REACT_APP_API_URL}/api/user/username/${username}`);
     const { email, photoUrl, country, bio } = await response.json();
     const user = {
       userId,

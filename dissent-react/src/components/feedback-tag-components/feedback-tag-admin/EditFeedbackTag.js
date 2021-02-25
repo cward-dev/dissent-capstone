@@ -31,7 +31,7 @@ function EditFeedbackTag ( { feedbackTag, setFeedbackTagToEdit, update, setUpdat
     };
 
     try {
-      const response = await fetch(`http://localhost:8080/api/feedback-tag/${feedbackTag.feedbackTagId}`, init);
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/feedback-tag/${feedbackTag.feedbackTagId}`, init);
 
       if (response.status === 204) {
 

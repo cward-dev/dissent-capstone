@@ -9,7 +9,7 @@ function ReactivateTopic ( { topic, setTopicToReactivate, update, setUpdate, use
     event.preventDefault();
 
     try {
-      const response = await fetch(`http://localhost:8080/api/topic/activate/${topic.topicId}`, { method: "PUT" } );
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/topic/activate/${topic.topicId}`, { method: "PUT" } );
 
       if (response.status === 204) {
 
