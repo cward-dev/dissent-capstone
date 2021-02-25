@@ -1,5 +1,5 @@
 import UserCard from '../user-components/UserCard.js';
-import Post from '../post-components/Post.js';
+import PostFeedUserPage from '../post-components/PostFeedUserPage.js';
 import './UserPage.css';
 import { useContext, useState, useEffect } from 'react';
 import React from "react";
@@ -17,28 +17,23 @@ function UserPage () {
   const [updated, setUpdated] = useState(false);
   const auth = useContext(AuthContext);
 
-  const [user, setUser] = useState();
+  const [user, setUser] = useState(null);
   const [currentOption, setCurrentOption] = useState(0);
 
-  let { username } = useParams();
-
-  const getData = async () => {
-    try {
-      const response = await fetch(`http://localhost:8080/api/user/username/${username}`);
-      const data = await response.json();
-      setUser(data);
-    } catch (error) {
-      console.log("Something went wrong.")
-    }
-  };
+  const { username } = useParams();
 
   useEffect(() => {
+    const getData = async () => {
+      try {
+        const response = await fetch(`http://localhost:8080/api/user/username/${username}`);
+        const data = await response.json();
+        setUser(data);
+      } catch (error) {
+        console.log("Something went wrong.")
+      }
+    };
     getData();
   }, []);
-
-  const makePost = (post) => {
-    <Post post={post} />
-  }
 
   const handleEditUser = () => {
     setCurrentOption(1);
@@ -46,7 +41,7 @@ function UserPage () {
 
   const handleUserEdited = () => {
     setCurrentOption(0);
-  }
+  };
 
 
   return (
@@ -62,6 +57,7 @@ function UserPage () {
         }
       </div>
       <div>
+        <PostFeedUserPage thisUser={user} user={user} />
       </div>
     </div>
   );

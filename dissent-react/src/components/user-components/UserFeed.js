@@ -1,6 +1,23 @@
+import { useState, useEffect } from 'react';
 import UserCard from './UserCard.js';
 
-function UserFeed( { users } ) {
+function UserFeed() {
+
+  const [users, setUsers] = useState([]);
+
+  const getData = async () => {
+    try {
+      const response = await fetch(`http://localhost:8080/api/user/`);
+      const data = await response.json();
+      setUsers(data);
+    } catch (error) {
+      console.log("Something went wrong.")
+    }
+  };
+
+  useEffect(() => {
+    getData();
+  }, []);
 
   const makeUser = (user) => {
     return (
@@ -10,7 +27,7 @@ function UserFeed( { users } ) {
 
   return (
     <div>
-      {users.map(user => makeUser(user))}
+      {users.sort((a, b) => (a.username > b.username ? 1 : -1)).map(user => makeUser(user))}
     </div>
   );
 }
