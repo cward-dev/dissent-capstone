@@ -38,23 +38,13 @@ public class PostController {
     }
 
     @GetMapping("/article/{articleId}")
-    public ResponseEntity<List<Post>> findByArticleId(@PathVariable String articleId) {
-        List<Post> posts = service.findByArticleId(articleId);
-        if (posts.size() == 0) {
-            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-        }
-
-        return ResponseEntity.ok(posts);
+    public List<Post> findByArticleId(@PathVariable String articleId) {
+        return service.findByArticleId(articleId);
     }
 
     @GetMapping("/user/{userId}")
-    public ResponseEntity<List<Post>> findByUserId(@PathVariable String userId) {
-        List<Post> posts = service.findByUserId(userId);
-        if (posts.size() == 0) {
-            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-        }
-
-        return ResponseEntity.ok(posts);
+    public List<Post> findByUserId(@PathVariable String userId) {
+        return service.findByUserId(userId);
     }
 
     @PostMapping
