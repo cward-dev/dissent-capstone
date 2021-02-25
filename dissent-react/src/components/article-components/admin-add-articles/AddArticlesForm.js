@@ -1,20 +1,27 @@
-import { useEffect, useState } from 'react';
-import NewsAPIFeed from './NewsAPIFeed.js';
+import { useState, useEffect } from 'react';
+import { Link, useHistory } from 'react-router-dom';
 import Errors from '../../Errors.js';
-import AddArticlesForm from './AddArticlesForm.js';
 
-function AddArticlesPage( { user } ) {
-  const [articles, setArticles] = useState([]);
-  const [addArticles, setAddArticles] = useState(false);
+function AddArticlesForm ( { setArticles, setAddArticles, user } ) {
+
+  const [articlesJson, setArticlesJson] = useState("");
   const [errors, setErrors] = useState([]);
 
-  const fetchArticles = async () => {
+  const handleChange = (event) => {
+    const updatedArticlesJson = event.target.value;
+    setArticlesJson(updatedArticlesJson);
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+
     let rawArticles;
 
     try {
-      const response = await fetch("http://newsapi.org/v2/top-headlines?country=us&apiKey=46f374bc4801471fa5acc0956d739b7c");
-      const data = await response.json();
+      const data = JSON.parse(articlesJson);
       rawArticles = data.articles;
+
+      // rawArticles = JSON.parse(articlesJson);
     } catch (error) {
       setErrors(["Something went wrong with our fetch, sorry!"]);
     }
@@ -23,8 +30,8 @@ function AddArticlesPage( { user } ) {
     let postedTime = new Date();
     postedTime = new Date(postedTime.getTime() - postedTime.getTimezoneOffset() * 60000);
 
+    console.log(rawArticles.length);
     for (let i = 0; i < rawArticles.length; i++) {
-
       let publishedTime = new Date(rawArticles[i].publishedAt);
       publishedTime = new Date(publishedTime.getTime() - publishedTime.getTimezoneOffset() * 60000);
 
@@ -46,26 +53,31 @@ function AddArticlesPage( { user } ) {
       };
       newArticles.push(article);
     }
-    setArticles(newArticles);
-  };
 
-  const handleAddArticlesClick = () => {
-    setAddArticles(true);
-  };
+    setArticles(newArticles);
+    setAddArticles(false);
+  }
+
+  const handleCancel = () => {
+    setAddArticles(false);
+  }
 
   return (
-    <div className="container">
+    <form onSubmit={handleSubmit}>
       <Errors errors={errors} />
-      <h1 className="d-flex flex-row justify-content-center mb-4">Add New Articles</h1>
-      <hr className="mb-4"></hr>
-      <NewsAPIFeed articles={articles} setArticles={setArticles} user={user} />
-      <button className="col btn btn-danger" onClick={fetchArticles}>Fetch Latest Articles (localhost only - no subscription)</button>
-      <hr className="my-4"></hr>
-      {addArticles ? <AddArticlesForm setArticles={setArticles} setAddArticles={setAddArticles} user={user} /> : 
-        <button className="col btn btn-dark" onClick={handleAddArticlesClick}>Fetch Latest Articles (deployed demo - no subscription)</button>
-        }
-    </div>
+      <div className="form-row mb-4">
+        <div className="col-9">
+          <label htmlFor="articlesJson" className="pl-2 pt-2">New Articles Json Response (no subscription)</label>
+        </div>
+        <textarea className="form-control mb-3 mr-3" id="articlesJson" name="articlesJson" type="textarea" rows="10" required onChange={handleChange} />
+        <div className="col text-right">
+          <button type="button" className="btn btn-light btn-sm" onClick={handleCancel}>Cancel</button>
+          <button type="submit" className="btn btn-dark ml-2 mr-3 btn-sm">Submit</button>
+        </div>
+      </div>
+      <hr></hr>
+    </form>
   );
 }
 
-export default AddArticlesPage;
+export default AddArticlesForm;
