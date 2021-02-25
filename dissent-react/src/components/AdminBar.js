@@ -6,6 +6,7 @@ function AdminBar ( { user } ) {
   const [adminBarSelection, setAdminBarSelection] = useState(0);
   const [users, setUsers] = useState([]);
 
+
   useEffect(() => {
     getData();
   }, []);
@@ -37,17 +38,8 @@ function AdminBar ( { user } ) {
           <Link className="btn btn-dark mr-2" to="/admin/topics">Topics</Link>
           <Link className="btn btn-dark mr-2" to="/admin/feedback-tags">Feedback Tags</Link>
           <Link className="btn btn-dark mr-2" to="/admin/article/add">Add Articles</Link>
-          <button className="btn btn-dark mr-2" onClick={onViewUsers}>View Users</button>
+          <Link className="btn btn-dark mr-2" to="/admin/users">View Users</Link>
         </div>
-        {adminBarSelection == 0 ? null:
-        <div className="container alert alert-secondary">
-          {adminBarSelection == 2 
-          ? <div>
-            <UserFeed users={users} />
-            </div> 
-            : null}
-        </div>
-        }
       </>
       : null}
     </>

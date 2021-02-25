@@ -3,11 +3,12 @@ import { Route, BrowserRouter as Router, Switch, Link } from 'react-router-dom';
 import HomePage from './components/article-components/HomePage.js';
 import TopicPage from './components/topic-components/TopicPage.js';
 import TopicsAdmin from './components/topic-components/topic-admin/TopicsAdmin.js';
+import UserFeed from './components/user-components/UserFeed.js';
 import FeedbackTagsAdmin from './components/feedback-tag-components/feedback-tag-admin/FeedbackTagsAdmin.js';
 import About from './components/pages/About.js';
 import UserPage from './components/pages/UserPage.js';
 import ArticlePage from './components/article-components/ArticlePage.js';
-import AddArticlesPage from './components/article-components/AddArticlesPage.js';
+import AddArticlesPage from './components/article-components/admin-add-articles/AddArticlesPage.js';
 import TopicSidebar from './components/topic-components/TopicSidebar.js';
 import NotFound from './components/pages/NotFound.js';
 import Navbar from './components/Navbar.js';
@@ -118,6 +119,9 @@ function App() {
           <div className="row">
             <div className="col-8 alert alert-secondary pt-4">
               <Switch>
+                <Route path={'/admin/users'} exact>
+                  <UserFeed user={user} />
+                </Route>
                 <Route path={'/article/add'} exact>
                   <AddArticlesPage user={user} />
                 </Route>

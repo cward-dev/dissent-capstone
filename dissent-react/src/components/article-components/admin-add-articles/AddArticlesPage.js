@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react';
 import NewsAPIFeed from './NewsAPIFeed.js';
-import Errors from '../Errors.js';
+import Errors from '../../Errors.js';
+import AddArticlesForm from './AddArticlesForm.js';
 
 function AddArticlesPage( { user } ) {
   const [articles, setArticles] = useState([]);
+  const [addArticles, setAddArticles] = useState(false);
   const [errors, setErrors] = useState([]);
 
   const fetchArticles = async () => {
@@ -47,13 +49,20 @@ function AddArticlesPage( { user } ) {
     setArticles(newArticles);
   };
 
+  const handleAddArticlesClick = () => {
+    setAddArticles(true);
+  };
+
   return (
     <div className="container">
       <Errors errors={errors} />
       <h1 className="d-flex flex-row justify-content-center mb-4">Add New Articles</h1>
       <hr className="mb-4"></hr>
       <NewsAPIFeed articles={articles} setArticles={setArticles} user={user} />
-      <button className="col btn btn-danger" onClick={fetchArticles}>Get Articles</button>
+      <button className="col btn btn-danger btn-sm mb-4" onClick={fetchArticles}>Fetch Latest Articles (localhost only - no subscription)</button>
+      {addArticles ? <AddArticlesForm setArticles={setArticles} setAddArticles={setAddArticles} user={user} /> : 
+        <button className="col btn btn-secondary btn-sm" onClick={handleAddArticlesClick}>Fetch Latest Articles (deployed demo - no subscription)</button>
+        }
     </div>
   );
 }
