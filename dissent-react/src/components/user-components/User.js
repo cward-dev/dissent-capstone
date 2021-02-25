@@ -3,6 +3,7 @@ import { useContext, useEffect, useState } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import TableFeedbackTagIcon from '../feedback-tag-components/user/TableFeedbackTagIcon'
 import AuthContext from '../AuthContext';
+import './User.css';
 
 function User ( { user, setUserToDelete } ) {
 
