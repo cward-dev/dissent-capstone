@@ -10,14 +10,25 @@ function User ( { user, setUserToDelete } ) {
   const auth = useContext(AuthContext);
   const [posts, setPosts] = useState([]);
   const getData = async () => {
-    try {
-      const response = await fetch(`http://localhost:8080/api/post/user/${user.userId}`);
-      const data = await response.json();
-      setPosts(data);
-    } catch (error) {
-      console.log("Something went wrong.");
+    let mounted = true;
+
+    if (mounted && user && user.userId) {
+      console.log(user);
+      try {
+        const response = await fetch(`http://localhost:8080/api/post/user/${user.userId}`);
+        const data = await response.json();
+        setPosts(data);
+      } catch (error) {
+        console.log("Something went wrong.");
+      }
     }
+
+    return () => mounted = false;
   };
+
+  useEffect(() => {
+    getData();
+  }, []);
 
   const handleDeleteClick = async () => {
     // try {
@@ -35,11 +46,7 @@ function User ( { user, setUserToDelete } ) {
     // } catch (error) {
     // }
     setUserToDelete(user);
-  }
-
-  useEffect(() => {
-    getData();
-  }, []);
+  };
 
   return (
     <tr>

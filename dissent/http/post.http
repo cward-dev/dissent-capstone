@@ -4,6 +4,10 @@ GET {{url}} HTTP/1.1
 
 ###
 
+GET http://localhost:8080/api/post/user/8596b557-35ca-4cb7-bacb-992a184643fd HTTP/1.1
+
+###
+
 GET {{url}}/a7db5cb6-446a-4c8e-836e-006d9ff239b5 HTTP/1.1
 
 ###

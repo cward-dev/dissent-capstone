@@ -6,22 +6,25 @@ import DeleteUser from './DeleteUser';
 function UserFeed() {
 
   const [users, setUsers] = useState([]);
-  const [user, setUser] = useState([]);
   const [update, setUpdate] = useState(false);
   const [userToDelete, setUserToDelete] = useState(null);
   const [errors, setErrors] = useState([]);
 
   const getData = async () => {
-    try {
-      const response = await fetch(`http://localhost:8080/api/user/`);
-      const data = await response.json();
-      setUsers(data);
-    } catch (error) {
-      console.log("Something went wrong.")
-    }
-  };
+    let mounted = true;
 
-  
+    if (mounted) {
+      try {
+        const response = await fetch(`http://localhost:8080/api/user/`);
+        const data = await response.json();
+        setUsers(data);
+      } catch (error) {
+        console.log("Something went wrong.")
+      }
+    }
+
+    return () => mounted = false;
+  };
 
   useEffect(() => {
     getData();

@@ -15,7 +15,7 @@ function UserCard ( { user } ) {
       const data = await response.json();
       setPosts(data);
     } catch (error) {
-      console.log("Something went wrong.")
+      console.log("Something went wrong.");
     }
   };
 
