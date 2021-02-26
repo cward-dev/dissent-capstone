@@ -26,9 +26,9 @@ function Navbar ({user, handleLogout}) {
                   <Link className="nav-link active" to={`/user/${auth.user.username}`}>{auth.user.username}</Link>
                 </li>
             }
-            <li className="nav-item">
+            {/* <li className="nav-item">
               <Link className="nav-link active" to="/about" aria-current="page">About</Link>
-            </li>
+            </li> */}
             {auth.user && 
               <li className="nav-item">
                 <Link className="nav-link active" onClick={auth.logout} to="/">Log Out</Link>
