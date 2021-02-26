@@ -7,7 +7,7 @@ function DeleteUser ( { user, setUserToDelete, update, setUpdate } ) {
 
   const handleDeleteSubmit = async (event) => {
     try {
-      const response = await fetch(`http://localhost:8080/api/user/${user.userId}`, { method: "DELETE" } );
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/user/${user.userId}`, { method: "DELETE" } );
 
       if (response.status === 204) {
 

@@ -54,6 +54,7 @@ CREATE TABLE article (
         REFERENCES `source` (source_id)
 );
 
+
 CREATE TABLE article_topic (
     article_id VARCHAR(255) NOT NULL,
     topic_id INT NOT NULL,

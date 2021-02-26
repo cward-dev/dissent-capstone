@@ -10,7 +10,7 @@ function PostFeedUserPage ( { thisUser, user } ) {
     const getData = async () => {
       try {
         if (thisUser) {
-          const response = await fetch(`http://localhost:8080/api/post/user/${thisUser.userId}`);
+          const response = await fetch(`${process.env.REACT_APP_API_URL}/api/post/user/${thisUser.userId}`);
           const data = await response.json();
           setPosts(data);
         }

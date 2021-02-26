@@ -37,7 +37,7 @@ function UserPage () {
   useEffect(() => {
     const getData = async () => {
       try {
-        const response = await fetch(`http://localhost:8080/api/user/username/${username}`);
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/api/user/username/${username}`);
         const data = await response.json();
         setUser(data);
       } catch (error) {

@@ -13,7 +13,7 @@ function UserFeed() {
 
   const getData = async () => {
     try {
-      const response = await fetch(`http://localhost:8080/api/user/`);
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/user/`);
       const data = await response.json();
       setUsers(data);
     } catch (error) {
