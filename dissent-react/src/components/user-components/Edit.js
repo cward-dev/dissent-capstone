@@ -7,12 +7,12 @@ function Edit ( { originalUser, setCurrentOption} ) {
   const auth = useContext(AuthContext)
   const [email, setEmail] = useState(originalUser.email);
   const [username, setUsername] = useState(originalUser.username);
-  const [password, setPassword] = useState('')
-  const [confirmPassword, setConfirmPassword] = useState('')
-  const [country, setCountry] = useState(originalUser.country)
-  const [bio, setBio] = useState(originalUser.bio)
-  const [photoUrl, setPhotoUrl] = useState(originalUser.bio)
-  const [userId, setUserId] = useState(originalUser.userId)
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [country, setCountry] = useState(originalUser.country);
+  const [bio, setBio] = useState(originalUser.bio);
+  const [photoUrl, setPhotoUrl] = useState(originalUser.photoUrl);
+  const [userId, setUserId] = useState(originalUser.userId);
 
   const [errors, setErrors] = useState([]);
   const history = useHistory();

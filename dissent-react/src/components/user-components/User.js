@@ -8,14 +8,14 @@ import './User.css';
 function User ( { user, setUserToDelete } ) {
 
   const auth = useContext(AuthContext);
-  const [posts, setPosts] = useState([])
+  const [posts, setPosts] = useState([]);
   const getData = async () => {
     try {
       const response = await fetch(`http://localhost:8080/api/post/user/${user.userId}`);
       const data = await response.json();
       setPosts(data);
     } catch (error) {
-      console.log("Something went wrong.")
+      console.log("Something went wrong.");
     }
   };
 

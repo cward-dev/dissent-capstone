@@ -35,7 +35,7 @@ function TopicSidebar ( { topicsUpdated, user } ) {
       <hr></hr>
       <Errors errors={errors} />
       <ul className="list-group">
-        {topics.sort((a, b) => (a.topicName > b.topicName) ? 1 : -1).map(topic => makeTopic(topic))}
+        {topics ? topics.sort((a, b) => (a.topicName > b.topicName) ? 1 : -1).map(topic => makeTopic(topic)) : null}
       </ul>
     </div>
   );
